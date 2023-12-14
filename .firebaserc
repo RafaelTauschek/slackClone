@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "slack-clone-19a0c": {
+      "hosting": {
+        "slack-clone": [
+          "slack-clone-19a0c"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "slack-clone-19a0c"
+  }
+}
