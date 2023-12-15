@@ -1,0 +1,35 @@
+<div class="login-section">
+    <span class="headline">Anmeldung</span>
+    <span class="explanation">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
+
+    <form [formGroup]="loginForm">
+        <div class="input-container">
+            <img src="./assets/img/icons/mail-icon.png" alt="">
+            <input type="text" placeholder="beispielname@email.com">
+        </div>
+        <div class="input-container">
+            <img src="./assets/img/icons/lock-icon.png" alt="">
+            <input type="text" placeholder="Passwort">
+        </div>
+
+        <a href="/">Passwort vergessen?</a>
+
+        <div class="or-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="500" height="2" viewBox="0 0 500 2" fill="none">
+                <path d="M500 1H0" stroke="#ADB0D9" />
+            </svg>
+            <span>ODER</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="500" height="2" viewBox="0 0 500 2" fill="none">
+                <path d="M500 1H0" stroke="#ADB0D9" />
+            </svg>
+        </div>
+
+        <div class="google-container"></div>
+
+        <div class="btn-container">
+            <button>Anmelden</button>
+            <button>Gäste-Login</button>
+        </div>
+    </form>
+
+</div>
