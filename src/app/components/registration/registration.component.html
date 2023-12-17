@@ -1,1 +1,32 @@
-<p>registration works!</p>
+<div class="registration-section">
+
+
+    <div class="header">
+        <div class="topline">
+            <div [routerLink]="['/login']" class="arrow-back">
+                <img src="./assets/img/icons/arrow-back.png" alt="arrow-back">
+            </div>
+            <div class="title">
+                <span>Konto erstellen</span>
+            </div>
+        </div>
+        <span class="explanation">Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</span>
+    </div>
+
+    <form [formGroup]="registrationForm">
+        <div class="input-container">
+            <img src="./assets/img/icons/person-icon.png" alt="person-icon">
+            <input type="name" placeholder="Vor- und Nachname">
+        </div>
+        <div class="input-container">
+            <img src="./assets/img/icons/mail-icon.png" alt="mail-icon">
+            <input type="text" placeholder="E-Mail-Adresse">
+        </div>
+        <div class="input-container">
+            <img src="./assets/img/icons/lock-icon.png" alt="lock-icon">
+            <input type="password" placeholder="Passwort">
+        </div>
+
+        <button class="next-btn">Weiter</button>
+    </form>
+</div>

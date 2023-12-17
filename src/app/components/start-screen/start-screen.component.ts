@@ -1,15 +1,15 @@
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
-
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-start-screen',
   standalone: true,
-  imports: [CommonModule, LoginComponent],
+  imports: [CommonModule, LoginComponent, RouterOutlet, RouterModule],
   templateUrl: './start-screen.component.html',
   styleUrl: './start-screen.component.scss',
 })

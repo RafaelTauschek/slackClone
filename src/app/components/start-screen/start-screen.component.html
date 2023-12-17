@@ -1,10 +1,17 @@
-<div class="logo-animation" [class.d-none]="animationEnd">
-    <div class="logo-container">
-        <img src="./assets/img/logo.png" alt="logo">
-        <span>DABubble</span>
-    </div>
+
+
+<div class="start-section">
+    <header>
+        <img src="./assets/img/logo_top.png" alt="logo">
+    </header>
+
+    <router-outlet></router-outlet>
+
+    <footer>
+        <span>Neu bei DABubble?</span>
+        <button [routerLink]="['/registration']">Konto erstellen</button>
+    </footer>
 </div>
 
-<div class="content">
-    <app-login></app-login>
-</div>
+
+

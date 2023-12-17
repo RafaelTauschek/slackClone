@@ -1,35 +1,40 @@
 <div class="login-section">
-    <span class="headline">Anmeldung</span>
-    <span class="explanation">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
+    <div class="header">
+        <span class="title">Anmeldung</span>
+        <span class="explanation">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
+    </div>
 
     <form [formGroup]="loginForm">
-        <div class="input-container">
-            <img src="./assets/img/icons/mail-icon.png" alt="">
-            <input type="text" placeholder="beispielname@email.com">
-        </div>
-        <div class="input-container">
-            <img src="./assets/img/icons/lock-icon.png" alt="">
-            <input type="text" placeholder="Passwort">
+
+        <div class="inputs">
+            <div class="input-container">
+                <img src="./assets/img/icons/mail-icon.png">
+                <input type="text" placeholder="E-Mail-Adresse">
+            </div>
+    
+            <div class="input-container">
+                <img src="./assets/img/icons/lock-icon.png">
+                <input type="text" placeholder="Passwort">
+            </div>
         </div>
 
-        <a href="/">Passwort vergessen?</a>
+        <div class="forgot-password-container">
+            <span [routerLink]="['/reset-password']">Passwort vergessen?</span>
+        </div>
 
         <div class="or-container">
-            <svg xmlns="http://www.w3.org/2000/svg" width="500" height="2" viewBox="0 0 500 2" fill="none">
-                <path d="M500 1H0" stroke="#ADB0D9" />
-            </svg>
+            <img src="./assets/img/line.png">
             <span>ODER</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="500" height="2" viewBox="0 0 500 2" fill="none">
-                <path d="M500 1H0" stroke="#ADB0D9" />
-            </svg>
+            <img src="./assets/img/line.png">
         </div>
 
-        <div class="google-container"></div>
-
-        <div class="btn-container">
-            <button>Anmelden</button>
-            <button>Gäste-Login</button>
+        <div class="google-container">
+            <img src="./assets/img/icons/google-icon.png">
+            <span>Anmelden mit Google</span>
+        </div>
+        <div class="login-container">
+            <button class="login-btn">Anmelden</button>
+            <button class="guest-btn">Gäste Login</button>
         </div>
     </form>
-
 </div>
