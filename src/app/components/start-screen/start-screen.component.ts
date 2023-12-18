@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
-import { LoginComponent } from '../login/login.component';
+import { LoginComponent } from '../auth/login/login.component';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
