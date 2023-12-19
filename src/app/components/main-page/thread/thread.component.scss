@@ -1,0 +1,114 @@
+.thread-section {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 30px;
+}
+
+header {
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+    background-color: white;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    >.title {
+        font-weight: 700;
+        font-size: 20px;
+    }
+
+    >img {
+        width: 16px;
+        height: 16px;
+    }
+
+    >.channel-name {
+        font-size: 14px;
+        color: #797EF3;
+    }
+}
+
+.header-right {
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    >img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+
+
+
+.textarea {
+    padding: 10px 20px 20px 20px;
+}
+
+
+.write-message {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 20px;
+    border: 1px solid #ADB0D9;
+
+    >textarea {
+        font-size: 18px;
+        color: #686868;
+        border: none;
+        height: 100%;
+        width: 100%;
+        outline: none;
+        font-family: "Nunito", sans-serif;
+    }
+}
+
+.textarea-icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+
+    .icons-left {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        .icon-container {
+            padding: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            >img {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+
+
+    .icons-right {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        >img {
+            width: 40px;
+            height: 40px;
+        }
+    }
+}

@@ -1,6 +1,9 @@
 .channel-chat-section {
     display: flex;
     flex-direction: column;
+    background-color: white;
+    border-radius: 30px;
+    max-width: 100%;
 }
 
 header {
@@ -8,6 +11,8 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
 
 
