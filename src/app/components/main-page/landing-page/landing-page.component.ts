@@ -6,7 +6,6 @@ import { DirectChatComponent } from '../../chats/direct-chat/direct-chat.compone
 import { ThreadComponent } from '../thread/thread.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
-
 @Component({
   selector: 'app-landing-page',
   standalone: true,

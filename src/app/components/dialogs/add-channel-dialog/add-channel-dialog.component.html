@@ -1,0 +1,33 @@
+<div class="add-channel-container">
+    <div class="add-channel-header">
+        <span>Channel erstellen</span>
+        <div>
+            <img src="./assets/img/icons/close-icon.png" alt="close-icon" (click)="closeDialog()">
+        </div>
+    </div>
+
+    <div class="description">
+        <span>Channels dienen deinem Team zur Kommuniktion. Am besten sollten sie themenbezogen sein #marketing zum
+            Beispiel.</span>
+    </div>
+
+
+    <div class="input-wrapper">
+        <span>Channel-Name</span>
+        <div class="input-container">
+            <img src="./assets/img/icons/tag-gray-icon.png" alt="tag-icon">
+            <input [(ngModel)]="channelName" type="text" placeholder="z.B. Kooperationsprojekte">
+        </div>
+    </div>
+
+    <div class="input-wrapper">
+        <span>Beschreibung (optional)</span>
+        <div class="input-container">
+            <input [(ngModel)]="channelDescription" type="text" placeholder="Dein Text hier">
+        </div>
+    </div>
+
+
+
+    <button (click)="addChannel()">Erstellen</button>
+</div>

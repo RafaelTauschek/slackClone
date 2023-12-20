@@ -1,22 +1,31 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../services/auth.service';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, RouterLink],
+  imports: [RouterModule, RouterLink, FormsModule],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss'
 })
 export class RegistrationComponent {
-  registrationForm: FormGroup;
+  name: string = '';
+  email: string = '';
+  password: string = '';
 
-  constructor(private formBuilder: FormBuilder) {
-    this.registrationForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
-    })
+
+  constructor(private auth: Auth ,private authService: AuthService) {}
+
+  async register() {
+    if (this.name !== '' && this.email !== '' && this.password !== '') {
+      console.log('Form was filled correctly');
+      await this.authService.registerUser(this.email, this.password);
+    } else {
+      console.log('you fucked up!');
+      
+    }
   }
 }
