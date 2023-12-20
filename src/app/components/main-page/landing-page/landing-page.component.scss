@@ -1,10 +1,21 @@
+
+.landingpage-section {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #ECEEFE;
+}
+
 main {
     display: flex;
     gap: 20px;
     max-width: 100%;
-    height: 100%;
-    padding: 20px;
+    height: calc(100% - 140px);
     background-color: #ECEEFE;
+    padding: 0px 20px 25px 0px;
+    padding: 0px 20px;
 }
 
 app-channel-chat {

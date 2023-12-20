@@ -1,14 +1,48 @@
 header {
     display: flex;
     justify-content: space-between;
-    padding: 15px 16px;
+    padding: 25px 34px 20px 50px;
     align-items: center;
-    height: 80px;
+    height: 70px;
     background-color: #ECEEFE;
+}
+
+
+.search-bar {
+    padding: 17.5px 45px;
+    width: 550px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 42px;
+    height: 35px;
+    background-color: white;
+
+
+    input {
+        border: none;
+        outline: none;
+        height: 100%;
+        width: 100%;
+        font-size: 24px;
+        color: #686868;
+    }
+}
+
+
+.user-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+
+    span {
+        font-size: 32px;
+        font-weight: 700;
+    }
 
     >.avatar {
         height: 50px;
         width: 50px;
     }
-
 }

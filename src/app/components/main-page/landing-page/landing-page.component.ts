@@ -14,5 +14,7 @@ import { RouterModule, RouterOutlet } from '@angular/router';
   styleUrl: './landing-page.component.scss'
 })
 export class LandingPageComponent {
-
+  isThreadActive: boolean = true;
+  isDirectChatActive: boolean = false;
+  isChannelChatActive: boolean = true;
 }

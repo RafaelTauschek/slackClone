@@ -28,12 +28,12 @@
             <img src="./assets/img/line.png">
         </div>
 
-        <div class="google-container">
+        <div class="google-container" (click)="loginGoogle()">
             <img src="./assets/img/icons/google-icon.png">
             <span>Anmelden mit Google</span>
         </div>
         <div class="login-container">
-            <button class="login-btn">Anmelden</button>
+            <button class="login-btn" (click)="login()">Anmelden</button>
             <button [routerLink]="['/landingPage']" class="guest-btn">Gäste Login</button>
         </div>
     </form>

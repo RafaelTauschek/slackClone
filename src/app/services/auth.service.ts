@@ -2,17 +2,27 @@ import {Injectable } from '@angular/core';
 import { Auth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, onAuthStateChanged, getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { UserService } from './user.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
 
-  loginGoogle() {
+  async loginGoogle() {
     const provider = new GoogleAuthProvider();
+    const auth = getAuth();
+    await signInWithPopup(auth, provider).then((userCredential) => {
+      const user = userCredential;
+      console.log('User logged in: ', user);
+      this.router.navigate(['/landingPage']);
+    }).catch((e) => {
+      console.log(e);
+    });
   }
 
 
@@ -21,6 +31,7 @@ export class AuthService {
     await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
       const user = userCredential;
       console.log('User logged in: ', user);
+      this.router.navigate(['/landingPage']);
     }).catch((e) => {
       console.error(e);
     })
