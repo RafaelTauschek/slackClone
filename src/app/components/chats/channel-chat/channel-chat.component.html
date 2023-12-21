@@ -21,8 +21,11 @@
                         <img src="./assets/img/icons/add-icon-gray.png" alt="add-icon">
                     </div>
                     <img src="./assets/img/line-vertical.png" alt="vertical-line">
-                    <div class="icon-container">
+                    <div class="icon-container d-none">
                         <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
+                        <div class="emoji-picker">
+                            <emoji-mart (emojiClick)="addEmoji($event)"></emoji-mart>
+                        </div>
                     </div>
                     <div class="icon-container">
                         <img src="./assets/img/icons/at-icon.png" alt="at-icon">

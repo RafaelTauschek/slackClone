@@ -1,8 +1,8 @@
-<div class="add-channel-container">
+<div class="add-channel-container" mat-dialog-content>
     <div class="add-channel-header">
         <span>Channel erstellen</span>
         <div>
-            <img src="./assets/img/icons/close-icon.png" alt="close-icon" (click)="closeDialog()">
+            <img src="./assets/img/icons/close-icon.png" alt="close-icon" [mat-dialog-close]="true">
         </div>
     </div>
 

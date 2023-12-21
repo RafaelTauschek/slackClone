@@ -7,6 +7,8 @@
     gap: 25px;
     max-width: 366px;
     border-radius: 30px;
+    height: 100%;
+    max-height: calc(100% - 40px);
 }
 
 .searchbar {
@@ -31,6 +33,41 @@
     >img {
         width: 32px;
         height: 32px;
+    }
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .header-left {
+        gap: 15px;
+        display: flex;
+        align-items: center;
+        padding-right: 20px;
+
+        img {
+            width: 60px;
+            height: 60px;
+        }
+
+        span {
+            font-size: 24px;
+            font-weight: 700;
+        }
+    }
+
+    .header-right {
+        padding: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
     }
 }
 
@@ -99,6 +136,7 @@ main {
     flex-direction: column;
     padding-left: 25px;
     gap: 13px;
+
 
     >.channel {
         display: flex;
@@ -172,6 +210,8 @@ main {
     flex-direction: column;
     padding-left: 25px;
     gap: 13px;
+    overflow-y: scroll;
+    max-height: 70%;
 
     >.direct-chat {
         padding: 4px 20px;

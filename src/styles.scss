@@ -1,3 +1,5 @@
+@import '@ctrl/ngx-emoji-mart/picker';
+
 html,
 body {
   margin: 0;
@@ -5,6 +7,10 @@ body {
   font-family: 'Nunito', sans-serif;
   line-height: 120%;
   background-color: #ECEEFE;
+}
+
+.d-none {
+  display: none !important; 
 }
 
 
