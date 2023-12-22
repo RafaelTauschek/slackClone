@@ -4,17 +4,17 @@
         <span class="explanation">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
     </div>
 
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
 
         <div class="inputs">
             <div class="input-container">
                 <img src="./assets/img/icons/mail-icon.png">
-                <input type="text" placeholder="E-Mail-Adresse">
+                <input formControlName="email" type="email" placeholder="E-Mail-Adresse">
             </div>
     
             <div class="input-container">
                 <img src="./assets/img/icons/lock-icon.png">
-                <input type="text" placeholder="Passwort">
+                <input formControlName="password" type="password" placeholder="Passwort">
             </div>
         </div>
 
@@ -33,7 +33,7 @@
             <span>Anmelden mit Google</span>
         </div>
         <div class="login-container">
-            <button class="login-btn" (click)="login()">Anmelden</button>
+            <button class="login-btn" type="submit">Anmelden</button>
             <button [routerLink]="['/landingPage']" class="guest-btn">Gäste Login</button>
         </div>
     </form>

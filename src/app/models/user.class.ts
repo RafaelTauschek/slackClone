@@ -3,8 +3,8 @@ export class User {
     email: string;
     profilepicture: File;
     id: string;
-    channels: string[];
-    chats: string[];
+    channels: [];
+    chats: [];
 
 
     constructor(obj?: any) {
@@ -22,8 +22,8 @@ export class User {
             email: this.email,
             profilepicture: this.profilepicture,
             id: this.id,
-            channels: this.channels,
-            chats: this.chats,
+            channels: this.channels || [],
+            chats: this.chats || [],
         }
     }
 }

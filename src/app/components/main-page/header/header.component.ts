@@ -17,6 +17,4 @@ export class HeaderComponent {
   openDialog() {
     this.dialog.open(MenuDialogComponent, {});
   }
-  
-
 }

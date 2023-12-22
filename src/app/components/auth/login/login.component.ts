@@ -28,7 +28,12 @@ export class LoginComponent {
       const password = this.loginForm.get('password')?.value;
       if (email && password) {
         this.authService.login(email, password);
+      } else {
+        console.log('you fucked up email and password');
       }
+    } else {
+      console.log('loginform is invalid');
+      
     }
   }
 

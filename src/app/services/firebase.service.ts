@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { collection, doc } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc, setDoc, getDoc } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,25 @@ export class FirebaseService {
   }
 
   getDocumentRef(colId: string, docId: string) {
-    return (collection(this.firestore, colId), docId);
+    return doc(collection(this.firestore, colId), docId);
   }
+
+  async addCollection(colId: string, item: {}) {
+    const docRef = await addDoc(this.getCollectionRef(colId), item);
+    return docRef.id;
+  }
+
+  async setDocument(docId: string, colId: string, item: {}) {
+    await setDoc(doc(this.getCollectionRef(colId), docId), item);
+  }
+
+  async updateDocument(colId: string, docId: string, item: {}) {
+    await updateDoc(this.getDocumentRef(colId, docId), item)
+  }
+
+  async getDocument(colId: string, docId: string) {
+    const docRef = this.getDocumentRef(colId, docId);
+    return await getDoc(docRef);
+  }
+
 }

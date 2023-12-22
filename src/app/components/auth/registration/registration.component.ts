@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
-import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-registration',
@@ -17,15 +16,14 @@ export class RegistrationComponent {
   password: string = '';
 
 
-  constructor(private auth: Auth ,private authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
   async register() {
     if (this.name !== '' && this.email !== '' && this.password !== '') {
       console.log('Form was filled correctly');
-      await this.authService.registerUser(this.email, this.password);
+      await this.authService.registerUser(this.email, this.password, this.name);
     } else {
       console.log('you fucked up!');
-      
     }
   }
 }
