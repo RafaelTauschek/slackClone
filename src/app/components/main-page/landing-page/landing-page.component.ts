@@ -6,6 +6,7 @@ import { DirectChatComponent } from '../../chats/direct-chat/direct-chat.compone
 import { ThreadComponent } from '../thread/thread.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { MessageService } from '../../../services/message.service';
 @Component({
   selector: 'app-landing-page',
   standalone: true,
@@ -17,4 +18,27 @@ export class LandingPageComponent {
   isThreadActive: boolean = true;
   isDirectChatActive: boolean = false;
   isChannelChatActive: boolean = true;
+
+
+  constructor(private messageService: MessageService) {}
+
+
+
+  setThread() {
+    this.isThreadActive = true;
+    this.isChannelChatActive = true;
+    this.isDirectChatActive = false;
+  }
+
+  setDirectChat() {
+    this.isThreadActive = false;
+    this.isChannelChatActive = false;
+    this.isDirectChatActive = true;
+  }
+
+  setChannelChat() {
+    this.isChannelChatActive = true;
+    this.isDirectChatActive = false;
+    this.isThreadActive = false;
+  }
 }

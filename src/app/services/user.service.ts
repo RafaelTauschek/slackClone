@@ -9,13 +9,30 @@ import { BehaviorSubject } from 'rxjs';
 export class UserService {
   activeUser = new BehaviorSubject<User[]>([]);
   activeUserObservable$ = this.activeUser.asObservable();
+  availableUsers: User[] = []
 
 
   constructor(private firebaseService: FirebaseService) {
 
   }
 
+  async loadUser(userId: string) {
+      const docSnap = await this.firebaseService.getDocument('users', userId);
+      const user = docSnap.data() as User;
+      this.setActiveUser(user);
+  }
 
+  async loadAvailableUsers() {
+    const docSnap = await this.firebaseService.getCollection('users').then((user) => {
+      user.forEach((userdata) => {
+        this.availableUsers.push(userdata.data() as User)
+      })
+      this.availableUsers.push()
+    })
+
+    console.log('Available users: ', this.availableUsers);
+    
+  }
 
   setActiveUser(user: User): void {
     console.log('User to set', user);

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { initializeApp } from 'firebase/app';
 import { environment } from '../../environments/environment.development';
 import { FirebaseService } from './firebase.service';
+import { User } from '../models/user.class';
 
 
 @Injectable({
@@ -21,6 +22,8 @@ export class AuthService {
       if (user) {
         console.log('Current user logged in: ', user);
         console.log('Current userID is: ', user.uid);
+        this.userDocId = user.uid;
+        this.userService.loadUser(this.userDocId);
       } else {
         console.log('User was logged out');
       }
@@ -47,7 +50,7 @@ export class AuthService {
           chats: [],
           channels: [],
         };
-        await this.firebaseService.setDocument('users', this.userDocId, userData);
+        await this.firebaseService.setDocument(this.userDocId, 'users', userData);
         this.router.navigate(['/select-avatar', { docId: this.userDocId, name: userData.name, email: userData.email }]);
       }
     } catch (err) {

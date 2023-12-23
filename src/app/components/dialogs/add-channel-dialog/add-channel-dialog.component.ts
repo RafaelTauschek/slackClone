@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
+import { FirebaseService } from '../../../services/firebase.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-add-channel-dialog',
@@ -14,7 +16,7 @@ export class AddChannelDialogComponent {
   channelName: string = '';
   channelDescription: string = '';
 
-  constructor(private dialog: MatDialogRef<AddChannelDialogComponent>) { }
+  constructor(private dialog: MatDialogRef<AddChannelDialogComponent>, private firebaseService: FirebaseService, private userService: UserService) { }
 
   closeDialog() {
     this.dialog.close();
@@ -26,6 +28,14 @@ export class AddChannelDialogComponent {
     } else {
       console.log('Channel generated with name:', this.channelName);
       console.log('Channel generated with description:', this.channelDescription);
+      const channelData = {
+        name: this.channelName,
+        description: this.channelDescription,
+      }
+
+      this.firebaseService.addCollection('channels', channelData)
+      
+
       this.closeDialog();
     }
   }

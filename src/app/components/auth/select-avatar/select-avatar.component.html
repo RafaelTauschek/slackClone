@@ -13,21 +13,20 @@
         <div class="avatar-selection">
             <span class="user-name">Frederik Beck</span>
             <span class="explanation">Wähle deinen avatar...</span>
+
             <div class="available-avatars">
-                <img src="./assets/img/avatars/avatar1.png" alt="avatar1">
-                <img src="./assets/img/avatars/avatar2.png" alt="avatar2">
-                <img src="./assets/img/avatars/avatar3.png" alt="avatar3">
-                <img src="./assets/img/avatars/avatar4.png" alt="avatar4">
-                <img src="./assets/img/avatars/avatar5.png" alt="avatar5">
-                <img src="./assets/img/avatars/avatar6.png" alt="avatar6">
+                @for (avatar of avatarId; track $index) {
+                    <div (click)="setSelectedAvatar(avatar)">
+                        <img src="./assets/img/avatars/{{ avatar }}.png" alt="avatar-img">
+                    </div>
+                }
             </div>
             <div class="upload-avatar">
                 <span>Oder Lade ein</span>
-                <input type="file" (change)="onFileSelected($event)">
-                <button (click)="uploadAvatar()">Foto hoch</button>
+                <input type="file" (change)="onFileSelected($event)" placeholder="Foto hoch">
             </div>
         </div>
     </div>
 
-    <button>Weiter</button>
+    <button (click)="submitSelectedAvatar()">Weiter</button>
 </div>
