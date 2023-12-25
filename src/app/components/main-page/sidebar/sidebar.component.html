@@ -28,14 +28,12 @@
                 </div>
             </div>
             <div class="available-channels">
-                <div class="channel">
-                    <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
-                    <span>Entwicklerteam</span>
-                </div>
-                <div class="channel">
-                    <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
-                    <span>Office-team</span>
-                </div>
+                @for (channel of channels; track $index) {
+                    <div class="channel" (click)="selectChannel(channel.id)">
+                        <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
+                        <span>{{ channel.name }}</span>
+                    </div>
+                }
             </div>
             <div class="add-channel" (click)="openDialog()">
                 <img src="./assets/img/icons/add-cirrcle-icon.png" alt="add-icon">

@@ -13,7 +13,9 @@ export class UserService {
 
 
   constructor(private firebaseService: FirebaseService) {
-
+    this.loadAvailableUsers();
+    console.log(this.availableUsers);
+    
   }
 
   async loadUser(userId: string) {
@@ -23,11 +25,10 @@ export class UserService {
   }
 
   async loadAvailableUsers() {
-    const docSnap = await this.firebaseService.getCollection('users').then((user) => {
+    await this.firebaseService.getCollection('users').then((user) => {
       user.forEach((userdata) => {
         this.availableUsers.push(userdata.data() as User)
       })
-      this.availableUsers.push()
     })
 
     console.log('Available users: ', this.availableUsers);

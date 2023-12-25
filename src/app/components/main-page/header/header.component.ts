@@ -22,7 +22,6 @@ export class HeaderComponent implements OnDestroy {
     this.currentUserSubscription = this.userService.activeUserObservable$.subscribe( (currentUser) => {
       this.currentUser = currentUser;
       console.log(this.currentUser);
-      
     })
   }
 
