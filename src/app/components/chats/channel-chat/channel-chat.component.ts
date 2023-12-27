@@ -21,9 +21,10 @@ export class ChannelChatComponent implements OnDestroy {
   constructor(private channelService: ChannelService) {
     this.channelSubscription = this.channelService.channelSubscription.subscribe((channel) => {
       this.channel = channel;
-
     });
   }
+
+
 
   addEmoji(event: Event) {
     console.log('Event activated: ', event);

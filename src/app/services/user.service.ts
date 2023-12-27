@@ -14,8 +14,6 @@ export class UserService {
 
   constructor(private firebaseService: FirebaseService) {
     this.loadAvailableUsers();
-    console.log(this.availableUsers);
-    
   }
 
   async loadUser(userId: string) {
@@ -30,9 +28,6 @@ export class UserService {
         this.availableUsers.push(userdata.data() as User)
       })
     })
-
-    console.log('Available users: ', this.availableUsers);
-    
   }
 
   setActiveUser(user: User): void {
@@ -40,5 +35,4 @@ export class UserService {
     this.activeUser.next([user]);
     console.log('Updated user:', this.activeUser);
   }
-
 }

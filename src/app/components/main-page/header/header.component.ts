@@ -4,12 +4,14 @@ import { MenuDialogComponent } from '../../dialogs/menu-dialog/menu-dialog.compo
 import { UserService } from '../../../services/user.service';
 import { Subscription } from 'rxjs';
 import { User } from '../../../models/user.class';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
 
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MenuDialogComponent],
+  imports: [MenuDialogComponent, CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -18,11 +20,11 @@ export class HeaderComponent implements OnDestroy {
   currentUserSubscription: Subscription;
 
 
-  constructor(private dialog: MatDialog, private userService: UserService) {
-    this.currentUserSubscription = this.userService.activeUserObservable$.subscribe( (currentUser) => {
+  constructor(private dialog: MatDialog, private userService: UserService, private authService: AuthService) {
+    this.authService.authCurrentUser();
+    this.currentUserSubscription = this.userService.activeUserObservable$.subscribe((currentUser) => {
       this.currentUser = currentUser;
-      console.log(this.currentUser);
-    })
+    });
   }
 
 

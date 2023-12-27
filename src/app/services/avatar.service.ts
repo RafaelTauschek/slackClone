@@ -14,5 +14,7 @@ export class AvatarService {
 
   constructor() {}
 
-  //uploadAvatar(file: File, userId: string): Observable<string> {}
+  uploadAvatar(file: File, userId: string) {
+    
+  } 
 }

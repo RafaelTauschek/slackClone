@@ -15,25 +15,50 @@ import { ChannelService } from './channel.service';
 export class AuthService {
   app = initializeApp(environment.firebase);
   auth: Auth = getAuth(this.app);
+  user: User[] = [];
   userDocId: string = '';
 
-  
-  constructor(private userService: UserService, private router: Router, private firebaseService: FirebaseService,
-    private channelService: ChannelService) {
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        console.log('Current user logged in: ', user);
-        console.log('Current userID is: ', user.uid);
-        this.userDocId = user.uid;
-        this.userService.loadUser(this.userDocId);
-      } else {
-        console.log('User was logged out');
-      }
-    })
 
+  constructor(
+    private userService: UserService, private router: Router, private firebaseService: FirebaseService, private channelService: ChannelService) {
+      this.authCurrentUser();
+      this.setupAuthStateListener();
   }
 
 
+  authCurrentUser() {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      console.log(user?.uid);
+      this.userService.loadUser(user?.uid);
+      this.channelService.loadChannels();
+    } else {
+      console.log('No user is singed in');
+    }
+  }
+
+  setupAuthStateListener(): void {
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        this.handeUserLoggedIn(user);
+      } else {
+        this.handleUserLoggedOut();
+      }
+    });
+  }
+
+  handeUserLoggedIn(user: any): void {
+    console.log('Current user logged in: ', user);
+    console.log('Current userID is: ', user.uid);
+    this.userDocId = user.uid;
+    this.userService.loadUser(this.userDocId)
+  }
+
+  handleUserLoggedOut(): void {
+    console.log('User was logged out');
+    
+  }
 
   async loginGoogle() {
     const provider = new GoogleAuthProvider();
@@ -45,7 +70,6 @@ export class AuthService {
       if (userSnap.exists()) {
         this.router.navigate(['landingPage/']);
         this.userService.loadUser(this.userDocId);
-        this.channelService.loadChannels();
       } else {
         const userData = {
           name: user.displayName,
@@ -71,7 +95,6 @@ export class AuthService {
       console.log('User logged in: ', user);
       this.router.navigate(['/landingPage']);
       this.userService.loadUser(this.userDocId);
-      this.channelService.loadChannels();
     }).catch((e) => {
       console.error(e);
     })

@@ -1,7 +1,7 @@
-import { Injectable, OnDestroy, ɵsetAllowDuplicateNgModuleIdsForTest } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { UserService } from './user.service';
 import { Channel } from '../models/channel.class';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { User } from '../models/user.class';
 import { FirebaseService } from './firebase.service';
 
@@ -9,33 +9,42 @@ import { FirebaseService } from './firebase.service';
   providedIn: 'root'
 })
 export class ChannelService implements OnDestroy {
-  //channels: Channel[] = []
   channelsSubscription = new BehaviorSubject<Channel[]>([]);
   channelsSubscription$ = this.channelsSubscription.asObservable();
   channelSubscription = new BehaviorSubject<Channel[]>([]);
   channelSubscription$ = this.channelSubscription.asObservable();
+  channels: Channel[] = [];
+  userSubscription: Subscription;
+  user: User[]= [];
 
-  currentUserSubscription: Subscription;
-  currentUser: User[] = []
-  
+  constructor(private firebaseService: FirebaseService, private userService: UserService) {
+    this.userSubscription = this.userService.activeUserObservable$.subscribe((activeUser) => {
+      if (activeUser) {
+        this.user = activeUser;
+        this.loadChannels();
+        console.log('Channels where loaded', this.channels);
+      }
 
-  constructor(private userService: UserService, private firebaseService: FirebaseService) {
-    this.currentUserSubscription = this.userService.activeUserObservable$.subscribe((activeUser) => {
-      this.currentUser = activeUser;
     });
+    console.log('User in channelService: ',this.user);
+    
   }
 
 
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
+  }
 
   async loadChannels() {
-    const channels: Channel[] = []
-    this.currentUser[0].channels.forEach(async (id) => {
+    const channels: Channel[] = [];
+    this.user[0].channels.forEach(async (id) => {
       const docSnap = await this.firebaseService.getDocument('channels', id);
-      channels.push(docSnap.data() as Channel);
-    });
+      channels.push(docSnap.data() as Channel)
+    })
     this.setChannels(channels);
-    this.setChannel(channels[0]);
+    this.setChannel(this.channels[0]);
   }
+
 
 
   setSelectedChannel(channelId: string) {
@@ -47,12 +56,9 @@ export class ChannelService implements OnDestroy {
     this.channelSubscription.next(channel);
   }
 
-
   setChannels(channels: any): void {
     this.channelsSubscription.next(channels);
+    console.log(this.channelSubscription);
   }
 
-  ngOnDestroy(): void {
-    this.currentUserSubscription.unsubscribe();
-    }
 }
