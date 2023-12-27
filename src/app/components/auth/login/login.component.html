@@ -1,40 +1,39 @@
-<div class="login-section">
+<div class="login-container">
     <div class="header">
-        <span class="title">Anmeldung</span>
+        <span class="login">Anmeldung</span>
         <span class="explanation">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
     </div>
-
     <form [formGroup]="loginForm" (ngSubmit)="login()">
-
-        <div class="inputs">
-            <div class="input-container">
-                <img src="./assets/img/icons/mail-icon.png">
-                <input formControlName="email" type="email" placeholder="E-Mail-Adresse">
+        <div class="input-container">
+            <div class="input-div">
+                <div class="input">                
+                    <img src="./assets/img/icons/mail-icon.png" alt="email-icon">
+                    <input type="email" placeholder="E-Mail-Adresse" formControlName="email">
+                </div>
+                <span class="error-span">*Diese E-Mail-Adresse ist leider ungültig.</span>
             </div>
-    
-            <div class="input-container">
-                <img src="./assets/img/icons/lock-icon.png">
-                <input formControlName="password" type="password" placeholder="Passwort">
+
+            <div class="input-div">
+                <div class="input">
+                    <img src="./assets/img/icons/lock-icon.png" alt="lock-icon">
+                    <input type="password" placeholder="Passwort" formControlName="password">
+                </div>
+                <span class="error-span">Falsches Passwort. Bitte noch einmal versuchen.</span>
             </div>
         </div>
-
-        <div class="forgot-password-container">
-            <span [routerLink]="['/reset-password']">Passwort vergessen?</span>
-        </div>
-
+        <span class="forgot-password" [routerLink]="['/reset-password']">Passwort vergessen?</span>
         <div class="or-container">
             <img src="./assets/img/line.png">
             <span>ODER</span>
             <img src="./assets/img/line.png">
         </div>
-
-        <div class="google-container" (click)="loginGoogle()">
+        <div class="goolge-login" (click)="loginGoogle()">
             <img src="./assets/img/icons/google-icon.png">
             <span>Anmelden mit Google</span>
         </div>
-        <div class="login-container">
-            <button class="login-btn" type="submit">Anmelden</button>
-            <button [routerLink]="['/landingPage']" class="guest-btn">Gäste Login</button>
+        <div class="btn-container">
+            <button class="login" type="submit">Anmelden</button>
+            <button [routerLink]="['/loandingPage']" class="guest-login">Gäste-Login</button>
         </div>
     </form>
 </div>

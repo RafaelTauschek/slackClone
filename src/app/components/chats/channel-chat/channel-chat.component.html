@@ -2,7 +2,10 @@
     <header>
         <div class="channel-name">
             <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
-            <span></span>
+            <span *ngIf="channel && channel.length > 0; else noChannel">{{ channel[0].name }}</span>
+            <ng-template #noChannel>
+                <span>Allgemein</span>
+            </ng-template>
             <img src="./assets/img/icons/arrow-drop-down.png" alt="dropdown-icon">
         </div>
         <div class="add-member">
@@ -14,7 +17,10 @@
 
     <div class="textarea">
         <div class="write-message">
-            <textarea placeholder="Nachricht an #"></textarea>
+            <textarea [(ngModel)]="message" *ngIf="channel && channel.length > 0; else noChannelTextarea" placeholder="Nachricht an # {{ channel[0].name }}"></textarea>
+            <ng-template #noChannelTextarea>
+                <textarea [(ngModel)]="message" placeholder="Nachricht an # Allgemein"></textarea>
+            </ng-template>
             <div class="textarea-icons">
                 <div class="icons-left">
                     <div class="icon-container">
@@ -31,7 +37,7 @@
                         <img src="./assets/img/icons/at-icon.png" alt="at-icon">
                     </div>
                 </div>
-                <div class="icons-right">
+                <div class="icons-right" (click)="sendMessage()">
                     <img src="./assets/img/icons/send-icon.png" alt="send-icon">
                 </div>
             </div>

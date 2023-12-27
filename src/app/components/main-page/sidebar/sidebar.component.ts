@@ -22,11 +22,14 @@ export class SidebarComponent implements OnDestroy {
       this.channels = channels;
       console.log('Available Channels: ', channels);
       
+      
     })
   }
 
   selectChannel(channelId: string) {
-
+    this.channelService.setSelectedChannel(channelId);
+    console.log('Selected Channel: ', channelId);
+    
   }
 
   ngOnDestroy(): void {

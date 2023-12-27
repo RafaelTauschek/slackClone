@@ -32,7 +32,7 @@ export class AuthService {
     if (user) {
       console.log(user?.uid);
       this.userService.loadUser(user?.uid);
-      this.channelService.loadChannels();
+      this.channelService.loadChannels(user?.uid);
     } else {
       console.log('No user is singed in');
     }
@@ -51,6 +51,7 @@ export class AuthService {
   handeUserLoggedIn(user: any): void {
     console.log('Current user logged in: ', user);
     console.log('Current userID is: ', user.uid);
+    this.channelService.loadChannels(user.uid);
     this.userDocId = user.uid;
     this.userService.loadUser(this.userDocId)
   }

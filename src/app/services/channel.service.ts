@@ -8,55 +8,43 @@ import { FirebaseService } from './firebase.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ChannelService implements OnDestroy {
+export class ChannelService {
   channelsSubscription = new BehaviorSubject<Channel[]>([]);
   channelsSubscription$ = this.channelsSubscription.asObservable();
   channelSubscription = new BehaviorSubject<Channel[]>([]);
   channelSubscription$ = this.channelSubscription.asObservable();
   channels: Channel[] = [];
-  userSubscription: Subscription;
-  user: User[]= [];
+  currentChannelId: string = '';
 
-  constructor(private firebaseService: FirebaseService, private userService: UserService) {
-    this.userSubscription = this.userService.activeUserObservable$.subscribe((activeUser) => {
-      if (activeUser) {
-        this.user = activeUser;
-        this.loadChannels();
-        console.log('Channels where loaded', this.channels);
-      }
-
-    });
-    console.log('User in channelService: ',this.user);
-    
-  }
+  constructor(private firebaseService: FirebaseService) {}
 
 
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
-  }
 
-  async loadChannels() {
-    const channels: Channel[] = [];
-    this.user[0].channels.forEach(async (id) => {
-      const docSnap = await this.firebaseService.getDocument('channels', id);
-      channels.push(docSnap.data() as Channel)
-    })
-    this.setChannels(channels);
-    this.setChannel(this.channels[0]);
+  async loadChannels(userId: string) {
+    this.channels = [];
+    const docSnap = await this.firebaseService.getDocument('users', userId);
+    const user = docSnap.data() as User;
+    for(const channel of user.channels) {
+      const docSnap = await this.firebaseService.getDocument('channels', channel);
+      this.channels.push(docSnap.data() as Channel);
+      this.setChannels(this.channels);
+      this.setChannel([this.channels[0]])
+    }
   }
 
 
 
   setSelectedChannel(channelId: string) {
     const channel = this.channelsSubscription.value.find((channel) => channel.id == channelId);
-    this.setChannel(channel);
+    this.setChannel([channel as Channel]);
   }
 
-  setChannel(channel: any): void {
+  setChannel(channel: Channel[]): void {
     this.channelSubscription.next(channel);
+    this.currentChannelId = channel[0].id;
   }
 
-  setChannels(channels: any): void {
+  setChannels(channels: Channel[]): void {
     this.channelsSubscription.next(channels);
     console.log(this.channelSubscription);
   }
