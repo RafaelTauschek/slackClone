@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { ThreadChatComponent } from '../../chats/thread-chat/thread-chat.component';
+import { SharedService } from '../../../services/shared.service';
 
 @Component({
   selector: 'app-thread',
@@ -12,4 +13,14 @@ import { ThreadChatComponent } from '../../chats/thread-chat/thread-chat.compone
 })
 export class ThreadComponent {
 
+
+
+  constructor(private sharedService: SharedService) {
+    
+  }
+
+
+  closeThread() {
+    this.sharedService.closeThread();
+  }
 }

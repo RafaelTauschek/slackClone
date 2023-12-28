@@ -1,17 +1,49 @@
 import { Injectable } from '@angular/core';
 import { Message } from '../models/message.class';
 import { UserService } from './user.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
-  
+  threadActive = new Subject<boolean>();
+  threadActive$ = this.threadActive.asObservable();
+  directChatActive = new Subject<boolean>();
+  directChatActive$ = this.directChatActive.asObservable();
+  channelChatActive = new Subject<boolean>();
+  channelChatActive$ = this.channelChatActive.asObservable();
 
   constructor(private userService: UserService) {}
 
+  openDirectChat() {
+    this.directChatActive.next(true);
+  }
+
+  closeDirectChat() {
+    this.directChatActive.next(false);
+  }
+
+  openThread() {
+    this.threadActive.next(true);
+  }
+
+  closeThread() {
+    this.threadActive.next(false);
+  }
+
+  openChannelChat() {
+    this.channelChatActive.next(true);
+  }
+
+  closeChannelChat() {
+    this.channelChatActive.next(false);
+  }
+
+
 
   public groupMessagesByDate(messages: Message[]) {
+    messages.sort((a, b) => a.timestamp - b.timestamp);
     const groupedMessages = new Map<string, Message[]>();
     messages.forEach((message) => {
       const dateKey = this.formatDate(message.timestamp);
@@ -23,9 +55,13 @@ export class SharedService {
         messagesArray.push(message);
       }
     });
-    return groupedMessages;
+    const reversedFormatedMessages = new Map([...groupedMessages.entries()].sort().reverse());
+    const reversedObject: { [key: string]: Message[] } = {};
+    reversedFormatedMessages.forEach((value, key) => {
+      reversedObject[key] = value;
+    });
+    return reversedObject;
   }
-
 
   public formatDate(timestamp: number) {
     const date = new Date(timestamp);

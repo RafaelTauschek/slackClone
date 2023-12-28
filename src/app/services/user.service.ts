@@ -11,9 +11,17 @@ export class UserService {
   activeUserObservable$ = this.activeUser.asObservable();
   availableUsers: User[] = []
 
-
   constructor(private firebaseService: FirebaseService) {
     this.loadAvailableUsers();
+  }
+
+  getUserName(userId: string) {
+    const user = this.availableUsers.find(user => user.id === userId);
+    if (user) {
+      return user.name;  
+    } else {
+      return 'deleted User';
+    }
   }
 
   async loadUser(userId: string) {

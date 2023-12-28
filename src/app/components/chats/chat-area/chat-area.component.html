@@ -1,25 +1,25 @@
-<main *ngFor="let entry of formatedMessages | keyvalue">
+<main *ngFor="let key of this.sharedService.getKeys(formatedMessages)">
     <div class="date-container">
         <img src="./assets/img/line.png" alt="line">
         <div class="date">
-            <span>{{ entry.key }}</span>
+            <span>{{ key }}</span>
         </div>
         <img src="./assets/img/line.png" alt="line">
     </div>
 
-    <div class="message-container" *ngFor="let message of entry.value">
+    <div class="message-container" *ngFor="let message of formatedMessages[key]">
         <ng-container *ngIf="this.sharedService.getMessageAlignment(message.senderId); else leftContainer">
             <div class="message-container-right">
                 <div class="message-content-container">
                     <div class="message-header">
                         <span class="time">{{ message.timestamp | date: 'HH:mm'}} Uhr</span>
-                        <span class="username">{{ message.senderId }}</span>
+                        <span class="username">{{ this.userService.getUserName(message.senderId) }}</span>
                     </div>
                     <div class="message-content">
                         <span class="text">{{ message.content }}</span>
                     </div>
                     <div class="message-footer">
-                        <span class="answers">{{ message.answers.length }} Antworten</span>
+                        <span (click)="openThread(message)" class="answers">{{ message.answers.length }} Antworten</span>
                         <span class="last-answer">Letzte Antwort 14:56</span>
                     </div>
                 </div>
@@ -49,7 +49,4 @@
             </div>
         </ng-template>
     </div>
-    
-
-   
 </main>

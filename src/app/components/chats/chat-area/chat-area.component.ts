@@ -21,9 +21,9 @@ export class ChatAreaComponent implements OnDestroy {
   messages: Message[] = [];
   channelSubscription: Subscription;
   messageSubscription: Subscription;
-  formatedMessages: Map<string, Message[]> = new Map<string, Message[]>();
+  formatedMessages: { [key: string]: Message[] } = {};
 
-  constructor(private channelService: ChannelService, private messageService: MessageService, private userService: UserService, public sharedService: SharedService) {
+  constructor(private channelService: ChannelService, private messageService: MessageService, public userService: UserService, public sharedService: SharedService) {
     this.channelSubscription = this.channelService.channelSubscription$.subscribe((channel) => {
       this.channel = channel;
     });
@@ -34,6 +34,14 @@ export class ChatAreaComponent implements OnDestroy {
       console.log(this.formatedMessages);
     });
   }
+
+
+  openThread(message: any) {
+    console.log(message);
+    this.sharedService.openThread();
+  }
+
+
 
   ngOnDestroy(): void {
     this.channelSubscription.unsubscribe();

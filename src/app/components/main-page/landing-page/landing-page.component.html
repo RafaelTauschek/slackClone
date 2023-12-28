@@ -2,8 +2,10 @@
     <app-header></app-header>
     <main>
         <app-sidebar></app-sidebar>
+        <div class="chats">
             <app-channel-chat *ngIf="isChannelChatActive"></app-channel-chat>
-             <app-direct-chat *ngIf="isDirectChatActive"></app-direct-chat>
-            <app-thread *ngIf="isThreadActive"></app-thread>
+            <app-direct-chat *ngIf="isDirectChatActive"></app-direct-chat>
+        </div>
+        <app-thread *ngIf="isThreadActive"></app-thread>
     </main>
 </div>
