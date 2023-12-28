@@ -69,7 +69,7 @@ export class AuthService {
       this.userDocId = user.uid;
       const userSnap = await this.firebaseService.getDocument('users', this.userDocId);
       if (userSnap.exists()) {
-        this.router.navigate(['landingPage/']);
+        this.router.navigate(['main/']);
         this.userService.loadUser(this.userDocId);
       } else {
         const userData = {
@@ -94,7 +94,7 @@ export class AuthService {
       const user = userCredential.user;
       this.userDocId = user.uid;
       console.log('User logged in: ', user);
-      this.router.navigate(['/landingPage']);
+      this.router.navigate(['/main']);
       this.userService.loadUser(this.userDocId);
     }).catch((e) => {
       console.error(e);

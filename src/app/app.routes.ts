@@ -5,7 +5,7 @@ import { ResetPasswordComponent } from './components/auth/reset-password/reset-p
 import { RegistrationComponent } from './components/auth/registration/registration.component';
 import { SelectAvatarComponent } from './components/auth/select-avatar/select-avatar.component';
 import { SelectPasswordComponent } from './components/auth/select-password/select-password.component';
-import { LandingPageComponent } from './components/main-page/landing-page/landing-page.component';
+import { MainPageComponent } from './components/main-page/main-page/main-page.component';
 
 export const routes: Routes = [
     {path: '', component: StartScreenComponent, children: [
@@ -16,5 +16,5 @@ export const routes: Routes = [
         {path: 'select-password', component: SelectPasswordComponent},
         {path: 'select-avatar', component: SelectAvatarComponent}
     ]},
-    {path: 'landingPage', component: LandingPageComponent}
+    {path: 'main', component: MainPageComponent}
 ];

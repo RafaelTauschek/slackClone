@@ -10,13 +10,13 @@ import { MessageService } from '../../../services/message.service';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../../services/shared.service';
 @Component({
-  selector: 'app-landing-page',
+  selector: 'app-main-page',
   standalone: true,
   imports: [CommonModule, HeaderComponent, SidebarComponent, ChannelChatComponent, DirectChatComponent, ThreadComponent, RouterOutlet, RouterModule],
-  templateUrl: './landing-page.component.html',
-  styleUrl: './landing-page.component.scss'
+  templateUrl: './main-page.component.html',
+  styleUrl: './main-page.component.scss'
 })
-export class LandingPageComponent implements OnDestroy {
+export class MainPageComponent implements OnDestroy {
   isThreadActive: boolean = false;
   threadSubscription: Subscription;
   isDirectChatActive: boolean = false;
