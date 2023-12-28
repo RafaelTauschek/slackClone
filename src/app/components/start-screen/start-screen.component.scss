@@ -3,6 +3,7 @@
     background-color: #ECEEFE;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 50px 16px 16px;
     gap: 30px;
     height: 100vh;
@@ -43,4 +44,11 @@ router-outlet {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .start-section {
+        padding: 92px 16px 88px 16px;
+    }
 }

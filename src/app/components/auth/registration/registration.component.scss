@@ -1,104 +1,281 @@
-.registration-section {
-    max-width: 606px;
+.register-section {
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    width: 606px;
     border-radius: 30px;
-    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+    gap: 60px;
     background-color: white;
-    padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    padding: 50px;
 }
-
 
 .header {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 32px;
+}
+
+.back {
+    display: flex;
     justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
 
-    >.explanation {
-        font-size: 17px;
-        text-align: center;
-        padding-bottom: 20px;
+    &:hover {
+        border-radius: 100%;
+        background-color: #eceefe;
     }
+}
 
-    >.topline {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 22.5px;
 
-        >.arrow-back {
-            padding: 8px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            left: 22px;
+.headline {
+    font-size: 46px;
+    font-weight: 700;
+    color: #444df2;
+    text-align: center;
+}
 
-            >img {
-                width: 24px;
-                height: 24px;
-            }
-        }
-
-        >.title {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            >span {
-                color: #444DF2;
-                font-size: 32px;
-                text-align: center;
-                font-weight: 700;
-            }
-        }
-    }
+.explanation {
+    font-size: 20px;
+    text-align: center;
+    line-height: 120%;
+    word-wrap: normal;
 }
 
 form {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 40px;
 }
 
 
 .input-container {
-    padding: 13px 32px;
-    border-radius: 100px;
-    background-color: #ECEEFE;
-    display: flex;
-    align-items: center;
-    gap: 30px;
+    width: 500px;
+    position: relative;
+    box-sizing: border-box;
 
-    >img {
-        height: 24px;
-        width: 24px;
+    img {
+        position: absolute;
+        left: 24px;
+        top: 18px;
     }
 
-    >input {
-        background-color: #ECEEFE;
-        outline: none;
-        border: none;
+    input {
         font-size: 18px;
-        color: #686868;
-        height: 100%;
+        padding-left: 60px;
+        border: 1px solid transparent;
+        transition: 200ms;
+        box-sizing: border-box;
+        outline: none;
         width: 100%;
+        height: 60px;
+        background: #ECEEFE;
+        cursor: pointer;
+        border-radius: 100px;
+
+        &:hover {
+            border: 1px solid #686868;
+
+            &:focus {
+                border: 1px solid #535af1;
+
+                &:focus::placeholder {
+                    color: transparent;
+                }
+            }
+        }
     }
 }
 
+
 .next-btn {
     display: flex;
-    align-self: flex-end;
     padding: 12px 25px;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-end;
+    gap: 10px;
     border-radius: 25px;
-    color: white;
     background-color: #444DF2;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
     border: 1px solid transparent;
+
+    &:hover {
+        background-color: #797EF3;
+        border-color: #797EF3;
+    }
+}
+
+
+.data-protection {
+    display: flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 8px;
+
+
+    span {
+        font-size: 16px;
+        color: #42526E;
+    }
+
+    a {
+        text-decoration: none;
+        color: #797EF3;
+        font-size: 18px;
+
+        &:hover {
+            color: #444DF2;
+            font-size: 19px;
+        }
+    }
+}
+
+.data-protection-input-container {
+    position: relative;
+
+    svg {
+        position: absolute;
+        left: 3px;
+        top: 2px;
+        height: 24px;
+        width: 24px;
+        cursor: pointer;
+
+        &:hover {
+            fill: #444DF2;
+        }
+    }
+
+    input {
+        height: 20px;
+        width: 20px;
+        visibility: hidden;
+    }
+}
+
+
+@media only screen and (max-width: 1200px) {
+    .headline {
+        font-size: 42px;
+    }
+
+    .explanation {
+        font-size: 18px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .headline {
+        font-size: 38px;
+    }
+
+    .explanation {
+        font-size: 17px;
+    }
+
+    .next-btn {
+        font-size: 17px;
+    }
+}
+
+
+@media only screen and (max-width: 768px) {
+    form {
+        gap: 30px;
+    }
+
+    .back {
+        top: 25px;
+        left: 25px;
+    }
+
+    .register-section {
+        padding: 35px 20px;
+        gap: 20px;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .headline {
+        font-size: 32px;
+    }
+
+    .register-section {
+        max-width: calc(100vw - 32px);
+    }
+
+    .input-container {
+        max-width: calc(100vw - 72px);
+    }
+
+}
+
+
+@media only screen and (max-width: 480px) {
+
+    .header {
+        gap: 15px;
+    }
+
+    .input-container {
+        input {
+            font-size: 17px;
+            height: 50px;
+        }
+
+        img {
+            top: 13px;
+        }
+    }
+}
+
+
+
+@media only screen and (max-width: 400px) {
+    .headline {
+        font-size: 30px;
+    }
+    .next-btn {
+        font-size: 16px;
+    }
+    .explanation {
+        font-size: 16px;
+    }
+
+    .data-protection-input-container {
+        span {
+            font-size: 16px;
+        }
+        a {
+            font-size: 17px;
+        }
+    }
+}
+
+
+@media only screen and (max-width: 380px) {
+    .back {
+        top: 23px;
+        left: 12px;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+    .headline {
+        font-size: 28px;
+    }
 }
