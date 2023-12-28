@@ -1,32 +1,28 @@
-<div class="select-avatar-section">
-    <div class="top-section">
-        <div class="arrow-back">
-            <img src="./assets/img/icons/arrow-back.png" alt="arrow-back">
-        </div>
-        <span>Wähle deinen<br>Avatar</span>
+<div class="select-avatar-container">
+    <div class="back">
+        <img src="./assets/img/icons/arrow-back.png" alt="arrow-back">
     </div>
-
-    <div class="avatar-selection-container">
-        <div class="blank-avatar">
+    <span class="headline">Wähle deinen Avatar</span>
+    <div class="avatar-selection">
+        <div class="selected-avatar">
             <img src="./assets/img/avatars/avatar.png">
         </div>
-        <div class="avatar-selection">
-            <span class="user-name">Frederik Beck</span>
-            <span class="explanation">Wähle deinen avatar...</span>
-
-            <div class="available-avatars">
+        <div class="avatar-selection-content">
+            <span class="user-name">Max Mustermann</span>
+            <span class="choose">Aus der Liste wählen</span>
+            <div class="avatar-options">
                 @for (avatar of avatarId; track $index) {
-                    <div (click)="setSelectedAvatar(avatar)">
+                    <div (click)="setSelectedAvatar(avatar)" class="avatar-to-select">
                         <img src="./assets/img/avatars/{{ avatar }}.png" alt="avatar-img">
                     </div>
                 }
             </div>
-            <div class="upload-avatar">
-                <span>Oder Lade ein</span>
-                <input type="file" (change)="onFileSelected($event)" placeholder="Foto hoch">
-            </div>
+        </div>
+        <div class="upload-avatar">
+            <span>eigenes Bild verwenden</span>
+            <input class="file-input" type="file" placeholder="Datei hochladen">
+            <div class="upload-avatar-btn" (change)="onFileSelected($event)">Datei hochladen</div>
         </div>
     </div>
-
-    <button (click)="submitSelectedAvatar()">Weiter</button>
+    <button class="next-btn" (click)="submitSelectedAvatar()">Weiter</button>
 </div>

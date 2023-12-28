@@ -3,16 +3,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterModule, RouterLink, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  isSubmitted: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService) {
     this.loginForm = this.formBuilder.group({
@@ -23,6 +25,8 @@ export class LoginComponent {
 
 
   login() {
+    this.isSubmitted = true;
+    
     if (this.loginForm.valid) {
       const email = this.loginForm.get('email')?.value;
       const password = this.loginForm.get('password')?.value;
@@ -33,7 +37,7 @@ export class LoginComponent {
       }
     } else {
       console.log('loginform is invalid');
-      
+
     }
   }
 
