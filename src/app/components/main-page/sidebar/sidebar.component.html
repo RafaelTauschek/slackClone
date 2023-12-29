@@ -1,80 +1,64 @@
-<div class="sidebar-section">
-    <div class="searchbar d-none">
-        <input type="text" placeholder="Gehe zu...">
-        <img src="./assets/img/icons/search-icon.png" alt="search-icon">
-    </div>
+<div class="sidebar-container">
     <div class="sidebar-header">
-        <div class="header-left">
+        <div class="logo-container">
             <img src="./assets/img/workspace-logo.png" alt="workspace-logo">
-            <span>Code learning</span>
         </div>
-        <div class="channel-header-right">
+
+        <span>Code learning</span>
+
+        <div class="edit-container">
             <img src="./assets/img/icons/edit-icon-black.png" alt="edit-icon">
         </div>
     </div>
 
-    <main>
-        <div class="channels">
-            <div class="channel-header">
-                <div class="channel-header-left">
+    <div class="channel-container">
+        <div class="channel-header">
+            <div class="channel-header-start">
+                <div class="dropdown-container">
                     <img src="./assets/img/icons/arrow-drop-down.png">
-                    <div class="title">
-                        <img src="./assets/img/icons/channel-icon.png" alt="channel-icon">
-                        <span>Channels</span>
-                    </div>
                 </div>
-                <div class="channel-header-right" (click)="openDialog()">
-                    <img src="./assets/img/icons/add-icon.png" alt="add-icon">
+                <div class="channel-title-container">
+                    <img src="./assets/img/icons/channel-icon.png" alt="channel-icon">
+                    <span>Channels</span>
                 </div>
             </div>
-            <div class="available-channels">
-                @for (channel of channels; track $index) {
-                    <div class="channel" (click)="selectChannel(channel.id)">
-                        <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
-                        <span>{{ channel.name }}</span>
-                    </div>
-                }
-            </div>
-            <div class="add-channel" (click)="openDialog()">
-                <img src="./assets/img/icons/add-cirrcle-icon.png" alt="add-icon">
-                <span>Channel hinzufügen</span>
+            <div class="add-container" (click)="openDialog()">
+                <img src="./assets/img/icons/add-icon.png" alt="add-icon">
             </div>
         </div>
 
-        <div class="direct-chats">
-            <div class="direct-header">
-                <img src="./assets/img/icons/arrow-drop-down.png" alt="drop-down-icon">
-                <div class="header">
-                    <img src="./assets/img/icons/direct-chat-icon.png" alt="direct-chat-icon">
-                    <span>Direktnachrichten</span>
-                </div>
+        <div class="available-channels">
+            @for (channel of channels; track $index) {
+            <div class="single-channel" (click)="selectChannel(channel.id)">
+                <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
+                <span>{{ channel.name }}</span>
             </div>
-            <div class="available-chats">
-                <div class="direct-chat">
-                    <img src="./assets/img/avatars/avatar1.png" alt="avatar">
-                    <span>Frederik Beck (Du)</span>
-                </div>
-                <div class="direct-chat">
-                    <img src="./assets/img/avatars/avatar2.png" alt="avatar">
-                    <span>Sofia Müller</span>
-                </div>
-                <div class="direct-chat">
-                    <img src="./assets/img/avatars/avatar3.png" alt="avatar">
-                    <span>Noah Braun</span>
-                </div>
-                <div class="direct-chat">
-                    <img src="./assets/img/avatars/avatar4.png" alt="avatar">
-                    <span>Elise Roth</span>
-                </div>
-                <div class="direct-chat">
-                    <img src="./assets/img/avatars/avatar5.png" alt="avatar">
-                    <span>Elias Neumann</span>
-                </div>
-                <div class="direct-chat">
-                    <img src="./assets/img/avatars/avatar6.png" alt="avatar">
-                    <span>Steffen Hoffmann</span>
-                </div>
+            }
+        </div>
+
+        <div class="add-channel-container" (click)="openDialog()">
+            <img src="./assets/img/icons/add-cirrcle-icon.png" alt="add-icon">
+            <span>Channel hinzufügen</span>
+        </div>
+    </div>
+
+    <div class="direct-chat-container">
+        <div class="direct-chat-header">
+            <div class="dropdown-container">
+                <img src="./assets/img/icons/arrow-drop-down.png" alt="drop-down-icon">
+            </div>
+
+            <div class="title-container">
+                <img src="./assets/img/icons/direct-chat-icon.png" alt="direct-chat-icon">
+                <span>Direktnachrichten</span>
             </div>
         </div>
-    </main>
+
+        <div class="available-chats">
+            <div class="single-direct-chat">
+                <img src="./assets/img/avatars/avatar1.png" alt="avatar">
+                <span>Frederik Beck (Du)</span>
+            </div>
+        </div>
+    </div>
 </div>

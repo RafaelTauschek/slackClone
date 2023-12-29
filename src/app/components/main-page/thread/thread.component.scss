@@ -1,115 +1,141 @@
-.thread-section {
+.thread-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    width: calc(100% + 60px);
+    font-family: 'Nunito';
     background-color: white;
+    height: calc(100% - 150px);
     border-radius: 30px;
-    height: 100%
+    overflow: hidden;
+    padding: 32px 0px;
+    padding-top: 0 !important;
 }
 
-header {
-    border-top-right-radius: 30px;
-    border-top-left-radius: 30px;
+.thread-header {
+    width: 100%;
+    height: 100px;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 16px;
-    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-    background-color: white;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: -30px;
+        width: calc(100% + 60px);
+        height: 20px; 
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    img {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+    }
 }
 
 .header-left {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
+    font-weight: 400;
+    padding-left: 30px;
 
-    >.title {
-        font-weight: 700;
+    .title {
         font-size: 20px;
+        font-weight: 500;
+        margin: 0;
     }
 
-    >img {
-        width: 16px;
-        height: 16px;
-    }
-
-    >.channel-name {
-        font-size: 14px;
+    .channel-name {
         color: #797EF3;
+        font-size: 14px;
+        margin-bottom: 0;
     }
 }
 
 .header-right {
-    padding: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    >img {
-        width: 24px;
-        height: 24px;
-    }
+    padding-right: 30px;
 }
 
-
-
+textarea {
+    border: none;
+    outline: none;
+    resize: none;
+    margin: 0;
+    font-size: 18px;
+    color: #686868;
+    width: 100%;
+    font-family: 'Nunito', sans-serif;
+}
 
 .textarea {
-    padding: 10px 20px 20px 20px;
-}
-
-
-.write-message {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
+    align-self: center;
+    border: 1px solid lightgray;
     border-radius: 20px;
-    border: 1px solid #ADB0D9;
-
-    >textarea {
-        font-size: 18px;
-        color: #686868;
-        border: none;
-        height: 100%;
-        width: 100%;
-        outline: none;
-        font-family: "Nunito", sans-serif;
-    }
+    padding: 10px;
+    height: 140px;
+    margin: 0px 30px;
+    width: calc(100% - 60px);
+    position: relative;
+    bottom: 0;
+    box-sizing: border-box;
+    flex: 0 0 auto;
 }
 
-.textarea-icons {
+.iconbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 40px;
+}
 
+.icons-left {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
 
-    .icons-left {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-
-        .icon-container {
-            padding: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            >img {
-                width: 24px;
-                height: 24px;
-            }
-        }
+    img {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        padding-right: 2px;
+        padding-left: 2px;
     }
+}
 
+.icons-right {
+    padding-right: 24px;
 
-    .icons-right {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        >img {
-            width: 40px;
-            height: 40px;
-        }
+    img {
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
     }
+}
+
+.seperator {
+    color: #ADB0D9;
+    position: relative;
+    width: 0px;
+    border: 1px solid #ADB0D9;
+    height: 24px;
+}
+
+.thread-chatarea {
+        width: 100%;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+            width: 0;
+        }
+
+        scrollbar-width: thin;
+        scrollbar-color: transparent transparent;
 }

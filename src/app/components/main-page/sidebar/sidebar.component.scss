@@ -1,205 +1,195 @@
-.sidebar-section {
+.sidebar-container {
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    align-items: flex-start;
     background-color: white;
-    padding: 20px;
+    max-height: calc(100% - 180px);
+    min-height: calc(100% - 180px);
+    padding: 32px 30px;
+    width: 306px;
     gap: 25px;
-    max-width: 366px;
     border-radius: 30px;
-    height: 100%;
-    max-height: calc(100% - 75px);
-}
+    overflow-y: auto;
+    overflow-x: hidden;
 
-.searchbar {
-    display: flex;
-    padding: 8px 24px;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 42px;
-    border: 1px solid #ADB0D9;
-    background-color: white;
-
-    >input {
-        font-size: 17px;
-        border: none;
-        outline: none;
-        height: 100%;
-        width: 100%;
-        color: #686868;
-
-    }
-
-    >img {
-        width: 32px;
-        height: 32px;
+    &::-webkit-scrollbar {
+        display: none;
     }
 }
 
 .sidebar-header {
     display: flex;
+    gap: 15px;
     align-items: center;
-    justify-content: space-between;
+    width: 100%;
 
-    .header-left {
-        gap: 15px;
-        display: flex;
-        align-items: center;
-        padding-right: 20px;
-
-        img {
-            width: 60px;
-            height: 60px;
-        }
-
-        span {
-            font-size: 24px;
-            font-weight: 700;
-        }
+    span {
+        font-size: 24px;
+        font-weight: 700;
     }
 
-    .header-right {
-        padding: 8px;
+    .logo-container {
         display: flex;
         justify-content: center;
         align-items: center;
 
         img {
-            width: 24px;
+            height: 60px;
+            width: 60px;
+        }
+    }
+
+    .edit-container {
+        display: flex;
+        padding: 8px;
+        justify-content: center;
+        align-items: center;
+
+        img {
             height: 24px;
+            width: 24px;
         }
     }
 }
 
-main {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
+.channel-container {
+    width: 100%;
+    gap: 25px;
 
-.channels {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 30px;
-}
-
-.channel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 3px 0px;
-
-
-    >.channel-header-left {
+    .channel-header {
+        width: 100%;
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 15px;
+        padding-bottom: 13px;
 
-        >img {
-            width: 30px;
-            height: 30px;
-        }
 
-        >.title {
+        .add-container {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            padding: 3px;
 
-            >img {
+            img {
                 width: 24px;
                 height: 24px;
             }
+        }
 
-            >span {
-                font-size: 20px;
-                font-weight: 700;
+        .channel-header-start {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+
+            .dropdown-container {
+                img {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+
+            .channel-title-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+
+                img {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                span {
+                    font-size: 20px;
+                    font-weight: 700;
+                }
             }
         }
     }
-
-    >.channel-header-right {
-        padding: 3px;
-        display: flex;
-        align-items: center;
-
-        >img {
-            width: 24px;
-            height: 24px;
-        }
-    }
 }
-
 
 .available-channels {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    width: 100%;
     padding-left: 25px;
     gap: 13px;
 
 
-    >.channel {
+    .single-channel {
         display: flex;
         align-items: center;
-        padding: 4px 20px;
         gap: 10px;
+        padding: 4px 20px;
 
-        >img {
+        img {
             width: 24px;
             height: 24px;
         }
 
-        >span {
-            font-size: 17px;
+        span {
+            font-size: 18px;
+            font-weight: 700;
         }
     }
 }
 
-.add-channel {
+.add-channel-container {
     display: flex;
+    padding: 25px 10px 4px 45px;
     align-items: center;
-    justify-content: flex-start;
-    padding-left: 45px;
     gap: 10px;
 
-    >img {
+    img {
         width: 24px;
         height: 24px;
     }
 
-    >span {
-        font-size: 17px;
-        color: #535AF1;
+    span {
+        font-size: 18px;
     }
 }
 
 
-.direct-chats {
+.direct-chat-container {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 25px;
 
-    .direct-header {
+
+    .direct-chat-header {
         display: flex;
         align-items: center;
         gap: 15px;
         padding: 5px 10px 5px 0px;
 
+        .dropdown-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
+            img {
+                width: 30px;
+                height: 30px;
+            }
+        }
 
-        >.header {
+        .title-container {
             display: flex;
             align-items: center;
             gap: 10px;
 
-            >img {
+            img {
                 width: 24px;
                 height: 24px;
             }
 
-            >span {
-                font-size: 20px;
+            span {
                 font-weight: 700;
+                font-size: 20px;
             }
         }
     }
@@ -208,25 +198,25 @@ main {
 .available-chats {
     display: flex;
     flex-direction: column;
-    padding-left: 25px;
+    justify-content: center;
+    width: 100%;
     gap: 13px;
-    overflow-y: scroll;
-    max-height: 70%;
+    padding-left: 25px;
 
-    >.direct-chat {
-        padding: 4px 20px;
+    .single-direct-chat {
         display: flex;
         align-items: center;
         gap: 15px;
+        padding: 4px 20px;
 
-        >img {
+
+        img {
             width: 50px;
             height: 50px;
         }
 
-        >span {
-            font-size: 17px;
+        span {
+            font-size: 18px;
         }
     }
-
 }

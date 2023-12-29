@@ -1,24 +1,29 @@
-
-.landingpage-section {
+.mainpage-container {
+    background-color: #ECEEFE;
     display: flex;
     flex-direction: column;
     height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: #ECEEFE;
+    overflow: hidden;
 }
 
 main {
     display: flex;
     gap: 20px;
-    max-width: 100%;
-    height: calc(100% - 140px);
-    background-color: #ECEEFE;
-    padding: 0px 20px 25px 0px;
-    padding: 0px 20px;
-}
+    height: 100%;
+    width: calc(100% - 108px);
+    margin-left: 24px;
 
-app-channel-chat {
-    display: flex;
-    flex: 0 0 1;
+    app-sidebar {
+        flex: 0 0 12%;
+    }
+
+    .chats {
+        flex: 1;
+    }
+
+    app-thread {
+        flex: 0 0 12%;
+    }
 }

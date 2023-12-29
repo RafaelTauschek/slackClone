@@ -1,45 +1,43 @@
-<div class="channel-chat-section">
-    <header>
-        <div class="channel-name">
-            <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
+<div class="channel-chat-container">
+    <div class="channel-chat-header">
+        <div class="header-left">
             <span *ngIf="channel && channel.length > 0; else noChannel">{{ channel[0].name }}</span>
             <ng-template #noChannel>
                 <span>Allgemein</span>
             </ng-template>
             <img src="./assets/img/icons/arrow-drop-down.png" alt="dropdown-icon">
         </div>
-        <div class="add-member">
-            <img src="./assets/img/icons/add-person-icon.png" alt="add-member-icon">
+
+        <div class="header-right">
+            <div class="channel-member">
+                <img src="./assets/img/avatars/avatar.png" alt="member-avatar">
+                <img src="./assets/img/avatars/avatar.png" alt="member-avatar">
+                <img src="./assets/img/avatars/avatar.png" alt="member-avatar">
+                <span class="member-count">3</span>
+            </div>
+            <img class="add-member" src="./assets/img/icons/add-person-icon.png" alt="add-member-icon">
         </div>
-    </header>
+    </div>
 
-    <app-chat-area></app-chat-area>
+    <div class="chat-area">
+        <app-chat-area></app-chat-area>
+    </div>
 
-    <div class="textarea">
-        <div class="write-message">
-            <textarea [(ngModel)]="message" *ngIf="channel && channel.length > 0; else noChannelTextarea" placeholder="Nachricht an # {{ channel[0].name }}"></textarea>
-            <ng-template #noChannelTextarea>
-                <textarea [(ngModel)]="message" placeholder="Nachricht an # Allgemein"></textarea>
-            </ng-template>
-            <div class="textarea-icons">
-                <div class="icons-left">
-                    <div class="icon-container">
-                        <img src="./assets/img/icons/add-icon-gray.png" alt="add-icon">
-                    </div>
-                    <img src="./assets/img/line-vertical.png" alt="vertical-line">
-                    <div class="icon-container d-none">
-                        <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
-                        <div class="emoji-picker">
-                            <emoji-mart (emojiClick)="addEmoji($event)"></emoji-mart>
-                        </div>
-                    </div>
-                    <div class="icon-container">
-                        <img src="./assets/img/icons/at-icon.png" alt="at-icon">
-                    </div>
-                </div>
-                <div class="icons-right" (click)="sendMessage()">
-                    <img src="./assets/img/icons/send-icon.png" alt="send-icon">
-                </div>
+    <div class="channel-textarea">
+        <textarea [(ngModel)]="message" *ngIf="channel && channel.length > 0; else noChannelTextarea"
+            placeholder="Nachricht an # {{ channel[0].name }}" cols="30" rows="3"></textarea>
+        <ng-template #noChannelTextarea>
+            <textarea [(ngModel)]="message" placeholder="Nachricht an # Allgemein" cols="30" rows="4"></textarea>
+        </ng-template>
+        <div class="thread-icons">
+            <div class="icons-left">
+                <img src="./assets/img/icons/add-icon-gray.png" alt="add-icon">
+                <div class="seperator"></div>
+                <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
+                <img src="./assets/img/icons/at-icon.png" alt="at-icon">
+            </div>
+            <div class="icons-right">
+                <img src="./assets/img/icons/send-icon.png" alt="send-icon" (click)="sendMessage()">
             </div>
         </div>
     </div>
