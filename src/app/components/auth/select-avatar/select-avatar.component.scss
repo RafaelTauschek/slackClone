@@ -183,7 +183,7 @@
     }
 
     .back {
-        top: 25px;
+        top: 35px;
         left: 25px;
     }
 }
@@ -221,6 +221,11 @@
         }
     }
 
+    .back {
+        top: 31px;
+        left: 10px;
+    }
+
 
     .avatar-to-select {
         gap: 4px;
@@ -234,6 +239,13 @@
     }
 }
 
+@media only screen and (max-width: 440px) {
+    .back {
+        top: 32px;
+        left: 4px;
+    }
+}
+
 
 @media only screen and (max-width: 400px) {
     .headline {
@@ -243,6 +255,11 @@
     .next-btn,
     .upload-avatar-btn {
         font-size: 16px;
+    }
+
+    .back {
+        top: 30px;
+        left: 0px;
     }
 }
 

@@ -1,4 +1,4 @@
-<div class="landingpage-section">
+<div class="mainpage-container">
     <app-header></app-header>
     <main>
         <app-sidebar></app-sidebar>
@@ -6,6 +6,6 @@
             <app-channel-chat *ngIf="isChannelChatActive"></app-channel-chat>
             <app-direct-chat *ngIf="isDirectChatActive"></app-direct-chat>
         </div>
-        <app-thread *ngIf="isThreadActive"></app-thread>
+        <app-thread></app-thread>
     </main>
 </div>
