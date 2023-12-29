@@ -1,9 +1,9 @@
 <div class="channel-chat-container">
     <div class="channel-chat-header">
         <div class="header-left">
-            <span *ngIf="channel && channel.length > 0; else noChannel">{{ channel[0].name }}</span>
+            <span *ngIf="channel && channel.length > 0; else noChannel"># {{ channel[0].name }}</span>
             <ng-template #noChannel>
-                <span>Allgemein</span>
+                <span># Allgemein</span>
             </ng-template>
             <img src="./assets/img/icons/arrow-drop-down.png" alt="dropdown-icon">
         </div>

@@ -7,10 +7,83 @@
         <img src="./assets/img/icons/search-icon.png" alt="search-icon">
     </div>
     <div class="user-container">
-        <span>{{ currentUser[0].name }}</span>
+        <span *ngIf="currentUser[0].name == undefined; else noName">{{ currentUser[0].name }}</span>
+        <ng-template #noName>
+            <span>Gast</span>
+        </ng-template>
         <img class="avatar" src="./assets/img/avatars/{{ currentUser[0].profilepicture }}.png" alt="avatar">
-        <img (click)="openDialog()" class="dropdown" src="./assets/img/icons/arrow-drop-down.png" alt="arrow-dropdown">
+        <img (click)="userMenu = !userMenu" class="dropdown" src="./assets/img/icons/arrow-drop-down.png" alt="arrow-dropdown">
     </div>
+
+    
+    <div *ngIf="userMenu || profileMenu || editMenu" class="overlay" (click)="closeMenus()"></div>
+    <div class="user-menu" *ngIf="userMenu">
+        <div class="user-menu-option">
+            <span (click)="openProfileMenu()">Profil</span>
+        </div>
+        <div class="user-menu-option">
+            <span>Abmelden</span>
+        </div>
+    </div>
+
+    <div class="profile-menu" *ngIf="profileMenu">
+        <div class="profile-menu-header">
+            <span>Profil</span>
+            <img (click)="closeProfileMenu()" src="./assets/img/icons/close-icon.png" alt="close-icon">
+        </div>
+        <div class="profile-menu-img">
+            <img src="./assets/img/avatars/{{ currentUser[0].profilepicture }}.png" alt="user-avatar">
+        </div>
+        <div class="profile-menu-name">
+            <div class="profile-menu-name-header">
+                <span class="profile-menu-name-username">{{ currentUser[0].name }}</span>
+                <span (click)="openEditMenu()" class="profile-menu-name-edit">Bearbeiten</span>
+            </div>
+            <div class="profile-menu-name-footer">
+                <img src="./assets/img/online-dot.png" alt="online-dot">
+                <span>Aktiv</span>
+            </div>
+        </div>
+        <div class="profile-menu-mail">
+            <div class="profile-menu-mail-header">
+                <img src="./assets/img/icons/mail-icon.png" alt="email-icon">
+                <span>E-Mail-Adresse</span>
+            </div>
+            <span class="profile-menu-mail-footer">{{ currentUser[0].email }}</span>
+        </div>
+    </div>
+
+
+    <div class="edit-menu" *ngIf="editMenu">
+        <div class="edit-menu-header">
+            <span>Dein Profil bearbeiten</span>
+            <img (click)="closeEditMenu() " src="./assets/img/icons/close-icon.png" alt="close-icon">
+        </div>
+        <div class="edit-menu-userimage">
+            <img src="./assets/img/avatars/{{ currentUser[0].profilepicture }}.png" alt="user-avatar">
+        </div>
+        <div class="edit-menu-inputs">
+            <div class="edit-input-container">
+                <div class="edit-input-header">
+                    <img src="./assets/img/icons/person-icon.png" alt="person-icon">
+                    <span>Vollständiger Name</span>
+                </div>
+                <input type="text" placeholder="{{ currentUser[0].name }}">
+            </div>
+            <div class="edit-input-container">
+                <div class="edit-input-header">
+                    <img src="./assets/img/icons/mail-icon.png" alt="person-icon">
+                    <span>E-Mail-Adresse</span>
+                </div>
+                <input type="email" placeholder="{{ currentUser[0].email }}">
+            </div>
+        </div>
+        <div class="edit-menu-button">
+            <button (click)="closeEditMenu()" class="cancel-btn">Abbrechen</button>
+            <button (click)="saveChanges()" class="save-btn">Speichern</button>
+        </div>
+    </div>
+
 </div>
 
 

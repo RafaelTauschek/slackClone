@@ -56,3 +56,310 @@
         top: 14px;
     }
 }
+
+.user-menu {
+    position: absolute;
+    right: 25px;
+    top: 100px;
+    z-index: 999;
+    background-color: white;
+    border-radius: 30px 0px 30px 30px;
+    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.20);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+    .user-menu-option {
+        padding: 10px 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100px;
+        background-color: white;
+
+        &:hover {
+            background-color: #ECEEFE;
+
+
+            span {
+                color: #797EF3;
+                ;
+            }
+        }
+
+        span {
+            font-size: 24px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    }
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 800;
+}
+
+
+.profile-menu {
+    position: absolute;
+    width: 420px;
+    right: 25px;
+    top: 100px;
+    z-index: 999;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+    padding: 45px 40px;
+    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.20);
+    border-radius: 30px 0px 30px 30px;
+
+    .profile-menu-header {
+        justify-content: space-between;
+        align-items: center;
+        display: flex;
+
+        span {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        img {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+    }
+
+    .profile-menu-img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+        }
+    }
+
+    .profile-menu-name {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .profile-menu-name-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .profile-menu-name-username {
+                font-size: 32px;
+                font-weight: 700;
+            }
+
+            .profile-menu-name-edit {
+                font-size: 18px;
+                color: #535AF1;
+                font-weight: 600;
+                cursor: pointer;
+            }
+        }
+
+
+        .profile-menu-name-footer {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 15px;
+
+            img {
+                width: 16px;
+                height: 16px;
+            }
+
+            span {
+                font-weight: 400;
+                color: #92C83E;
+                font-size: 20px;
+            }
+        }
+    }
+
+    .profile-menu-mail {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+
+        .profile-menu-mail-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+
+
+            img {
+                width: 30px;
+                height: 30px;
+            }
+
+            span {
+                font-weight: 700;
+                font-size: 20px;
+            }
+        }
+
+        .profile-menu-mail-footer {
+            padding-left: 50px;
+            font-weight: 500;
+            font-size: 18px;
+            color: #1381FF;
+        }
+    }
+}
+
+.edit-menu {
+    position: absolute;
+    right: 25px;
+    top: 100px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    background-color: white;
+    width: 420px;
+    gap: 45px;
+    border-radius: 30px;
+    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.20);
+
+    .edit-menu-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        span {
+            font-weight: 700;
+            font-size: 24px;
+        }
+
+        img {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+    }
+
+    .edit-menu-userimage {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+
+        img {
+            object-fit: contain;
+            width: 200px;
+            height: 200px;
+        }
+    }
+
+    .edit-menu-inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+
+        .edit-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+
+            input {
+                padding: 15px 20px;
+                border: 1px solid #ADB0D9;
+                border-radius: 30px;
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                font-size: 18px;
+                font-weight: 500;
+                color: #686868;
+            }
+
+
+            .edit-input-header {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+
+                img {
+                    width: 30px;
+                    height: 30px;
+                }
+
+                span {
+                    font-size: 20px;
+                    font-weight: 700;
+                }
+
+
+            }
+        }
+    }
+
+    .edit-menu-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;
+
+
+        .cancel-btn {
+            display: flex;
+            padding: 12px 25px;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            border-radius: 50px;
+            border: 1px solid #797EF3;
+            background-color: white;
+            color: #797EF3;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 700;
+
+            &:hover {
+                background-color: #797EF3;
+                color: white;
+            }
+        }
+
+        .save-btn {
+            display: flex;
+            padding: 12px 25px;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            border-radius: 50px;
+            background-color: #444DF2;
+            border: 1px solid transparent;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 700;
+
+            &:hover {
+                background-color: #797EF3;
+            }
+        }
+    }
+}
