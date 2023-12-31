@@ -1,7 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { collection, addDoc, updateDoc, doc, setDoc, getDoc, query, getDocs, where, arrayUnion } from 'firebase/firestore';
-import { getStorage } from "firebase/storage";
+import { Observable } from 'rxjs';
+import { User } from '../models/user.class';
+import { Channel } from '../models/channel.class';
+
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +53,20 @@ export class FirebaseService {
       messages: arrayUnion(item)
     });
   }
+
+  async getUserChannels(user: User) {
+    const channelsCollectionRef = collection(this.firestore, 'channels');
+    const channelIds = user.channels;
+    const q = query(channelsCollectionRef, where('id', 'in', channelIds));
+    const querySnapshot = await getDocs(q);
+    const channels: Channel[] = [];
+    querySnapshot.forEach((doc) => {
+      channels.push(doc.data() as Channel)
+    });
+    console.log('Channels in query Snapshot: ', channels);
+  }
+
+
 
 
 

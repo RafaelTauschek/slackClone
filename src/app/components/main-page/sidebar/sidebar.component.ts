@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ChannelService } from '../../../services/channel.service';
 import { Subscription } from 'rxjs';
 import { Channel } from '../../../models/channel.class';
-
+import { SharedService } from '../../../services/shared.service';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -17,16 +17,15 @@ export class SidebarComponent implements OnDestroy {
   channelsSubscription: Subscription;
   channels: Channel[] = [];
 
-  constructor(private dialog: MatDialog, private channelService: ChannelService) {
+  constructor(private dialog: MatDialog, private channelService: ChannelService, private sharedService: SharedService) {
     this.channelsSubscription = this.channelService.channelsSubscription$.subscribe((channels) => {
       this.channels = channels;
       console.log('Available Channels: ', channels);
-      
-      
     })
   }
 
   selectChannel(channelId: string) {
+    this.sharedService.closeThread();
     this.channelService.setSelectedChannel(channelId);
     console.log('Selected Channel: ', channelId);
     
@@ -40,5 +39,12 @@ export class SidebarComponent implements OnDestroy {
 
   openDialog() {
     this.dialog.open(AddChannelDialogComponent, {});
+  }
+
+  openNewMessage() {
+    this.sharedService.closeChannelChat();
+    this.sharedService.closeDirectChat();
+    this.sharedService.closeThread();
+    this.sharedService.openMessageChat();
   }
 }

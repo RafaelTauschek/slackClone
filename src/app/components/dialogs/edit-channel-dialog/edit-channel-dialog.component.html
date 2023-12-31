@@ -1,1 +1,42 @@
-<p>edit-channel-dialog works!</p>
+<div class="edit-channel-container">
+    <div class="header">
+        <div class="header-left">
+            <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
+            <span>Entwicklerteam</span>
+        </div>
+        <div class="header-right" (click)="closeDialog()">
+            <img src="./assets/img/icons/close-icon.png" alt="close-icon">
+        </div>
+    </div>
+    <div class="channel-name">
+        <div class="channel-name-header">
+            <span class="name">Channel-Name</span>
+            <span class="edit">Bearbeiten</span>
+        </div>
+        <div class="channel-name-footer">
+            <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
+            <span>Entwicklerteam</span>
+        </div>
+    </div>
+    <div class="channel-description">
+        <div class="channel-description-header">
+            <div class="channel-desription-header-title">
+                <span class="name">Beschreibung</span>
+                <span class="edit">Bearbeiten</span>
+            </div>
+
+            <div class="channel-description-content">
+                <span>Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team
+                    Meetings abhalten, Dokumente teilen und Entscheidungen treffen.</span>
+            </div>
+        </div>
+
+        <div class="seperator"></div>
+
+        <div class="creator">
+            <span class="created-from">Erstellt von</span>
+            <span class="creator-name">Noah Braun</span>
+        </div>
+    </div>
+    <div class="leave-channel">Channel verlassen</div>
+</div>

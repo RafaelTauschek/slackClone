@@ -1,19 +1,19 @@
 <div class="thread-chat-section">
-    <div class="message-container">
+    <div class="message-container" *ngIf="message !== undefined && message !== null">
         <img src="./assets/img/avatars/avatar6.png" alt="avatar">
         <div class="message-content">
-            <div class="message-header">
-                <span class="user-name">Noah Braun</span>
-                <span class="time">14:25 Uhr</span>
+            <div class="message-header" *ngIf="message.length > 0">
+                <span class="user-name">{{ this.userService.getUserName(message[0].senderId) }}</span>
+                <span class="time">{{ this.sharedService.formatTimestampToTime(message[0].timestamp) }} Uhr</span>
             </div>
-            <div class="message-main">
-                <span>Welche Version ist aktuell von Angular?</span>
+            <div class="message-main" *ngIf="message.length > 0">
+                <span>{{ message[0].content }}</span>
             </div>
         </div>
     </div>
 
-    <div class="answer-divider">
-        <span>2 Antworten</span>
+    <div class="answer-divider" *ngIf="message !== undefined && message !== null" >
+        <span *ngIf="message.length > 0">{{ message[0].answers.length }} Antworten</span>
         <img src="./assets/img/line.png" alt="line">
     </div>
 

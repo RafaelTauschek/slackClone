@@ -37,8 +37,8 @@ export class ChatAreaComponent implements OnDestroy {
 
 
   openThread(message: any) {
-    console.log(message);
-    this.sharedService.openThread();
+    this.messageService.setCurrentMessage([message]);
+      this.sharedService.openThread();
   }
 
 

@@ -5,13 +5,26 @@
     <div class="search-menu">
         <input type="text" placeholder="Code learning durchsuchen">
         <img src="./assets/img/icons/search-icon.png" alt="search-icon">
+        <div class="hiddens-search-container">
+            <div></div>
+            <div *ngIf="searchChannel">
+                <div *ngFor="let channel of searchedChannel">
+                    <span (click)="openChannel"># Channelname</span>
+                </div>
+            </div>
+            <div *ngIf="searchUser">
+                <div *ngFor="let user of searchedUser">
+                    <span (click)="openChat()">&#64; Username</span>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="user-container">
-        <span *ngIf="currentUser[0].name == undefined; else noName">{{ currentUser[0].name }}</span>
+        <span *ngIf="currentUser !== undefined; else noName">{{ currentUser[0]?.name }}</span>
         <ng-template #noName>
             <span>Gast</span>
         </ng-template>
-        <img class="avatar" src="./assets/img/avatars/{{ currentUser[0].profilepicture }}.png" alt="avatar">
+        <img *ngIf="currentUser !== undefined" class="avatar" src="./assets/img/avatars/{{ currentUser[0]?.profilepicture }}.png" alt="avatar">
         <img (click)="userMenu = !userMenu" class="dropdown" src="./assets/img/icons/arrow-drop-down.png" alt="arrow-dropdown">
     </div>
 
@@ -22,7 +35,7 @@
             <span (click)="openProfileMenu()">Profil</span>
         </div>
         <div class="user-menu-option">
-            <span>Abmelden</span>
+            <span (click)="logout()">Abmelden</span>
         </div>
     </div>
 

@@ -18,24 +18,33 @@ export class MessageService implements OnDestroy {
   messages: any
   messageSubscription = new BehaviorSubject<Message[]>([]);
   messageSubscription$ = this.messageSubscription.asObservable();
+  singleMessageSubscription = new BehaviorSubject<Message[]>([]);
+  singleMessageSubscription$ = this.singleMessageSubscription.asObservable();
+
 
   constructor(private userService: UserService, private channelService: ChannelService, private firebaseService: FirebaseService) {
     this.userSubscription = this.userService.activeUserObservable$.subscribe((activeUser) => {
       this.user = activeUser;
     });
     this.channelSubscription = this.channelService.channelSubscription$.subscribe((channel) => {
-      this.channel = channel;
-      this.messages = channel[0].messages;
-      this.setCurrentMessages(this.messages)
+      if (channel && channel.length > 0 && channel[0].messages) {
+        this.channel = channel;
+        this.messages = channel[0].messages;
+        this.setCurrentMessages(this.messages);
+      }
     })
   }
 
+
+  setCurrentMessage(message: Message[]) {
+    this.singleMessageSubscription.next(message)
+  }
 
   setCurrentMessages(messages: Message[]) {
     this.messageSubscription.next(messages)
   }
 
- 
+
 
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
@@ -57,6 +66,6 @@ export class MessageService implements OnDestroy {
     } catch (err) {
       console.log(err);
     }
-    
+
   }
 }

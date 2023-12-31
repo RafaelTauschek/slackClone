@@ -5,7 +5,8 @@
         <div class="chats">
             <app-channel-chat *ngIf="isChannelChatActive"></app-channel-chat>
             <app-direct-chat *ngIf="isDirectChatActive"></app-direct-chat>
+            <app-new-message *ngIf="isNewMessageActive"></app-new-message>
         </div>
-        <app-thread></app-thread>
+        <app-thread *ngIf="isThreadActive"></app-thread>
     </main>
 </div>

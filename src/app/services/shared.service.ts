@@ -13,8 +13,21 @@ export class SharedService {
   directChatActive$ = this.directChatActive.asObservable();
   channelChatActive = new Subject<boolean>();
   channelChatActive$ = this.channelChatActive.asObservable();
+  messageActive = new Subject<boolean>();
+  messageActive$ = this.messageActive.asObservable();
 
   constructor(private userService: UserService) {}
+
+
+
+  openMessageChat() {
+    this.messageActive.next(true);
+  }
+
+  closeMessageChat() {
+    this.messageActive.next(false);
+  }
+
 
   openDirectChat() {
     this.directChatActive.next(true);
@@ -72,6 +85,13 @@ export class SharedService {
     const user = this.userService.activeUser.value;
     const loggedInUserId = user[0].id;
     return senderId === loggedInUserId ? true : false;
+  }
+
+  public formatTimestampToTime(timestamp: number): string {
+    const date = new Date(timestamp);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
   }
 
   public getKeys(obj: any) {

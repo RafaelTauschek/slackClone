@@ -1,6 +1,6 @@
 <div class="channel-chat-container">
     <div class="channel-chat-header">
-        <div class="header-left">
+        <div class="header-left" (click)="openDialog()">
             <span *ngIf="channel && channel.length > 0; else noChannel"># {{ channel[0].name }}</span>
             <ng-template #noChannel>
                 <span># Allgemein</span>

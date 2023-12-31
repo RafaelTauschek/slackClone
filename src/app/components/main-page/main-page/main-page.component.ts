@@ -1,18 +1,19 @@
 import { Component, OnDestroy } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
-import { ChannelChatComponent } from '../../chats/channel-chat/channel-chat.component';
-import { DirectChatComponent } from '../../chats/direct-chat/direct-chat.component';
 import { ThreadComponent } from '../thread/thread.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { MessageService } from '../../../services/message.service';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../../services/shared.service';
+import { ChannelChatComponent } from '../channel-chat/channel-chat.component';
+import { DirectChatComponent } from '../direct-chat/direct-chat.component';
+import { NewMessageComponent } from '../new-message/new-message.component';
 @Component({
   selector: 'app-main-page',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, SidebarComponent, ChannelChatComponent, DirectChatComponent, ThreadComponent, RouterOutlet, RouterModule],
+  imports: [CommonModule, HeaderComponent, SidebarComponent, ChannelChatComponent, DirectChatComponent ,ThreadComponent, RouterOutlet, RouterModule, NewMessageComponent],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
@@ -23,6 +24,8 @@ export class MainPageComponent implements OnDestroy {
   directChatSubscription: Subscription;
   isChannelChatActive: boolean = true;
   channelChatSubscription: Subscription;
+  isNewMessageActive: boolean = false;
+  newMessageSubscription: Subscription;
 
 
   constructor(private messageService: MessageService, private sharedService: SharedService) {
@@ -45,6 +48,11 @@ export class MainPageComponent implements OnDestroy {
         this.setChannelChat();
       }
     });
+
+    this.newMessageSubscription = this.sharedService.messageActive$.subscribe((newMessageActive: boolean) => {
+      this.isNewMessageActive = newMessageActive;
+      this.setMessageChat();  
+    });
   }
 
 
@@ -54,6 +62,12 @@ export class MainPageComponent implements OnDestroy {
     this.channelChatSubscription.unsubscribe();
   }
 
+  setMessageChat() {
+    this.isThreadActive = false;
+    this.isChannelChatActive = false;
+    this.isDirectChatActive = false; 
+    this.isNewMessageActive = true; 
+  }
 
   setThread() {
     this.isThreadActive = true;
@@ -72,4 +86,6 @@ export class MainPageComponent implements OnDestroy {
     this.isDirectChatActive = false;
     this.isThreadActive = false;
   }
+
+
 }

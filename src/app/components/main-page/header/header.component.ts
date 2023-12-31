@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { User } from '../../../models/user.class';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
+import { Channel } from '../../../models/channel.class';
 
 
 @Component({
@@ -19,10 +20,13 @@ export class HeaderComponent implements OnDestroy {
   userMenu: boolean = false;
   profileMenu: boolean = false;
   editMenu: boolean = false;
+  searchUser: boolean = false;
+  searchChannel: boolean = false;
+  searchedChannel: Channel[] = [];
+  searchedUser: User[] = [];  
 
 
   constructor(private userService: UserService, private authService: AuthService) {
-    this.authService.authCurrentUser();
     this.currentUserSubscription = this.userService.activeUserObservable$.subscribe((currentUser) => {
       this.currentUser = currentUser;
     });
@@ -60,4 +64,18 @@ export class HeaderComponent implements OnDestroy {
     console.log('save btn funktioniert!');
   }
 
+  logout() {
+    this.authService.logout();
+  }
+
+
+  openChat() {
+
+  }
+
+  openChannel() {
+    
+  }
 }
+
+

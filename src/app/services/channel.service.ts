@@ -23,12 +23,16 @@ export class ChannelService {
   async loadChannels(userId: string) {
     this.channels = [];
     const docSnap = await this.firebaseService.getDocument('users', userId);
-    const user = docSnap.data() as User;
-    for(const channel of user.channels) {
-      const docSnap = await this.firebaseService.getDocument('channels', channel);
-      this.channels.push(docSnap.data() as Channel);
-      this.setChannels(this.channels);
-      this.setChannel([this.channels[0]])
+    if (docSnap.exists()) {
+      const user = docSnap.data() as User;
+      for(const channel of user.channels) {
+        const docSnap = await this.firebaseService.getDocument('channels', channel);
+        this.channels.push(docSnap.data() as Channel);
+        this.setChannels(this.channels);
+        this.setChannel([this.channels[0]])
+      }
+    } else {
+      console.log('No Channel available for the user');
     }
   }
 

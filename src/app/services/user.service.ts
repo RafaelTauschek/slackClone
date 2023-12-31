@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.class';
 import { FirebaseService } from './firebase.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { Channel } from '../models/channel.class';
+import { ChannelService } from './channel.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +12,18 @@ export class UserService {
   activeUser = new BehaviorSubject<User[]>([]);
   activeUserObservable$ = this.activeUser.asObservable();
   availableUsers: User[] = []
+  users = new BehaviorSubject<User[]>([]); 
+  usersObservable$ = this.users.asObservable(); 
+
 
   constructor(private firebaseService: FirebaseService) {
     this.loadAvailableUsers();
+  }
+
+
+
+  setUsers() {
+    this.users.next(this.availableUsers);
   }
 
   getUserName(userId: string) {
@@ -28,6 +39,8 @@ export class UserService {
       const docSnap = await this.firebaseService.getDocument('users', userId);
       const user = docSnap.data() as User;
       this.setActiveUser(user);
+      console.log(user);
+      this.firebaseService.getUserChannels(user)
   }
 
   async loadAvailableUsers() {
@@ -36,6 +49,7 @@ export class UserService {
         this.availableUsers.push(userdata.data() as User)
       })
     })
+    this.setUsers();
   }
 
   setActiveUser(user: User): void {
