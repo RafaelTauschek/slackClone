@@ -27,3 +27,40 @@ main {
         flex: 0 0 12%;
     }
 }
+
+.workspace-menu {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    padding: 14px 23px;
+    box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.20);
+    border-radius: 0px 0px 30px 30px;
+    bottom: 220px;
+    left: -140px;
+    transform: rotate(270deg);
+    cursor: pointer;
+
+    &:hover {
+        span {
+            color: blue;
+            transform: scale(1.02);
+        }
+        img {
+            fill: blue;
+        }
+    }
+
+    span {
+        font-weight: 500;
+        font-size: 20px;
+    }
+
+    img {
+        transform: rotate(90deg);
+        width: 32px;
+        height: 32px;
+    }
+}

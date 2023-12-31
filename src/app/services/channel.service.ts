@@ -36,7 +36,9 @@ export class ChannelService {
     }
   }
 
-
+  async updateChannel(channel: Channel) {
+    
+  }
 
   setSelectedChannel(channelId: string) {
     const channel = this.channelsSubscription.value.find((channel) => channel.id == channelId);

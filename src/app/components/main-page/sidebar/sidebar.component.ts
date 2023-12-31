@@ -25,7 +25,8 @@ export class SidebarComponent implements OnDestroy {
   }
 
   selectChannel(channelId: string) {
-    this.sharedService.closeThread();
+    this.sharedService.closeMessageChat();
+    this.sharedService.openChannelChat();
     this.channelService.setSelectedChannel(channelId);
     console.log('Selected Channel: ', channelId);
     

@@ -23,18 +23,24 @@ export class HeaderComponent implements OnDestroy {
   searchUser: boolean = false;
   searchChannel: boolean = false;
   searchedChannel: Channel[] = [];
-  searchedUser: User[] = [];  
+  searchedUser: User[] = [];
+  availableUsersSubscription: Subscription;
+  availableUsers: User[] = [];
 
 
   constructor(private userService: UserService, private authService: AuthService) {
     this.currentUserSubscription = this.userService.activeUserObservable$.subscribe((currentUser) => {
       this.currentUser = currentUser;
     });
+    this.availableUsersSubscription = this.userService.usersObservable$.subscribe((availableUsers) => {
+      this.availableUsers = availableUsers;
+    });
   }
 
 
   ngOnDestroy(): void {
     this.currentUserSubscription.unsubscribe()
+    this.availableUsersSubscription.unsubscribe();
   }
 
   closeProfileMenu() {

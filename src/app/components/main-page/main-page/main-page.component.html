@@ -1,7 +1,7 @@
 <div class="mainpage-container">
     <app-header></app-header>
     <main>
-        <app-sidebar></app-sidebar>
+        <app-sidebar *ngIf="isSidebarOpen"></app-sidebar>
         <div class="chats">
             <app-channel-chat *ngIf="isChannelChatActive"></app-channel-chat>
             <app-direct-chat *ngIf="isDirectChatActive"></app-direct-chat>
@@ -9,4 +9,10 @@
         </div>
         <app-thread *ngIf="isThreadActive"></app-thread>
     </main>
+
+    <div class="workspace-menu" (click)="isSidebarOpen = !isSidebarOpen">
+        <span *ngIf="isSidebarOpen">Workspace-Menü schließen</span>
+        <span *ngIf="!isSidebarOpen">Workspace-Menü öffnen</span>
+        <img src="./assets/img/icons/sidebar-menu-icon.png" alt="workspace-icon">
+    </div>
 </div>

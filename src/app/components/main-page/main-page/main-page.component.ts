@@ -26,6 +26,8 @@ export class MainPageComponent implements OnDestroy {
   channelChatSubscription: Subscription;
   isNewMessageActive: boolean = false;
   newMessageSubscription: Subscription;
+  isSidebarOpen: boolean = true;
+  
 
 
   constructor(private messageService: MessageService, private sharedService: SharedService) {
@@ -84,6 +86,7 @@ export class MainPageComponent implements OnDestroy {
   setChannelChat() {
     this.isChannelChatActive = true;
     this.isDirectChatActive = false;
+    this.isNewMessageActive = false;
     this.isThreadActive = false;
   }
 

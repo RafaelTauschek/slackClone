@@ -70,6 +70,7 @@
             align-items: center;
             justify-content: center;
             padding: 3px;
+            cursor: pointer;
 
             img {
                 width: 24px;
@@ -84,9 +85,12 @@
             justify-content: center;
 
             .dropdown-container {
+                cursor: pointer;
+
                 img {
                     width: 30px;
                     height: 30px;
+
                 }
             }
 
@@ -124,6 +128,7 @@
         align-items: center;
         gap: 10px;
         padding: 4px 20px;
+        cursor: pointer;
 
         img {
             width: 24px;
@@ -142,6 +147,7 @@
     padding: 25px 10px 4px 45px;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
 
     img {
         width: 24px;
@@ -171,6 +177,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
 
             img {
                 width: 30px;
@@ -209,6 +216,7 @@
         align-items: center;
         gap: 15px;
         padding: 4px 20px;
+        cursor: pointer;
 
 
         img {
