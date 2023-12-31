@@ -20,7 +20,6 @@ export class SidebarComponent implements OnDestroy {
   constructor(private dialog: MatDialog, private channelService: ChannelService, private sharedService: SharedService) {
     this.channelsSubscription = this.channelService.channelsSubscription$.subscribe((channels) => {
       this.channels = channels;
-      console.log('Available Channels: ', channels);
     })
   }
 
@@ -28,8 +27,6 @@ export class SidebarComponent implements OnDestroy {
     this.sharedService.closeMessageChat();
     this.sharedService.openChannelChat();
     this.channelService.setSelectedChannel(channelId);
-    console.log('Selected Channel: ', channelId);
-    
   }
 
   ngOnDestroy(): void {

@@ -20,7 +20,6 @@ export class ThreadChatComponent implements OnDestroy {
   constructor(private messageService: MessageService, public userService: UserService, public sharedService: SharedService) {
     this.messageSubscription = this.messageService.singleMessageSubscription$.subscribe((message) => {
       this.message = message;
-      console.log(this.message);
     }) 
   }
 

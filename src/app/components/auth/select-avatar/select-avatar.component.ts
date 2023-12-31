@@ -29,10 +29,8 @@ export class SelectAvatarComponent {
       this.username = name.toString();
       const email = paramMap.get('email') || '';
       this.useremail = email;
-      console.log(email);
       const id = paramMap.get('docId') || '';
       this.userId = id;
-      console.log(id);
     })
   }
 

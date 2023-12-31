@@ -48,9 +48,15 @@ main {
             color: blue;
             transform: scale(1.02);
         }
-        img {
-            fill: blue;
+
+        svg path {
+            stroke: blue;
         }
+
+        svg rect {
+            stroke: blue;
+        }
+
     }
 
     span {
@@ -58,9 +64,9 @@ main {
         font-size: 20px;
     }
 
-    img {
+    svg {
         transform: rotate(90deg);
-        width: 32px;
-        height: 32px;
+        width: 16px;
+        height: 16px;
     }
 }

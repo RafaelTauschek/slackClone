@@ -88,9 +88,9 @@
             height: 12px;
             border-radius: 50%;
             background-color: #ECEEFE;
-    
+
             &:hover {
-                    fill: #797EF3;
+                fill: #797EF3;
             }
         }
     }
@@ -108,9 +108,11 @@ app-chat-area {
     flex-direction: column;
     flex: 1 1 auto;
     overflow-y: auto;
+
     &::-webkit-scrollbar {
-        width: 0; 
+        width: 0;
     }
+
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
 }
@@ -225,6 +227,181 @@ app-chat-area {
 
         span {
             color: #797EF3;
+        }
+    }
+}
+
+.invite-member-menu {
+    background-color: white;
+    border-radius: 30px 0px 30px 30px;
+    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.20);
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 100px;
+    top: 190px;
+    gap: 20px;
+    width: 434px;
+    padding: 40px;
+    z-index: 999;
+
+
+    .invite-header {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            span {
+                font-size: 24px;
+                font-weight: 700;
+            }
+
+            img {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        .header-bottom {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 15px;
+
+
+            span {
+                font-size: 18px;
+                color: #797EF3;
+            }
+
+            img {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+
+
+
+    .invite-input {
+        align-self: stretch;
+        position: relative;
+        border: 1px solid #ADB0D9;
+        border-radius: 30px;
+        align-items: flex-start;
+        padding: 15px 20px;
+
+
+        input {
+            font-size: 18px;
+            color: #686868;
+            border: none;
+            outline: none;
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    button {
+        padding: 12px 25px;
+        display: flex;
+        align-items: center;
+        border-radius: 25px;
+        background-color: #686868;
+        color: white;
+        width: max-content;
+        align-self: flex-end;
+        font-size: 18px;
+        font-weight: 700;
+        border: 1px solid transparent;
+    }
+}
+
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 800;
+}
+
+
+.member-list-menu {
+    border-radius: 30px 0px 30px 30px;
+    background: white;
+    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.20);
+    display: inline-flex;
+    padding: 40px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    position: absolute;
+    right: 100px;
+    top: 190px;
+    z-index: 999;
+    
+
+    .member-list-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        
+
+        span {
+            font-weight: 700;
+            font-size: 24px;
+        }
+
+        img {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+    }
+
+    .single-member {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 4px 20px;
+        gap: 15px;
+
+        img {
+            width: 50px;
+            height: 50px;
+            border-radius: 100px;
+        }
+
+        span {
+            font-size: 18px;
+        }
+    }
+
+    .member-list-add-member {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 15px;
+        padding: 12px 29px;
+        cursor: pointer;
+
+        img {
+            width: 24px;
+            height: 24px;
+
+        }
+
+        span {
+            font-size: 18px;
         }
     }
 }

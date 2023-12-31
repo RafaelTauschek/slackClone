@@ -26,11 +26,9 @@ export class NewMessageComponent implements OnDestroy {
   constructor(private userService: UserService, private channelService: ChannelService) {
     this.usersSubscription = this.userService.usersObservable$.subscribe((users) => {
       this.users = users;
-      console.log('Available Users: ', users);
     });
     this.channelsSubscription = this.channelService.channelsSubscription$.subscribe((channels) => {
       this.channels = channels;
-      console.log('Available Channels: ', channels);
     }); 
   }
 

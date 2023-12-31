@@ -9,13 +9,13 @@
         </div>
 
         <div class="header-right">
-            <div class="channel-member">
+            <div class="channel-member" (click)="openMemberList()">
                 <img src="./assets/img/avatars/avatar.png" alt="member-avatar">
                 <img src="./assets/img/avatars/avatar.png" alt="member-avatar">
                 <img src="./assets/img/avatars/avatar.png" alt="member-avatar">
                 <span class="member-count">3</span>
             </div>
-            <img class="add-member" src="./assets/img/icons/add-person-icon.png" alt="add-member-icon">
+            <img class="add-member" src="./assets/img/icons/add-person-icon.png" alt="add-member-icon" (click)="memberInviteActive = true">
         </div>
     </div>
 
@@ -40,5 +40,45 @@
                 <img src="./assets/img/icons/send-icon.png" alt="send-icon" (click)="sendMessage()">
             </div>
         </div>
+    </div>
+
+    <div class="overlay" *ngIf="memberInviteActive || memberListActive" (click)="closeMenus()"></div>
+
+    <div class="member-list-menu" *ngIf="memberListActive">
+        <div class="member-list-header">
+            <span>Mitglieder</span>
+            <img src="./assets/img/icons/close-icon.png" alt="close-icon" (click)="memberListActive = false">
+        </div>
+        <div>
+            <div class="single-member">
+                <img src="./assets/img/avatars/avatar5.png" alt="user-avatar">
+                <span>Username</span>
+            </div>
+        </div>
+        <div class="member-list-add-member" (click)="openInviteList()">
+            <img src="./assets/img/icons/add-person-icon.png" alt="add-member-icon">
+            <span>Mitglieder hinzufügen</span>
+        </div>
+    </div>
+
+
+
+    <div class="invite-member-menu" *ngIf="memberInviteActive">
+        <div class="invite-header">
+            <div class="header-top">
+                <span>Leute hinzufügen</span>
+                <img src="./assets/img/icons/edit-icon.png" alt="close-icon">
+            </div>
+            <div class="header-bottom">
+                <img src="./assets/img/icons/tag-blue-icon.png" alt="tag-icon">
+                <span>Channelname</span>
+            </div>
+        </div>
+
+        <div class="invite-input">
+            <input type="text" placeholder="Name eingeben">
+        </div>
+        
+        <button>Hinzufügen</button>
     </div>
 </div>

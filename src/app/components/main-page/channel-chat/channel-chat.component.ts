@@ -23,6 +23,8 @@ export class ChannelChatComponent implements OnDestroy {
   channelSubscription: Subscription;
   channel: Channel[] = [];
   message: string = '';
+  memberInviteActive: boolean = false;
+  memberListActive: boolean = false;
 
   constructor(public channelService: ChannelService, private userService: UserService, private messageService: MessageService, private dialog: MatDialog ) {
     this.channelSubscription = this.channelService.channelSubscription$.subscribe((channel) => {
@@ -30,6 +32,20 @@ export class ChannelChatComponent implements OnDestroy {
     });
   }
 
+  openMemberList() {
+    this.memberListActive = true;
+  }
+
+  openInviteList() {
+    this.memberListActive = false;
+    this.memberInviteActive = true;
+  }
+
+
+  closeMenus() {
+    this.memberInviteActive = false;
+    this.memberListActive = false;  
+  }
 
   openDialog() {
     this.dialog.open(EditChannelDialogComponent, {});

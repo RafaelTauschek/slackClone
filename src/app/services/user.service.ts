@@ -39,7 +39,6 @@ export class UserService {
       const docSnap = await this.firebaseService.getDocument('users', userId);
       const user = docSnap.data() as User;
       this.setActiveUser(user);
-      console.log(user);
       this.firebaseService.getUserChannels(user)
   }
 
@@ -53,8 +52,6 @@ export class UserService {
   }
 
   setActiveUser(user: User): void {
-    console.log('User to set', user);
     this.activeUser.next([user]);
-    console.log('Updated user:', this.activeUser);
   }
 }

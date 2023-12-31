@@ -30,8 +30,6 @@ export class ChatAreaComponent implements OnDestroy {
     this.messageSubscription = this.messageService.messageSubscription$.subscribe((message) => {
       this.messages = message;
       this.formatedMessages = this.sharedService.groupMessagesByDate(this.messages);
-      console.log(this.messages);
-      console.log(this.formatedMessages);
     });
   }
 

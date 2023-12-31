@@ -52,7 +52,6 @@ export class ChannelService {
 
   setChannels(channels: Channel[]): void {
     this.channelsSubscription.next(channels);
-    console.log(this.channelSubscription);
   }
 
 }

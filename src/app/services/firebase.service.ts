@@ -63,7 +63,6 @@ export class FirebaseService {
     querySnapshot.forEach((doc) => {
       channels.push(doc.data() as Channel)
     });
-    console.log('Channels in query Snapshot: ', channels);
   }
 
 

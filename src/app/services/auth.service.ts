@@ -39,7 +39,6 @@ export class AuthService {
   }
 
   handeUserLoggedIn(user: any): void {
-    console.log('User is currently logged in with id: ', user.uid);
     this.userService.loadUser(user.uid);
     this.channelService.loadChannels(user.uid);
   }
@@ -47,7 +46,6 @@ export class AuthService {
 
 
   handleUserLoggedOut(): void {
-    console.log('User is currently logged out');
   }
 
   async loginGoogle() {
@@ -129,7 +127,6 @@ export class AuthService {
 
   resetPassword(email: string) {
     sendPasswordResetEmail(this.auth, email).then(() => {
-      console.log('Email was send');
     }).catch((err) => {
       console.log(err);
     })

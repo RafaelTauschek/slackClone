@@ -16,7 +16,6 @@ export class DirectChatChatareaComponent {
   constructor(private userService: UserService) {
     this.userSubscription = this.userService.activeUserObservable$.subscribe((user) => {
       this.user = user;
-      console.log(this.user);
     })
   }
 }
