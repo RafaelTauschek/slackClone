@@ -50,7 +50,7 @@
         cursor: pointer;
     }
 
-    img {
+    .search-icon {
         position: absolute;
         cursor: pointer;
         right: 40px;
@@ -364,5 +364,40 @@
                 background-color: #797EF3;
             }
         }
+    }
+}
+
+.hiddens-search-container {
+    display: flex;
+    background-color: white;
+    padding: 30px;
+    flex-direction: column;
+    position: absolute;
+    width: 550px;
+    z-index: 2;
+}
+
+.searched-user,
+.searched-channel {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.singleUser,
+.singleChannel {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .user-image {
+        height: 40px;
+        width: 40px;
+        border-radius: 100px;
+    }
+
+    span {
+        font-size: 18px;
+        font-weight: 700;
     }
 }

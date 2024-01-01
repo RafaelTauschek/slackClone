@@ -11,23 +11,36 @@
     <div class="channel-name">
         <div class="channel-name-header">
             <span class="name">Channel-Name</span>
-            <span class="edit">Bearbeiten</span>
+            <span *ngIf="!channelNameEditActive" class="edit"  (click)="channelNameEditActive = true">Bearbeiten</span>
+            <span *ngIf="channelNameEditActive" class="save">Speichern</span>
         </div>
         <div class="channel-name-footer">
-            <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
-            <span>Entwicklerteam</span>
+            <div *ngIf="!channelNameEditActive" class="edit-channel-name-container">
+                <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
+                <span>Entwicklerteam</span>
+            </div>
+            <div *ngIf="channelNameEditActive" class="edit-channel-name-input">
+                <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
+                <input type="text" placeholder="Entwicklerteam">
+            </div>
         </div>
     </div>
     <div class="channel-description">
         <div class="channel-description-header">
             <div class="channel-desription-header-title">
                 <span class="name">Beschreibung</span>
-                <span class="edit">Bearbeiten</span>
+                <span *ngIf="!channelDescriptionEditActive" class="edit" (click)="channelDescriptionEditActive = true">Bearbeiten</span>
+                <span *ngIf="channelDescriptionEditActive" class="save">Speichern</span>
             </div>
 
             <div class="channel-description-content">
-                <span>Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team
-                    Meetings abhalten, Dokumente teilen und Entscheidungen treffen.</span>
+                <span *ngIf="!channelDescriptionEditActive">
+                    Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team
+                    Meetings abhalten, Dokumente teilen und Entscheidungen treffen.
+                </span>
+                <div *ngIf="channelDescriptionEditActive" class="edit-channel-description-input">
+                    <input type="text" placeholder="Dein Text hier">
+                </div>
             </div>
         </div>
 

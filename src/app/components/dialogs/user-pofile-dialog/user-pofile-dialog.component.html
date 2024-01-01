@@ -1,0 +1,31 @@
+<div class="userprofile-container">
+    <div class="header">
+        <span>Profil</span>
+        <div class="close-icon" (click)="closeDialog()">
+            <img src="./assets/img/icons/close-icon.png" alt="close-icon">
+        </div>
+    </div>
+
+    <img class="user-avatar" src="./assets/img/avatars/avatar1.png" alt="user-avatar">
+
+    <div class="username">
+        <span>Sofia Mueller</span>
+        <div class="online-status">
+            <img src="./assets/img/online-dot.png" alt="online-dot">
+            <span>Aktiv</span>
+        </div>
+    </div>
+
+    <div class="user-mail">
+        <div class="mail-header">
+            <img src="./assets/img/icons/mail-icon.png" alt="email-icon">
+            <span>E-Mail-Adresse</span>
+        </div>
+        <span>sofia.muel&#64;beispiel.com</span>
+    </div>
+
+    <div class="message-btn">
+        <img src=".c/assets/img/icons/comment-icon.png" alt="comment-icon">
+        <span (click)="openDirectChat()">Nachricht</span>
+    </div>
+</div>

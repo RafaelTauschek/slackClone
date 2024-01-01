@@ -53,7 +53,7 @@ export class SelectAvatarComponent {
       
       await this.firebaseService.updateDocument('users', this.userId, userData);
       setTimeout(() => {
-        this.router.navigate(['/landingPage']);
+        this.router.navigate(['/main']);
       }, 500)
     } else {
       console.log('You did not select an avatar');

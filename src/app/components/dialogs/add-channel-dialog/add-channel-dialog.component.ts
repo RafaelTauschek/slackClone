@@ -55,6 +55,7 @@ export class AddChannelDialogComponent {
         chats: this.activeUser[0].chats,
       }
       await this.firebaseService.updateDocument('users', this.activeUser[0].id, userData);
+      this.channelService.loadChannels(this.activeUser[0].id);
       this.closeDialog();
     }
   }

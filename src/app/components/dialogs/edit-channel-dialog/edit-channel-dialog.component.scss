@@ -12,7 +12,7 @@
     box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.20);
     border-radius: 0px 30px 30px 30px;
     background-color: white;
-    max-width: 792px;
+    width: 792px;
 }
 
 .header {
@@ -73,7 +73,8 @@
             font-weight: 700;
         }
 
-        .edit {
+        .edit,
+        .save {
             justify-content: center;
             align-items: center;
             display: flex;
@@ -88,6 +89,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        width: 100%;
 
         img {
             height: 24px;
@@ -129,7 +131,8 @@
             }
 
 
-            .edit {
+            .edit,
+            .save {
                 font-size: 18px;
                 color: #535AF1;
                 font-weight: 600;
@@ -185,4 +188,27 @@
         background-color: #797EF3;
         border-color: #797EF3;
     }
+}
+
+.edit-channel-name-input,
+.edit-channel-description-input {
+    box-sizing: border-box;
+    padding: 18px 20px;
+    align-items: center;
+    width: 100%;
+    display: flex;
+    border-radius: 40px;
+    border: 1px solid #ADB0D9;
+
+    input {
+        display: flex;
+        border: none;
+        height: 100%;
+        width: 100%;
+        font-size: 18px;
+        color: #686868;
+        outline: none;
+        box-sizing: border-box;
+    }
+    
 }
