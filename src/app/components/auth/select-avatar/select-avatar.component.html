@@ -4,17 +4,22 @@
     </div>
     <span class="headline">Wähle deinen Avatar</span>
     <div class="avatar-selection">
-        <div class="selected-avatar">
+        <div *ngIf="!selectedAvatar; else avatarSelected" class="selected-avatar">
             <img src="./assets/img/avatars/avatar.png">
         </div>
+        <ng-template #avatarSelected>
+            <div class="selected-avatar">
+                <img src="./assets/img/avatars/{{ selectedAvatar }}.png">
+            </div>
+        </ng-template>
         <div class="avatar-selection-content">
             <span class="user-name">Max Mustermann</span>
             <span class="choose">Aus der Liste wählen</span>
             <div class="avatar-options">
                 @for (avatar of avatarId; track $index) {
-                    <div (click)="setSelectedAvatar(avatar)" class="avatar-to-select">
-                        <img src="./assets/img/avatars/{{ avatar }}.png" alt="avatar-img">
-                    </div>
+                <div (click)="setSelectedAvatar(avatar)" class="avatar-to-select">
+                    <img src="./assets/img/avatars/{{ avatar }}.png" alt="avatar-img">
+                </div>
                 }
             </div>
         </div>
@@ -24,5 +29,5 @@
             <div class="upload-avatar-btn" (change)="onFileSelected($event)">Datei hochladen</div>
         </div>
     </div>
-    <button class="next-btn" (click)="submitSelectedAvatar()">Weiter</button>
+    <button [class.disabled]="disabled" class="next-btn" (click)="submitSelectedAvatar()" [disabled]="disabled">Weiter</button>
 </div>

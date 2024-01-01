@@ -28,7 +28,6 @@ export class SharedService {
     this.messageActive.next(false);
   }
 
-
   openDirectChat() {
     this.directChatActive.next(true);
   }

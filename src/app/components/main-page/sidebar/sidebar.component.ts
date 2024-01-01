@@ -25,6 +25,7 @@ export class SidebarComponent implements OnDestroy {
 
   selectChannel(channelId: string) {
     this.sharedService.closeMessageChat();
+    this.sharedService.closeDirectChat();
     this.sharedService.openChannelChat();
     this.channelService.setSelectedChannel(channelId);
   }
@@ -44,5 +45,12 @@ export class SidebarComponent implements OnDestroy {
     this.sharedService.closeDirectChat();
     this.sharedService.closeThread();
     this.sharedService.openMessageChat();
+  }
+
+  openDirectChat() {
+    this.sharedService.closeChannelChat();
+    this.sharedService.closeMessageChat();
+    this.sharedService.closeThread();
+    this.sharedService.openDirectChat();
   }
 }

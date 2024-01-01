@@ -16,14 +16,15 @@ export class SelectAvatarComponent {
   avatarId = ['avatar1', 'avatar2', 'avatar3', 'avatar4', 'avatar5', 'avatar6'];
   uploadedAvatar!: File;
   selectedAvatar!: string;
-
-
+  disabled: boolean = true;
   username: string = '';
   useremail: string = '';
   userId: string = '';
 
   constructor(private avatarService: AvatarService, private userService: UserService,
     private route: ActivatedRoute, private firebaseService: FirebaseService, private router: Router) {
+      console.log(this.selectedAvatar);
+      
     this.route.paramMap.subscribe((paramMap) => {
       const name = paramMap.get('name') || '';
       this.username = name.toString();
@@ -37,6 +38,7 @@ export class SelectAvatarComponent {
   setSelectedAvatar(avatar: string) {
     this.selectedAvatar = avatar;
     console.log('Selected Avatar', avatar);
+    this.disabled = false;
   }
 
   async submitSelectedAvatar() {
@@ -64,6 +66,7 @@ export class SelectAvatarComponent {
 
   onFileSelected(event: any): void {
     this.uploadedAvatar = event.target.files[0];
+    this.disabled = false;
   }
 
   uploadAvatar() {
