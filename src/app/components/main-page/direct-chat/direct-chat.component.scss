@@ -1,81 +1,142 @@
-header {
-    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+.direct-chat-container {
     background-color: white;
-    padding: 10px 16px;
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    justify-content: flex-start;
-
-    >img {
-        height: 50px;
-        width: 50px;
-    }
-
-    >span {
-        font-weight: 700;
-        font-size: 20px;
-    }
-}
-
-
-.textarea {
-    padding: 10px 20px 20px 20px;
-}
-
-
-.write-message {
-    padding: 20px;
+    height: calc(100% - 180px);
+    width: auto;
+    padding: 32px 0px;
     display: flex;
     flex-direction: column;
-    background-color: white;
-    border-radius: 20px;
-    border: 1px solid #ADB0D9;
+    align-items: flex-start;
+    border-radius: 30px;
+}
 
-    >textarea {
-        font-size: 18px;
-        color: #686868;
-        border: none;
-        height: 100%;
-        width: 100%;
-        outline: none;
-        font-family: "Nunito", sans-serif;
+.direct-chat-header {
+    width: calc(100% - 60px);
+    height: 100px;
+    margin-top: -30px;
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    flex: 0 0 auto;
+    gap: 15px;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: -30px;
+        width: calc(100% + 60px);
+        height: 20px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    img {
+        width: 50px;
+        height: 50px;
+        border-radius: 100px;
+    }
+    
+    span {
+        font-size: 24px;
+        font-weight: 700;
     }
 }
 
-.textarea-icons {
+
+
+.chat-area {
+    width: 100%;
+    margin: 16px 0px;
+    flex: 1 1 auto;
+    overflow-y: auto;
+}
+
+app-direct-chat-chatarea {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 0;
+    }
+
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+
+.direct-chat-textarea {
+    align-self: center;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    padding: 10px;
+    height: 140px;
+    width: calc(100% - 60px);
+    margin: 0;
+    position: relative;
+    bottom: 0;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+
+    textarea {
+        border: none;
+        outline: none;
+        resize: none;
+        margin: 0;
+        font-family: 'Nunito';
+        font-size: 18px;
+        color: #686868;
+        width: 100%;
+    }
+}
+
+.thread-icons {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 5px;
 
-
-    .icons-left {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-
-        .icon-container {
-            padding: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            >img {
-                width: 24px;
-                height: 24px;
-            }
-        }
-    }
-
-
-    .icons-right {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        >img {
-            width: 40px;
-            height: 40px;
-        }
+    img {
+        height: 24px;
+        width: 24px;
+        cursor: pointer;
+        padding-right: 2px;
+        padding-left: 2px;
     }
 }
+
+.icons-right {
+    padding-right: 24px;
+
+    img {
+        height: 24px;
+        width: 24px;
+        cursor: pointer;
+    }
+}
+
+.icons-left {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+
+    img {
+        height: 24px;
+        width: 24px;
+        cursor: pointer;
+        padding-right: 2px;
+        padding-left: 2px;
+    }
+}
+
+.seperator {
+    color: #ADB0D9;
+    position: relative;
+    width: 0px;
+    border: 1px solid #ADB0D9;
+    height: 24px;
+}
+

@@ -6,10 +6,12 @@
         </div>
     </div>
 
-    <img class="user-avatar" src="./assets/img/avatars/avatar1.png" alt="user-avatar">
+    <div class="user-avatar">
+        <img src="./assets/img/avatars/avatar1.png" alt="user-avatar">
+    </div>
 
     <div class="username">
-        <span>Sofia Mueller</span>
+        <span>{{ this.userService.getUserName(this.currentUserId) }}</span>
         <div class="online-status">
             <img src="./assets/img/online-dot.png" alt="online-dot">
             <span>Aktiv</span>
@@ -25,7 +27,7 @@
     </div>
 
     <div class="message-btn">
-        <img src=".c/assets/img/icons/comment-icon.png" alt="comment-icon">
+        <img src="./assets/img/icons/comment-icon.png" alt="comment-icon">
         <span (click)="openDirectChat()">Nachricht</span>
     </div>
 </div>

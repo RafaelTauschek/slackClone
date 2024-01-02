@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { collection, addDoc, updateDoc, doc, setDoc, getDoc, query, getDocs, where, arrayUnion } from 'firebase/firestore';
-import { Observable } from 'rxjs';
 import { User } from '../models/user.class';
 import { Channel } from '../models/channel.class';
 
@@ -64,9 +63,4 @@ export class FirebaseService {
       channels.push(doc.data() as Channel)
     });
   }
-
-
-
-
-
 }

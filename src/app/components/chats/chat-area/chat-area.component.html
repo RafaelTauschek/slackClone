@@ -39,7 +39,7 @@
                         </div>
                         <div class="message-content-container">
                             <div class="message-header">
-                                <span class="username">{{ message.senderId }}</span>
+                                <span class="username">{{ this.userService.getUserName(message.senderId)}}</span>
                                 <span class="time">{{ message.timestamp | date: 'HH:mm' }} Uhr</span>
                             </div>
                             <div class="message-content">

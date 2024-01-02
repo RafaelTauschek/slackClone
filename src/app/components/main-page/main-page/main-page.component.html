@@ -3,11 +3,11 @@
     <main>
         <app-sidebar *ngIf="isSidebarOpen"></app-sidebar>
         <div class="chats">
-            <app-channel-chat *ngIf="isChannelChatActive"></app-channel-chat>
-            <app-direct-chat *ngIf="isDirectChatActive"></app-direct-chat>
-            <app-new-message *ngIf="isNewMessageActive"></app-new-message>
+            <app-channel-chat *ngIf="this.sharedService.channelChatActive"></app-channel-chat>
+            <app-direct-chat *ngIf="this.sharedService.directChatActive"></app-direct-chat>
+            <app-new-message *ngIf="this.sharedService.messageActive"></app-new-message>
         </div>
-        <app-thread *ngIf="isThreadActive"></app-thread>
+        <app-thread *ngIf="this.sharedService.threadActive"></app-thread>
     </main>
 
     <div class="workspace-menu" (click)="isSidebarOpen = !isSidebarOpen">

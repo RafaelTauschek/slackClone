@@ -7,49 +7,18 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class SharedService {
-  threadActive = new Subject<boolean>();
-  threadActive$ = this.threadActive.asObservable();
-  directChatActive = new Subject<boolean>();
-  directChatActive$ = this.directChatActive.asObservable();
-  channelChatActive = new Subject<boolean>();
-  channelChatActive$ = this.channelChatActive.asObservable();
-  messageActive = new Subject<boolean>();
-  messageActive$ = this.messageActive.asObservable();
+  threadActive: Boolean = false;
+  directChatActive: Boolean = false;
+  channelChatActive: Boolean = true;
+  messageActive: Boolean = false;
+  currentChatPartnerId = new Subject<string>();
+  currentChatPartnerId$ = this.currentChatPartnerId.asObservable();
 
   constructor(private userService: UserService) {}
 
 
-
-  openMessageChat() {
-    this.messageActive.next(true);
-  }
-
-  closeMessageChat() {
-    this.messageActive.next(false);
-  }
-
-  openDirectChat() {
-    this.directChatActive.next(true);
-  }
-
-  closeDirectChat() {
-    this.directChatActive.next(false);
-  }
-
-  openThread() {
-    this.threadActive.next(true);
-  }
-
-  closeThread() {
-    this.threadActive.next(false);
-  }
-
-  openChannelChat() {
-    this.channelChatActive.next(true);
-  }
-
-  closeChannelChat() {
-    this.channelChatActive.next(false);
+  setCurrentChatPartnerId(id: string) {
+    this.currentChatPartnerId.next(id);
   }
 
 

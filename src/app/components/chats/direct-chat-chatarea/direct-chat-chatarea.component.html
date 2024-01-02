@@ -1,35 +1,60 @@
-<div class="direct-chat-chatarea-container">
+<div class="direct-chat-area-container" [class.no-message-container]="!messagesAvailable">
+    <div class="chat-area-wrapper" *ngIf="messagesAvailable; else noMessages">
+        <div class="date-container">
+            <div class="line"></div>
+            <div class="date">
+                <div class="date-border"></div>
+                <span>Date</span>
+            </div>
+            <div class="line"></div>
+        </div>
 
-    <div class="direct-chat-chatarea-header">
-        <div class="header">
-            <img src="./assets/img/avatars/avatar1.png" alt="chatpartner-avatar">
-            <span>Elisa Roth</span>
+        <div class="message-wrapper">
+            <div class="message-container">
+                <ng-container>
+                    <div class="message-container-right">
+                        <div class="message-content-container">
+                            <div class="message-header">
+                                <span class="time">Time</span>
+                                <span class="username">Sender</span>
+                            </div>
+                            <div class="message-content">
+                                <span class="text">Message</span>
+                            </div>
+                        </div>
+                        <div class="profile-img-container">
+                            <img src="./assets/img/avatars/avatar6.png" alt="avatar">
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-template #leftContainer>
+                    <div class="message-container-left">
+                        <div class="profile-img-container">
+                            <img src="./assets/img/avatars/avatar6.png" alt="avatar">
+                        </div>
+                        <div class="message-content-container">
+                            <div class="message-header">
+                                <span class="username">Username</span>
+                                <span class="time">Time</span>
+                            </div>
+                            <div class="message-content">
+                                <span class="text">Message Content</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
         </div>
     </div>
 
 
-    <div class="chat-area">
-        <app-direct-chat-chatarea></app-direct-chat-chatarea>
-    </div>
-
-
-    <div class="direct-chat-chatarea-textarea">
-        <textarea
-            placeholder="Nachricht an Elisa Roth" cols="30" rows="3"></textarea>
-        <ng-template #noChannelTextarea>
-            <textarea placeholder="Nachricht an # Allgemein" cols="30" rows="4"></textarea>
-        </ng-template>
-        <div class="thread-icons">
-            <div class="icons-left">
-                <img src="./assets/img/icons/add-icon-gray.png" alt="add-icon">
-                <div class="seperator"></div>
-                <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
-                <img src="./assets/img/icons/at-icon.png" alt="at-icon">
+    <ng-template #noMessages>
+        <div class="no-messages">
+            <div class="no-message-header">
+                <img src="./assets/img/avatars/avatar4.png" alt="user-avatar">
+                <span>Sofia Mueller</span>
             </div>
-            <div class="icons-right">
-                <img src="./assets/img/icons/send-icon.png" alt="send-icon">
-            </div>
+            <span>Diese Unterhaltung findet nur zwischen <a>&#64;Sofia Mueller</a> und dir statt</span>
         </div>
-    </div>
-
+    </ng-template>
 </div>

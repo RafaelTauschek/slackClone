@@ -4,6 +4,7 @@ import { UserService } from '../../../services/user.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FirebaseService } from '../../../services/firebase.service';
+import { StorageService } from '../../../services/storage.service';
 
 @Component({
   selector: 'app-select-avatar',
@@ -22,7 +23,7 @@ export class SelectAvatarComponent {
   userId: string = '';
 
   constructor(private avatarService: AvatarService, private userService: UserService,
-    private route: ActivatedRoute, private firebaseService: FirebaseService, private router: Router) {
+    private route: ActivatedRoute, private firebaseService: FirebaseService, private router: Router, private storageService: StorageService) {
       console.log(this.selectedAvatar);
       
     this.route.paramMap.subscribe((paramMap) => {
@@ -66,6 +67,7 @@ export class SelectAvatarComponent {
 
   onFileSelected(event: any): void {
     this.uploadedAvatar = event.target.files[0];
+    this.storageService.uploadFile(this.uploadedAvatar)
     this.disabled = false;
   }
 

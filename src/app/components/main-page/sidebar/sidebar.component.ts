@@ -24,9 +24,9 @@ export class SidebarComponent implements OnDestroy {
   }
 
   selectChannel(channelId: string) {
-    this.sharedService.closeMessageChat();
-    this.sharedService.closeDirectChat();
-    this.sharedService.openChannelChat();
+    this.sharedService.messageActive = false;
+    this.sharedService.directChatActive = false;
+    this.sharedService.channelChatActive = true;
     this.channelService.setSelectedChannel(channelId);
   }
 
@@ -41,16 +41,16 @@ export class SidebarComponent implements OnDestroy {
   }
 
   openNewMessage() {
-    this.sharedService.closeChannelChat();
-    this.sharedService.closeDirectChat();
-    this.sharedService.closeThread();
-    this.sharedService.openMessageChat();
+    this.sharedService.channelChatActive = false;
+    this.sharedService.directChatActive = false;
+    this.sharedService.threadActive = false;
+    this.sharedService.messageActive = true;
   }
 
   openDirectChat() {
-    this.sharedService.closeChannelChat();
-    this.sharedService.closeMessageChat();
-    this.sharedService.closeThread();
-    this.sharedService.openDirectChat();
+    this.sharedService.channelChatActive = false;
+    this.sharedService.messageActive = false;
+    this.sharedService.threadActive = false;
+    this.sharedService.directChatActive = true;
   }
 }

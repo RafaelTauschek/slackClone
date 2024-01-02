@@ -30,6 +30,6 @@ export class ThreadComponent implements OnDestroy {
   }
 
   closeThread() {
-    this.sharedService.closeThread();
+    this.sharedService.threadActive = false;
   }
 }

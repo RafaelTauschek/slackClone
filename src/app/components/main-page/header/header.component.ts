@@ -9,6 +9,7 @@ import { ChannelService } from '../../../services/channel.service';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UserPofileDialogComponent } from '../../dialogs/user-pofile-dialog/user-pofile-dialog.component';
+import { SharedService } from '../../../services/shared.service';
 
 @Component({
   selector: 'app-header',
@@ -33,7 +34,8 @@ export class HeaderComponent implements OnDestroy {
   searchTerm: string = '';
 
 
-  constructor(private userService: UserService, private authService: AuthService, private channelService: ChannelService, private dialog: MatDialog) {
+  constructor(private userService: UserService, private authService: AuthService, 
+    private channelService: ChannelService, private dialog: MatDialog, private sharedService: SharedService) {
     this.currentUserSubscription = this.userService.activeUserObservable$.subscribe((currentUser) => {
       this.currentUser = currentUser;
     });
@@ -85,7 +87,8 @@ export class HeaderComponent implements OnDestroy {
 
 
   openUser(userId: string) {
-    console.log('chat was opend with id: ', userId);
+    this.sharedService.setCurrentChatPartnerId(userId);
+    console.log('user profile was opend: ', userId);
   }
 
   openChannel(channelId: string) {
