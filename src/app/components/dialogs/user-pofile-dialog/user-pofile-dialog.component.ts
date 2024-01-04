@@ -15,9 +15,10 @@ export class UserPofileDialogComponent implements OnDestroy {
   currentUserId: string = '';
   currentUserIdSubscription: Subscription;
 
-  constructor(public dialogRef: MatDialogRef<UserPofileDialogComponent>, private sharedService: SharedService, public userService: UserService) { 
+  constructor(public dialogRef: MatDialogRef<UserPofileDialogComponent>, public sharedService: SharedService, public userService: UserService) { 
     this.currentUserIdSubscription = this.sharedService.currentChatPartnerId$.subscribe((currentUserId) => {
       this.currentUserId = currentUserId;
+      console.log(this.currentUserId);
     });
   }
 
@@ -31,6 +32,11 @@ export class UserPofileDialogComponent implements OnDestroy {
   }
 
   openDirectChat() {
+    this.sharedService.channelChatActive = false;
+    this.sharedService.messageActive = false; 
+    this.sharedService.threadActive = false;
     this.sharedService.directChatActive = true;
+    this.closeDialog();
   }
+
 }

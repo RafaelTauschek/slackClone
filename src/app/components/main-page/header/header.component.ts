@@ -87,13 +87,21 @@ export class HeaderComponent implements OnDestroy {
 
 
   openUser(userId: string) {
-    this.sharedService.setCurrentChatPartnerId(userId);
-    console.log('user profile was opend: ', userId);
+    this.sharedService.currentPartner = userId;
+    this.openDialog();
+    this.searchTerm = '';
+    this.searchActive = false;
   }
 
   openChannel(channelId: string) {
+    this.channelService.setSelectedChannel(channelId);
     console.log('channel was opend with id: ', channelId);
-    
+    this.sharedService.directChatActive = false;
+    this.sharedService.threadActive = false;
+    this.sharedService.messageActive = false;
+    this.sharedService.channelChatActive = true;
+    this.searchTerm = '';
+    this.searchActive = false;
   }
 
   onSearch() {

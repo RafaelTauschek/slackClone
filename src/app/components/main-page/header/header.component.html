@@ -7,15 +7,15 @@
         <img class="search-icon" src="./assets/img/icons/search-icon.png" alt="search-icon">
         <div class="hiddens-search-container" *ngIf="searchActive">
             <div *ngIf="searchChannel" class="searched-channel">
-                <div class="single-channel" *ngFor="let channel of searchedChannel">
-                    <span (click)="openChannel(channel.id)"># {{ channel.name}}</span>
+                <div class="single-channel" *ngFor="let channel of searchedChannel" (click)="openChannel(channel.id)">
+                    <span># {{ channel.name}}</span>
                 </div>
             </div>
 
             <div *ngIf="searchUser" class="searched-user">
-                <div class="singleUser" *ngFor="let user of searchedUser" (click)="openDialog()">
+                <div class="singleUser" *ngFor="let user of searchedUser" (click)="openUser(user.id)">
                     <img class="user-image" src="./assets/img/avatars/{{ user.profilepicture }}.png" alt="">
-                    <span (click)="openUser(user.id)">&#64; {{ user.name }}</span>
+                    <span>&#64; {{ user.name }}</span>
                 </div>
             </div>
 

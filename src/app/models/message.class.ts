@@ -6,7 +6,7 @@ export class Message {
     timestamp: number;
     content: string;
     emojis: Emoji[];
-    answers: [];
+    answers: any[];
 
 
     constructor(obj: any) {
@@ -14,7 +14,7 @@ export class Message {
         this.recieverId = obj ? obj.recieverId : '';
         this.timestamp = obj ? obj.timestamp : 0;
         this.content = obj ? obj.content : '';
-        this.emojis = obj ? obj.emojis : {};
+        this.emojis = obj ? obj.emojis : [];
         this.answers = obj ? obj.answers : [];
     }
 
@@ -24,7 +24,7 @@ export class Message {
             recieverId: this.recieverId,
             timestamp: this.timestamp,
             content: this.content,
-            emoji: this.emojis,
+            emojis: this.emojis,
             answers: this.answers,
         }
     }

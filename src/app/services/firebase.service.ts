@@ -53,6 +53,13 @@ export class FirebaseService {
     });
   }
 
+  async updateChats(colId: string, docId: string, item: {}) {
+    updateDoc(this.getDocumentRef(colId, docId), {
+      chats: arrayUnion(item)
+    });
+  }
+
+
   async getUserChannels(user: User) {
     const channelsCollectionRef = collection(this.firestore, 'channels');
     const channelIds = user.channels;

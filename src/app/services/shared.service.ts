@@ -11,6 +11,7 @@ export class SharedService {
   directChatActive: Boolean = false;
   channelChatActive: Boolean = true;
   messageActive: Boolean = false;
+  currentPartner: string = '';
   currentChatPartnerId = new Subject<string>();
   currentChatPartnerId$ = this.currentChatPartnerId.asObservable();
 

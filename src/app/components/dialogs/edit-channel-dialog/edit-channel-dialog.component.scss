@@ -108,6 +108,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    align-self: stretch;
     gap: 30px;
     border-radius: 20px;
     border: 1px solid #ADB0D9;
@@ -117,11 +118,13 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 20px;
+        width: 100%;
 
 
         .channel-desription-header-title {
             display: flex;
             justify-content: space-between;
+            align-self: stretch;
             align-items: center;
             width: 100%;
 
@@ -142,6 +145,7 @@
 
         .channel-description-content {
             font-size: 18px;
+            width: 100%;
         }
     }
 
@@ -188,6 +192,11 @@
         background-color: #797EF3;
         border-color: #797EF3;
     }
+}
+
+.edit-channel-name-container {
+    display: flex;
+    align-items: center;
 }
 
 .edit-channel-name-input,

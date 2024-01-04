@@ -5,7 +5,7 @@
     </div>
     <form [formGroup]="loginForm" (ngSubmit)="login()">
         <div class="input-container">
-            <img class="email-icon" src="src/assets/img/icons/mail-icon.png" alt="email-icon">
+            <img class="email-icon" src="./assets/img/icons/mail-icon.png" alt="email-icon">
             <input type="email" formControlName="email" placeholder="E-Mail-Adresse">
             <div class="error" *ngIf="isSubmitted && loginForm.get('email')?.hasError('required')">Dieses Feld ist
                 erforderlich</div>
@@ -13,7 +13,7 @@
                 leider ungültig.</div>
         </div>
         <div class="input-container">
-            <img class="lock-icon" src="src/assets/img/icons/lock-icon.png" alt="lock-icon">
+            <img class="lock-icon" src="./assets/img/icons/lock-icon.png" alt="lock-icon">
             <input type="password" formControlName="password" placeholder="Password">
             <div class="error" *ngIf="isSubmitted && loginForm.get('password')?.hasError('required')">Dieses Feld ist
                 erforderlich</div>

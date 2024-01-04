@@ -6,6 +6,8 @@ import { ChannelService } from '../../../services/channel.service';
 import { Subscription } from 'rxjs';
 import { Channel } from '../../../models/channel.class';
 import { SharedService } from '../../../services/shared.service';
+import { Chat } from '../../../models/chat.class';
+import { MessageService } from '../../../services/message.service';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -15,19 +17,26 @@ import { SharedService } from '../../../services/shared.service';
 })
 export class SidebarComponent implements OnDestroy {
   channelsSubscription: Subscription;
+  chatSubscription: Subscription; 
   channels: Channel[] = [];
+  chats: Chat[] = [];
 
-  constructor(private dialog: MatDialog, private channelService: ChannelService, private sharedService: SharedService) {
+  constructor(private dialog: MatDialog, private channelService: ChannelService, private sharedService: SharedService, private messageService: MessageService) {
     this.channelsSubscription = this.channelService.channelsSubscription$.subscribe((channels) => {
       this.channels = channels;
     })
+    this.chatSubscription = this.messageService.chatSubscription$.subscribe((chats) => { 
+      this.chats = chats;
+    });
+
   }
 
   selectChannel(channelId: string) {
+    this.channelService.setSelectedChannel(channelId);
     this.sharedService.messageActive = false;
     this.sharedService.directChatActive = false;
     this.sharedService.channelChatActive = true;
-    this.channelService.setSelectedChannel(channelId);
+
   }
 
   ngOnDestroy(): void {

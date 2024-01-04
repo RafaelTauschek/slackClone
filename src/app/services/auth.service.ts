@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment.development';
 import { FirebaseService } from './firebase.service';
 import { User } from '../models/user.class';
 import { ChannelService } from './channel.service';
+import { MessageService } from './message.service';
 
 
 @Injectable({
@@ -21,7 +22,7 @@ export class AuthService {
 
 
   constructor(
-    private userService: UserService, private router: Router, private firebaseService: FirebaseService, private channelService: ChannelService) {
+    private userService: UserService, private router: Router, private firebaseService: FirebaseService, private channelService: ChannelService, private messageService: MessageService) {
       this.setupAuthStateListener();
   }
 
@@ -41,6 +42,7 @@ export class AuthService {
   handeUserLoggedIn(user: any): void {
     this.userService.loadUser(user.uid);
     this.channelService.loadChannels(user.uid);
+    this.messageService.loadChats(user.uid);
   }
 
 

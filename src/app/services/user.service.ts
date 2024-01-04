@@ -35,6 +35,27 @@ export class UserService {
     }
   }
 
+
+  getUserMail(userId: string) {
+    const user = this.availableUsers.find(user => user.id === userId);
+    if (user) {
+      return user.email;  
+    } else {
+      return 'deleted User';
+    } 
+  }
+
+  getUserProfilePicture(userId: string) {
+    const user = this.availableUsers.find(user => user.id === userId);
+    if (user) {
+      return user.profilepicture;  
+    } else {
+      return 'deleted User';
+    }   
+  }
+
+
+
   async loadUser(userId: string) {
       const docSnap = await this.firebaseService.getDocument('users', userId);
       const user = docSnap.data() as User;
