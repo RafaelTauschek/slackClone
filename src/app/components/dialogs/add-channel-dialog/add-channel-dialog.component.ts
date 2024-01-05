@@ -33,12 +33,14 @@ export class AddChannelDialogComponent {
     if (this.channelName == '') {
       console.log('Name is empty');
     } else {
+      const date = new Date().getTime();
       const channelData = {
         name: this.channelName,
         description: this.channelDescription,
         creator: this.activeUser[0].id,
         id: '',
         messages: [],
+        creationDate: date,
       }
 
       const docRef = await this.firebaseService.addCollection('channels', channelData);

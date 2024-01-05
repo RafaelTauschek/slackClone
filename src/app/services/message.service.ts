@@ -21,7 +21,8 @@ export class MessageService implements OnDestroy {
   messageSubscription$ = this.messageSubscription.asObservable();
   singleMessageSubscription = new BehaviorSubject<Message[]>([]);
   singleMessageSubscription$ = this.singleMessageSubscription.asObservable();
-  chats: Chat[] = [];
+  chatsSubscription = new BehaviorSubject<Chat[]>([]);
+  chatsSubscription$ = this.chatsSubscription.asObservable();
   chatSubscription = new BehaviorSubject<Chat[]>([]);
   chatSubscription$ = this.chatSubscription.asObservable();
 
@@ -41,19 +42,21 @@ export class MessageService implements OnDestroy {
 
 
   async loadChats(userId: string) {
-    this.chats = [];
+    const chats = [];
     const docSnap = await this.firebaseService.getDocument('users', userId);
     if (docSnap.exists()) {
       const user = docSnap.data() as User;
       for(const chat of user.chats) {
         const docSnap = await this.firebaseService.getDocument('chats', chat);
-        this.chats.push(docSnap.data() as Chat);
+        chats.push(docSnap.data() as Chat);
       }
-      this.setChats(this.chats);
+      this.setChats(chats);
     } else {
       console.log('No Chats available for the user');
     }
   }
+
+
 
 
   checkIfChatExists(activeUserId: string, chatpartnerId: string) {
@@ -87,7 +90,11 @@ export class MessageService implements OnDestroy {
   }
 
   setChats(chats: Chat[]) {
-    this.chatSubscription.next(chats);
+    this.chatsSubscription.next(chats);
+  }
+
+  setCurrentChat(chat: Chat[]) {
+    this.chatSubscription.next(chat);
   }
 
   setCurrentMessage(message: Message[]) {

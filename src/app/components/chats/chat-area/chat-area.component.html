@@ -58,6 +58,9 @@
         </div>
     </div>
     <ng-template #noMessages>
-        <span>Keine Nachrichten vorhanden!</span>
+        <div>
+            <span># {{ channel[0].name }}</span>
+            <span>Dieser Channel wurde am Datumeinfuegen von {{ userService.getUserName(channel[0].creator) }} erstellt. Das ist der Anfang des Channels # {{ channel[0].name }}.</span>
+        </div>
     </ng-template>
 </div>

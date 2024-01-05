@@ -8,6 +8,8 @@ import { Channel } from '../../../models/channel.class';
 import { SharedService } from '../../../services/shared.service';
 import { Chat } from '../../../models/chat.class';
 import { MessageService } from '../../../services/message.service';
+import { UserService } from '../../../services/user.service';
+import { User } from '../../../models/user.class';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -18,17 +20,21 @@ import { MessageService } from '../../../services/message.service';
 export class SidebarComponent implements OnDestroy {
   channelsSubscription: Subscription;
   chatSubscription: Subscription; 
+  userSubscription: Subscription;
   channels: Channel[] = [];
   chats: Chat[] = [];
+  user: User[] = [];
 
-  constructor(private dialog: MatDialog, private channelService: ChannelService, private sharedService: SharedService, private messageService: MessageService) {
+  constructor(private dialog: MatDialog, private channelService: ChannelService, public sharedService: SharedService, private messageService: MessageService, public userService: UserService) {
     this.channelsSubscription = this.channelService.channelsSubscription$.subscribe((channels) => {
       this.channels = channels;
     })
-    this.chatSubscription = this.messageService.chatSubscription$.subscribe((chats) => { 
+    this.chatSubscription = this.messageService.chatsSubscription$.subscribe((chats) => { 
       this.chats = chats;
     });
-
+    this.userSubscription = this.userService.usersObservable$.subscribe((user) => {
+      this.user = user;
+    }); 
   }
 
   selectChannel(channelId: string) {
@@ -56,7 +62,9 @@ export class SidebarComponent implements OnDestroy {
     this.sharedService.messageActive = true;
   }
 
-  openDirectChat() {
+  openDirectChat(chatpartnerId: string, chat: Chat) {
+    this.sharedService.setCurrentChatPartnerId(chatpartnerId);
+    this.messageService.setCurrentChat([chat]);
     this.sharedService.channelChatActive = false;
     this.sharedService.messageActive = false;
     this.sharedService.threadActive = false;

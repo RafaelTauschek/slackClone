@@ -9,17 +9,17 @@
             <div class="line"></div>
         </div>
 
-        <div class="message-wrapper">
+        <div class="message-wrapper" *ngFor="let message of chat[0].messages">
             <div class="message-container">
                 <ng-container>
                     <div class="message-container-right">
                         <div class="message-content-container">
                             <div class="message-header">
-                                <span class="time">Time</span>
-                                <span class="username">Sender</span>
+                                <span class="time">{{ message.timestamp }}</span>
+                                <span class="username">{{ userService.getUserName(message.senderId) }}</span>
                             </div>
                             <div class="message-content">
-                                <span class="text">Message</span>
+                                <span class="text">{{ message.content }}</span>
                             </div>
                         </div>
                         <div class="profile-img-container">

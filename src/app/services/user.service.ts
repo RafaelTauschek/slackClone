@@ -4,6 +4,7 @@ import { FirebaseService } from './firebase.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Channel } from '../models/channel.class';
 import { ChannelService } from './channel.service';
+import { Chat } from '../models/chat.class';
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +55,10 @@ export class UserService {
     }   
   }
 
+  getChatPartnerId(chat: Chat, userId: string) {
+    const chatPartnerId = chat.users.find(user => user !== userId);
+    return chatPartnerId;
+  }
 
 
   async loadUser(userId: string) {
