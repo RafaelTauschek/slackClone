@@ -20,6 +20,7 @@ export class SharedService {
 
   setCurrentChatPartnerId(id: string) {
     this.currentChatPartnerId.next(id);
+    this.currentPartner = id;
   }
 
 

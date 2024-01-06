@@ -2,7 +2,7 @@
     <div class="header">
         <div class="header-left">
             <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
-            <span>Entwicklerteam</span>
+            <span>{{ channel[0].name }}</span>
         </div>
         <div class="header-right" (click)="closeDialog()">
             <img src="./assets/img/icons/close-icon.png" alt="close-icon">
@@ -12,16 +12,16 @@
         <div class="channel-name-header">
             <span class="name">Channel-Name</span>
             <span *ngIf="!channelNameEditActive" class="edit"  (click)="channelNameEditActive = true">Bearbeiten</span>
-            <span *ngIf="channelNameEditActive" class="save">Speichern</span>
+            <span *ngIf="channelNameEditActive" (click)="editChannelName()" class="save">Speichern</span>
         </div>
         <div class="channel-name-footer">
             <div *ngIf="!channelNameEditActive" class="edit-channel-name-container">
                 <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
-                <span>Entwicklerteam</span>
+                <span>{{ channel[0].name }}</span>
             </div>
             <div *ngIf="channelNameEditActive" class="edit-channel-name-input">
                 <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
-                <input type="text" placeholder="Entwicklerteam">
+                <input [(ngModel)]="name" type="text" placeholder="Entwicklerteam">
             </div>
         </div>
     </div>
@@ -30,16 +30,13 @@
             <div class="channel-desription-header-title">
                 <span class="name">Beschreibung</span>
                 <span *ngIf="!channelDescriptionEditActive" class="edit" (click)="channelDescriptionEditActive = true">Bearbeiten</span>
-                <span *ngIf="channelDescriptionEditActive" class="save">Speichern</span>
+                <span *ngIf="channelDescriptionEditActive" class="save" (click)="editChannelDescription()">Speichern</span>
             </div>
 
             <div class="channel-description-content">
-                <span *ngIf="!channelDescriptionEditActive">
-                    Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team
-                    Meetings abhalten, Dokumente teilen und Entscheidungen treffen.
-                </span>
+                <span *ngIf="!channelDescriptionEditActive">{{ channel[0].description }}</span>
                 <div *ngIf="channelDescriptionEditActive" class="edit-channel-description-input">
-                    <input type="text" placeholder="Dein Text hier">
+                    <input [(ngModel)]="description" type="text" placeholder="Dein Text hier">
                 </div>
             </div>
         </div>
@@ -48,8 +45,8 @@
 
         <div class="creator">
             <span class="created-from">Erstellt von</span>
-            <span class="creator-name">Noah Braun</span>
+            <span class="creator-name">{{ userService.getUserName(channel[0].creator) }}</span>
         </div>
     </div>
-    <div class="leave-channel">Channel verlassen</div>
+    <div class="leave-channel" (click)="leaveChannel()">Channel verlassen</div>
 </div>

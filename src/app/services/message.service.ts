@@ -57,14 +57,19 @@ export class MessageService implements OnDestroy {
   }
 
 
-
-
   checkIfChatExists(activeUserId: string, chatpartnerId: string) {
-    const users = this.userService.availableUsers;
-    const user = users.find(user => user.id === activeUserId);
-    const chat = user?.chats.find(chat => chat === chatpartnerId);
-    console.log(user, chat);
+    console.log('Checking if chat exists')
+    console.log('Active User Id: ' + activeUserId);
+    console.log('Chatpartner Id: ' + chatpartnerId);
+    const chat = this.chatsSubscription.value.find((chat) => chat.users.includes(activeUserId) && chat.users.includes(chatpartnerId));
+    console.log('Chat: ' + chat);
+    if (chat) {
+      return chat;
+    } else {
+      return false;
+    }
   }
+
 
   async generateNewChat(activeUserId: string, chatPartnerId: string, newMessage: any) {
     const date = new Date().getTime();
@@ -89,6 +94,14 @@ export class MessageService implements OnDestroy {
     await this.firebaseService.updateChats('users', chatPartnerId, chatId);
   }
 
+
+  async updateChatMessages(chatId: string) {
+    const docSnap = await this.firebaseService.getDocument('chats', chatId);
+    const chat = docSnap.data() as Chat;
+    this.setCurrentChat([chat]);
+  }
+  
+
   setChats(chats: Chat[]) {
     this.chatsSubscription.next(chats);
   }
@@ -112,6 +125,21 @@ export class MessageService implements OnDestroy {
     this.channelSubscription.unsubscribe();
   }
 
+
+  async addMessageToChat(chatId: string, newMessage: any, recieverId: string) {
+    const date = new Date().getTime();
+    const message = new Message({
+      senderId: this.user[0].id,
+      recieverId: recieverId,
+      timestamp: date,
+      content: newMessage,
+      emojis: [],
+      answers: [],
+    });
+    await this.firebaseService.updateMessages('chats', chatId, message.toJSON());
+    await this.updateChatMessages(chatId);
+  }
+
   sendChannelMessage(newMessage: string) {
     try {
       const date = new Date().getTime();
@@ -124,6 +152,7 @@ export class MessageService implements OnDestroy {
         answers: [],
       });
       this.firebaseService.updateMessages('channels', this.channelService.currentChannelId, message.toJSON())
+      this.channelService.updateChannel(this.channelService.currentChannelId);
     } catch (err) {
       console.log(err);
     }

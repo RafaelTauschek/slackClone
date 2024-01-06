@@ -7,6 +7,8 @@ import { UserService } from '../../../services/user.service';
 import { MessageService } from '../../../services/message.service';
 import { FirebaseService } from '../../../services/firebase.service';
 import { SharedService } from '../../../services/shared.service';
+import { Subscription } from 'rxjs';
+import { Chat } from '../../../models/chat.class';
 
 
 @Component({
@@ -18,36 +20,31 @@ import { SharedService } from '../../../services/shared.service';
 })
 export class DirectChatComponent {
   message: string = '';
+  chatSubscription: Subscription;
+  chat: Chat[] = [];
 
   constructor(private userService: UserService, private messageService: MessageService, private firebaseService: FirebaseService, private sharedService: SharedService) {
-
+    this.chatSubscription = this.messageService.chatSubscription$.subscribe((chat) => {
+      this.chat = chat;
+    });
   }
-
-
-  /**
-   * Tasks:
-   * 
-   * 1. Add a method to send a message to the current chat or create a new chat if there is no current chat
-   * 2. Check if a Chat already exists between the two users
-   * 3. Add a method to get the current chat id and push it into both chatpartner's chats array
-   * 
-   */
-
-
-
 
 
   async addMessageToChat() {
-    const currentUserId = this.userService.activeUser.value[0].id;
-    const chatPartnerId = this.sharedService.currentPartner;
-    const chatExits = this.messageService.checkIfChatExists(currentUserId, chatPartnerId);
-    if (chatExits == undefined) {
-      this.messageService.generateNewChat(currentUserId, chatPartnerId, this.message);
-    } else { 
-      console.log('Chat exists');
+    if (this.message !== '') {
+      const currentUserId = this.userService.activeUser.value[0].id;
+      const chatPartnerId = this.sharedService.currentPartner;
+      const chatExits = this.messageService.checkIfChatExists(currentUserId, chatPartnerId);
+      console.log(chatExits);
+      if (!chatExits) {
+        console.log('Chat does not exist, generating new chat');
+        await this.messageService.generateNewChat(currentUserId, chatPartnerId, this.message);
+        this.message = '';
+      } else {
+        const chatId = chatExits.chatId;
+        await this.messageService.addMessageToChat(chatId, this.message, chatPartnerId);
+        this.message = '';
+      }
     }
-    
   }
-
-
 }

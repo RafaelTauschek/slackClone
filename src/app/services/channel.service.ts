@@ -36,8 +36,12 @@ export class ChannelService {
     }
   }
 
-  async updateChannel(channel: Channel) {
-    
+  async updateChannel(channelId: string) {
+    const docSnap = await this.firebaseService.getDocument('channels', channelId);
+    const channel = docSnap.data() as Channel;
+    this.channels.push(channel);
+    this.setChannels(this.channels);
+    this.setChannel([channel]);
   }
 
   setSelectedChannel(channelId: string) {
@@ -53,5 +57,37 @@ export class ChannelService {
   setChannels(channels: Channel[]): void {
     this.channelsSubscription.next(channels);
   }
+
+  
+
+  async editChannelName(newChannelName: string) {
+    const channel = this.channelSubscription.value[0];
+    const newChannel = new Channel({
+      name: newChannelName,
+      description: channel.description,
+      creator: channel.creator,
+      id: channel.id,
+      messages: channel.messages,
+      creationDate: channel.creationDate,
+    });
+    await this.firebaseService.updateDocument('channels', channel.id, newChannel.toJSON());
+    await this.updateChannel(channel.id);
+  }
+
+  async editChannelDescription(newChannelDescription: string) {
+    const channel = this.channelSubscription.value[0];
+    const newChannel = new Channel({
+      name: channel.name,
+      description: newChannelDescription,
+      creator: channel.creator,
+      id: channel.id,
+      messages: channel.messages,
+      creationDate: channel.creationDate,
+    });
+    await this.firebaseService.updateDocument('channels', channel.id, newChannel.toJSON());
+    await this.updateChannel(channel.id);
+  }
+
+
 
 }

@@ -16,7 +16,7 @@ export class DirectChatChatareaComponent {
   user: any;
   userSubscription: Subscription;
   chatSubscription: Subscription;
-  messagesAvailable: boolean = true;
+  messagesAvailable: boolean = false;
   chat: Chat[] = [];
 
   constructor(public userService: UserService, private messageService: MessageService) {
@@ -25,6 +25,9 @@ export class DirectChatChatareaComponent {
     });
     this.chatSubscription = this.messageService.chatSubscription$.subscribe((chat) => {
       this.chat = chat;
+      if (this.chat && this.chat.length > 0 && this.chat[0].messages) {
+        this.messagesAvailable = true;  
+      }
     });
   }
 }

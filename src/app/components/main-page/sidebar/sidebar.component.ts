@@ -62,7 +62,8 @@ export class SidebarComponent implements OnDestroy {
     this.sharedService.messageActive = true;
   }
 
-  openDirectChat(chatpartnerId: string, chat: Chat) {
+  async openDirectChat(chatpartnerId: string, chat: Chat) {
+    console.log('chatpartnerId', chatpartnerId);
     this.sharedService.setCurrentChatPartnerId(chatpartnerId);
     this.messageService.setCurrentChat([chat]);
     this.sharedService.channelChatActive = false;
