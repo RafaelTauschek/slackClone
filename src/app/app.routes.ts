@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { StartScreenComponent } from './components/start-screen/start-screen.component';
+import { IntroScreenComponent } from './components/main-page/intro-screen/intro-screen.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { RegistrationComponent } from './components/auth/registration/registration.component';
@@ -8,7 +8,7 @@ import { SelectPasswordComponent } from './components/auth/select-password/selec
 import { MainPageComponent } from './components/main-page/main-page/main-page.component';
 
 export const routes: Routes = [
-    {path: '', component: StartScreenComponent, children: [
+    {path: '', component: IntroScreenComponent, children: [
         {path: '', redirectTo: 'login', pathMatch: 'full'},
         {path: 'login', component: LoginComponent},
         {path: 'registration', component: RegistrationComponent},

@@ -3,17 +3,17 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
-import { LoginComponent } from '../auth/login/login.component';
+import { LoginComponent } from '../../auth/login/login.component';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-start-screen',
+  selector: 'app-intro-screen',
   standalone: true,
   imports: [CommonModule, LoginComponent, RouterOutlet, RouterModule],
-  templateUrl: './start-screen.component.html',
-  styleUrl: './start-screen.component.scss',
+  templateUrl: './intro-screen.component.html',
+  styleUrl: './intro-screen.component.scss',
 })
-export class StartScreenComponent implements OnInit {
+export class IntroScreenComponent implements OnInit {
 
   animationEnd: boolean = false;
 

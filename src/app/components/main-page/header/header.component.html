@@ -3,7 +3,7 @@
         <img class="logo" src="./assets/img/logo_top.png" alt="logo">
     </div>
     <div class="search-menu">
-        <input type="text" placeholder="Code learning durchsuchen" (input)="onSearch()" [(ngModel)]="searchTerm">
+        <input type="text" placeholder="Code learning durchsuchen" [(ngModel)]="searchTerm" (input)="onSearch()">
         <img class="search-icon" src="./assets/img/icons/search-icon.png" alt="search-icon">
         <div class="hiddens-search-container" *ngIf="searchActive">
             <div *ngIf="searchChannel" class="searched-channel">
@@ -16,6 +16,30 @@
                 <div class="singleUser" *ngFor="let user of searchedUser" (click)="openUser(user.id)">
                     <img class="user-image" src="./assets/img/avatars/{{ user.profilepicture }}.png" alt="">
                     <span>&#64; {{ user.name }}</span>
+                </div>
+            </div>
+
+            <div *ngIf="searchedChannelMessages" class="searched-channel-message">
+                <div class="single-channel-message" *ngFor="let message of searchedChannelMessages">
+                    <div class="single-channel-header">
+                        <img src="./assets/img/icons/channel-icon.png" alt="channel-icon">
+                        <span>{{ message.channelName }}</span>
+                    </div>
+                    <span>{{ userService.getUserName(message.senderId) }}</span>
+                    <div class="single-channel-content">
+                        <span>{{ message.content }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="searchedDirectMessages" class="searched-direct-message">
+                <div class="single-direct-message">
+                    <div class="single-direct-header">
+
+                    </div>
+                    <div class="single-direct-content">
+
+                    </div>
                 </div>
             </div>
 
@@ -83,14 +107,14 @@
                     <img src="./assets/img/icons/person-icon.png" alt="person-icon">
                     <span>Vollständiger Name</span>
                 </div>
-                <input [(ngModel)]="editedUserName" type="text" value="{{ currentUser[0].name }}">
+                <input [(ngModel)]="editedUserName" type="text" placeholder="{{ currentUser[0].name }}">
             </div>
             <div class="edit-input-container">
                 <div class="edit-input-header">
                     <img src="./assets/img/icons/mail-icon.png" alt="person-icon">
                     <span>E-Mail-Adresse</span>
                 </div>
-                <input [(ngModel)]="editedUserMail" type="email" value="{{ currentUser[0].email }}">
+                <input [(ngModel)]="editedUserMail" type="email" placeholder="{{ currentUser[0].email }}">
             </div>
         </div>
         <div class="edit-menu-button">

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AvatarService } from '../../../services/avatar.service';
 import { UserService } from '../../../services/user.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -22,7 +21,7 @@ export class SelectAvatarComponent {
   useremail: string = '';
   userId: string = '';
 
-  constructor(private avatarService: AvatarService, private userService: UserService,
+  constructor(private userService: UserService,
     private route: ActivatedRoute, private firebaseService: FirebaseService, private router: Router, private storageService: StorageService) {
     console.log(this.selectedAvatar);
 
@@ -84,9 +83,11 @@ export class SelectAvatarComponent {
     reader.readAsDataURL(this.uploadedAvatar);
   }
 
-  uploadAvatar() {
+  async uploadAvatar() {
     if (this.uploadedAvatar) {
-
+      const url = await this.storageService.uploadFile(this.uploadedAvatar);
+      this.selectedAvatar = url;
+      this.disabled = false;
     }
   }
 

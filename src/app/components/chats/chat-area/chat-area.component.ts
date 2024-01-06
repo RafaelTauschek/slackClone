@@ -27,9 +27,11 @@ export class ChatAreaComponent implements OnDestroy {
     this.channelSubscription = this.channelService.channelSubscription$.subscribe((channel) => {
       this.channel = channel;
     });
-    this.messageSubscription = this.messageService.messageSubscription$.subscribe((message) => {
-      this.messages = message;
-      this.formatedMessages = this.sharedService.groupMessagesByDate(this.messages);
+    this.messageSubscription = this.messageService.messageSubscription$.subscribe((messages) => {
+      this.messages = messages;
+      if (messages.length > 0) {
+        this.formatedMessages = this.sharedService.groupMessagesByDate(this.messages);
+      }
     });
   }
 

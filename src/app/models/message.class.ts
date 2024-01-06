@@ -7,6 +7,8 @@ export class Message {
     content: string;
     emojis: Emoji[];
     answers: any[];
+    file: File;
+
 
 
     constructor(obj: any) {
@@ -16,6 +18,7 @@ export class Message {
         this.content = obj ? obj.content : '';
         this.emojis = obj ? obj.emojis : [];
         this.answers = obj ? obj.answers : [];
+        this.file = obj ? obj.file : null;
     }
 
     public toJSON () {
@@ -26,6 +29,7 @@ export class Message {
             content: this.content,
             emojis: this.emojis,
             answers: this.answers,
+            file: this.file
         }
     }
 }

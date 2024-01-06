@@ -88,6 +88,7 @@ export class MessageService implements OnDestroy {
       content: newMessage,
       emojis: [],
       answers: [],
+      file: null,
     });
     await this.firebaseService.updateMessages('chats', chatId, message.toJSON());
     await this.firebaseService.updateChats('users', activeUserId, chatId);
@@ -135,6 +136,7 @@ export class MessageService implements OnDestroy {
       content: newMessage,
       emojis: [],
       answers: [],
+      file: null,
     });
     await this.firebaseService.updateMessages('chats', chatId, message.toJSON());
     await this.updateChatMessages(chatId);
@@ -150,6 +152,7 @@ export class MessageService implements OnDestroy {
         content: newMessage,
         emojis: [],
         answers: [],
+        file: null,
       });
       this.firebaseService.updateMessages('channels', this.channelService.currentChannelId, message.toJSON())
       this.channelService.updateChannel(this.channelService.currentChannelId);

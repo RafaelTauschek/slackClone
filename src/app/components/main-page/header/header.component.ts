@@ -10,7 +10,14 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UserPofileDialogComponent } from '../../dialogs/user-pofile-dialog/user-pofile-dialog.component';
 import { SharedService } from '../../../services/shared.service';
+import { MessageService } from '../../../services/message.service';
+import { Message } from '../../../models/message.class';
+import { Chat } from '../../../models/chat.class';
+import { SearchService } from '../../../services/search.service';
 
+interface MessageWithChannel extends Message {
+  channelName: string;
+}
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -18,7 +25,14 @@ import { SharedService } from '../../../services/shared.service';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
+
+
+
 export class HeaderComponent implements OnDestroy {
+
+
+
+
   currentUser: User[] = []
   currentUserSubscription: Subscription;
   userMenu: boolean = false;
@@ -34,22 +48,35 @@ export class HeaderComponent implements OnDestroy {
   searchTerm: string = '';
   editedUserName: string = '';
   editedUserMail: string = '';
+  searchedChannelMessages!: MessageWithChannel[];
+  searchedDirectMessages!: Message[];
+  chats: Chat[] = [];
+  chatSubscription: Subscription; 
 
 
-  constructor(private userService: UserService, private authService: AuthService,
-    private channelService: ChannelService, private dialog: MatDialog, private sharedService: SharedService) {
+
+
+  constructor(public userService: UserService, private authService: AuthService,
+    private channelService: ChannelService, private dialog: MatDialog, 
+    private sharedService: SharedService, private messageService: MessageService, private searchService: SearchService) {
     this.currentUserSubscription = this.userService.activeUserObservable$.subscribe((currentUser) => {
       this.currentUser = currentUser;
     });
     this.availableUsersSubscription = this.userService.usersObservable$.subscribe((availableUsers) => {
       this.availableUsers = availableUsers;
     });
+    this.chatSubscription = this.messageService.chatSubscription$.subscribe((chats) => {
+      this.chats = chats;
+    });
   }
+
+
 
 
   ngOnDestroy(): void {
     this.currentUserSubscription.unsubscribe()
     this.availableUsersSubscription.unsubscribe();
+    this.chatSubscription.unsubscribe();
   }
 
   closeProfileMenu() {
@@ -128,37 +155,19 @@ export class HeaderComponent implements OnDestroy {
     }
   }
 
-
   onSearch() {
-    const channels: Channel[] = this.channelService.channels;
-    const users: User[] = this.availableUsers;
-    this.searchUser = false;
-    this.searchChannel = false;
-    this.searchActive = false;
+    const searchedChannels = this.searchService.filterChannels(this.channelService.channelsSubscription.value, this.searchTerm);
+    const searchedUsers = this.searchService.filterUsers(this.availableUsers, this.searchTerm);
+    const searchedDirectMessages = this.searchService.filterDirectMessages(this.chats, this.searchTerm);
+    const searchedChannelMessages = this.searchService.filterChannelMessages(this.channelService.channelsSubscription.value, this.searchTerm);
 
-    if (this.searchTerm.charAt(0) === '#') {
-      this.searchActive = true;
-      this.searchChannel = true;
-      const searchTermWithoutHash = this.searchTerm.substring(1).toLowerCase();
-      const filteredChannels = channels.filter(channel => channel.name.toLowerCase().startsWith(searchTermWithoutHash));
-      console.log('Channels matching the search term: ', filteredChannels);
-      this.searchedChannel = filteredChannels;
-      console.log('Searched Channel var: ', this.searchedChannel);
-    }
-
-    if (this.searchTerm.charAt(0) === '@') {
-      this.searchActive = true;
-      this.searchUser = true;
-      const searchTermWithoutAt = this.searchTerm.substring(1).toLowerCase();
-      const filteredUsers = users.filter(user => user.name.toLowerCase().startsWith(searchTermWithoutAt));
-      console.log('Users matching the search term: ', filteredUsers);
-      this.searchedUser = filteredUsers;
-      console.log('Searched User var: ', this.searchedUser);
-    }
-
+    console.log('Searched Channels: ', searchedChannels);
+    console.log('Searched Users: ', searchedUsers);
+    console.log('Searched Direct Messages: ', searchedDirectMessages);
+    console.log('Searched Channel Messages: ', searchedChannelMessages);  
   }
 
-
+ 
 }
 
 
