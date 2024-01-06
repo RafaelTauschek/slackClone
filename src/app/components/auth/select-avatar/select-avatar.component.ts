@@ -24,8 +24,8 @@ export class SelectAvatarComponent {
 
   constructor(private avatarService: AvatarService, private userService: UserService,
     private route: ActivatedRoute, private firebaseService: FirebaseService, private router: Router, private storageService: StorageService) {
-      console.log(this.selectedAvatar);
-      
+    console.log(this.selectedAvatar);
+
     this.route.paramMap.subscribe((paramMap) => {
       const name = paramMap.get('name') || '';
       this.username = name.toString();
@@ -37,9 +37,10 @@ export class SelectAvatarComponent {
   }
 
   setSelectedAvatar(avatar: string) {
-    this.selectedAvatar = avatar;
-    console.log('Selected Avatar', avatar);
+    this.selectedAvatar = `./assets/img/avatars/${avatar}.png`;
+    this.uploadedAvatar = null as any;
     this.disabled = false;
+
   }
 
   async submitSelectedAvatar() {
@@ -53,7 +54,7 @@ export class SelectAvatarComponent {
         channels: []
       }
       console.log(this.userId, userData);
-      
+
       await this.firebaseService.updateDocument('users', this.userId, userData);
       setTimeout(() => {
         this.router.navigate(['/main']);
@@ -66,9 +67,21 @@ export class SelectAvatarComponent {
 
 
   onFileSelected(event: any): void {
+    if (this.selectedAvatar && this.uploadedAvatar) {
+      URL.revokeObjectURL(this.selectedAvatar);
+    }
+
     this.uploadedAvatar = event.target.files[0];
-    this.storageService.uploadFile(this.uploadedAvatar)
-    this.disabled = false;
+    this.selectedAvatar = URL.createObjectURL(this.uploadedAvatar);
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      this.selectedAvatar = reader.result as string;
+      console.log(this.selectedAvatar);
+      this.disabled = false;
+    };
+
+    reader.readAsDataURL(this.uploadedAvatar);
   }
 
   uploadAvatar() {

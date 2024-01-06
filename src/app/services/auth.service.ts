@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Auth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, onAuthStateChanged, getAuth, createUserWithEmailAndPassword, 
-  signOut, signInWithRedirect, sendPasswordResetEmail, getRedirectResult } from "firebase/auth";
+  signOut, signInWithRedirect, sendPasswordResetEmail, getRedirectResult, updateEmail, updatePassword } from "firebase/auth";
 import { UserService } from './user.service';
 import { Router } from '@angular/router';
 import { initializeApp } from 'firebase/app';
@@ -86,6 +86,9 @@ export class AuthService {
   }
 
 
+  async changeUserMail() {
+
+  }
 
 
   async registerUser(email: string, password: string, name: string) {

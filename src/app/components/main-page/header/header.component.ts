@@ -32,9 +32,11 @@ export class HeaderComponent implements OnDestroy {
   availableUsers: User[] = [];
   searchActive: boolean = false;
   searchTerm: string = '';
+  editedUserName: string = '';
+  editedUserMail: string = '';
 
 
-  constructor(private userService: UserService, private authService: AuthService, 
+  constructor(private userService: UserService, private authService: AuthService,
     private channelService: ChannelService, private dialog: MatDialog, private sharedService: SharedService) {
     this.currentUserSubscription = this.userService.activeUserObservable$.subscribe((currentUser) => {
       this.currentUser = currentUser;
@@ -73,8 +75,10 @@ export class HeaderComponent implements OnDestroy {
     this.editMenu = true;
   }
 
-  saveChanges() {
-    console.log('save btn funktioniert!');
+  async saveChanges() {
+    this.editUserName();
+    this.editUserMail();
+    await this.userService.loadUser(this.currentUser[0].id);
   }
 
   logout() {
@@ -104,6 +108,27 @@ export class HeaderComponent implements OnDestroy {
     this.searchActive = false;
   }
 
+
+
+  async editUserName() {
+    const user = this.currentUser[0];
+    if (this.editedUserName !== '' || user.name) {
+      await this.userService.editUserName(this.editedUserName);
+    } else {
+      console.log('No changes were made');
+    }
+  }
+
+  async editUserMail() {
+    const user = this.currentUser[0];
+    if (this.editedUserMail !== '' || user.email) {
+      await this.userService.editUserMail(this.editedUserMail);
+    } else {
+      console.log('No changes were made');
+    }
+  }
+
+
   onSearch() {
     const channels: Channel[] = this.channelService.channels;
     const users: User[] = this.availableUsers;
@@ -130,7 +155,7 @@ export class HeaderComponent implements OnDestroy {
       this.searchedUser = filteredUsers;
       console.log('Searched User var: ', this.searchedUser);
     }
-    
+
   }
 
 

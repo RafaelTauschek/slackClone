@@ -4,30 +4,34 @@
     </div>
     <span class="headline">Wähle deinen Avatar</span>
     <div class="avatar-selection">
-        <div *ngIf="!selectedAvatar; else avatarSelected" class="selected-avatar">
-            <img src="./assets/img/avatars/avatar.png">
-        </div>
-        <ng-template #avatarSelected>
-            <div class="selected-avatar">
-                <img src="./assets/img/avatars/{{ selectedAvatar }}.png">
+        <div class="avatar-selection">
+            <div *ngIf="!selectedAvatar; else avatarSelected" class="selected-avatar">
+                <img *ngIf="!uploadedAvatar" src="./assets/img/avatars/avatar.png" alt="Default Avatar">
+                <img *ngIf="uploadedAvatar" [src]="selectedAvatar" alt="Uploaded Avatar">
             </div>
-        </ng-template>
-        <div class="avatar-selection-content">
-            <span class="user-name">Max Mustermann</span>
-            <span class="choose">Aus der Liste wählen</span>
-            <div class="avatar-options">
-                @for (avatar of avatarId; track $index) {
-                <div (click)="setSelectedAvatar(avatar)" class="avatar-to-select">
-                    <img src="./assets/img/avatars/{{ avatar }}.png" alt="avatar-img">
+            <ng-template #avatarSelected>
+                <div class="selected-avatar">
+                    <img *ngIf="selectedAvatar" [src]="selectedAvatar" alt="Selected Avatar">
                 </div>
-                }
+            </ng-template>
+            <div class="avatar-selection-content">
+                <span class="user-name">Max Mustermann</span>
+                <span class="choose">Aus der Liste wählen</span>
+                <div class="avatar-options">
+                    @for (avatar of avatarId; track $index) {
+                    <div (click)="setSelectedAvatar(avatar)" class="avatar-to-select">
+                        <img src="./assets/img/avatars/{{ avatar }}.png" alt="avatar-img">
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="upload-avatar">
+                <span>eigenes Bild verwenden</span>               
+                <label for="file-input" class="upload-avatar-btn">Datei hochladen</label>
+                    <input id="file-input" (change)="onFileSelected($event)" class="file-input" type="file">
+                    
             </div>
         </div>
-        <div class="upload-avatar">
-            <span>eigenes Bild verwenden</span>
-            <input class="file-input" type="file" placeholder="Datei hochladen">
-            <div class="upload-avatar-btn" (change)="onFileSelected($event)">Datei hochladen</div>
-        </div>
+        <button [class.disabled]="disabled" class="next-btn" (click)="submitSelectedAvatar()"
+            [disabled]="disabled">Weiter</button>
     </div>
-    <button [class.disabled]="disabled" class="next-btn" (click)="submitSelectedAvatar()" [disabled]="disabled">Weiter</button>
-</div>

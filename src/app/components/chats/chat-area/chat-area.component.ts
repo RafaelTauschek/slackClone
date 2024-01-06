@@ -7,7 +7,6 @@ import { UserService } from '../../../services/user.service';
 import { Message } from '../../../models/message.class';
 import { CommonModule } from '@angular/common';
 import { SharedService } from '../../../services/shared.service';
-import { User } from '../../../models/user.class';
 
 
 @Component({

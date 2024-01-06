@@ -21,7 +21,7 @@
             </div>
             <div *ngIf="channelNameEditActive" class="edit-channel-name-input">
                 <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
-                <input [(ngModel)]="name" type="text" placeholder="Entwicklerteam">
+                <input [(ngModel)]="name" type="text" placeholder="{{ channel[0].name }}">
             </div>
         </div>
     </div>

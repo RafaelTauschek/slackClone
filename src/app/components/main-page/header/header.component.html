@@ -83,14 +83,14 @@
                     <img src="./assets/img/icons/person-icon.png" alt="person-icon">
                     <span>Vollständiger Name</span>
                 </div>
-                <input type="text" value="{{ currentUser[0].name }}">
+                <input [(ngModel)]="editedUserName" type="text" value="{{ currentUser[0].name }}">
             </div>
             <div class="edit-input-container">
                 <div class="edit-input-header">
                     <img src="./assets/img/icons/mail-icon.png" alt="person-icon">
                     <span>E-Mail-Adresse</span>
                 </div>
-                <input type="email" value="{{ currentUser[0].email }}">
+                <input [(ngModel)]="editedUserMail" type="email" value="{{ currentUser[0].email }}">
             </div>
         </div>
         <div class="edit-menu-button">

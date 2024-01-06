@@ -80,4 +80,30 @@ export class UserService {
   setActiveUser(user: User): void {
     this.activeUser.next([user]);
   }
+
+  async editUserName(newName: string) {
+    const user = this.activeUser.value[0];
+    const newUser = new User({
+      name: newName,
+      email: user.email,
+      profilepicture: user.profilepicture,
+      channels: user.channels,
+      chats: user.chats,
+      id: user.id,
+    });
+    await this.firebaseService.updateDocument('users', user.id, newUser.toJSON());
+  } 
+
+  async editUserMail(newMail: string) {
+    const user = this.activeUser.value[0];
+    const newUser = new User({
+      name: user.name,
+      email: newMail,
+      profilepicture: user.profilepicture,
+      channels: user.channels,
+      chats: user.chats,
+      id: user.id,
+    });
+    await this.firebaseService.updateDocument('users', user.id, newUser.toJSON());
+  }
 }
