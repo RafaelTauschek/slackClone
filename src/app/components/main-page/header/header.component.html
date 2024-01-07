@@ -50,7 +50,9 @@
         <ng-template #noName>
             <span>Gast</span>
         </ng-template>
-        <img *ngIf="currentUser !== undefined" class="avatar" src="./assets/img/avatars/{{ currentUser[0]?.profilepicture }}.png" alt="avatar">
+        <img *ngIf="currentUser !== undefined" class="avatar" 
+     [src]="currentUser[0]?.profilepicture && currentUser[0].profilepicture?.startsWith('http') ? currentUser[0]?.profilepicture : './assets/img/avatars/' + currentUser[0]?.profilepicture + '.png'" 
+     alt="avatar">
         <img (click)="userMenu = !userMenu" class="dropdown" src="./assets/img/icons/arrow-drop-down.png" alt="arrow-dropdown">
     </div>
 

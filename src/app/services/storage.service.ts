@@ -12,6 +12,6 @@ export class StorageService {
   async uploadFile(file: File): Promise<string> {
     const storageRef = ref(this.storage, file.name);
     const result = await uploadBytes(storageRef, file);
-    return getDownloadURL(result.ref);
+    return await getDownloadURL(result.ref);
   }
 }

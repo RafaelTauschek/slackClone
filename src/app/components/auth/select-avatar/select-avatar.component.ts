@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FirebaseService } from '../../../services/firebase.service';
 import { StorageService } from '../../../services/storage.service';
+import { User } from '../../../models/user.class';
 
 @Component({
   selector: 'app-select-avatar',
@@ -43,18 +44,21 @@ export class SelectAvatarComponent {
   }
 
   async submitSelectedAvatar() {
-    if (this.selectedAvatar) {
-      const userData = {
+    let profilePictureUrl = this.selectedAvatar;
+    if (this.uploadedAvatar) {
+      profilePictureUrl = await this.storageService.uploadFile(this.uploadedAvatar);
+    }
+    if (profilePictureUrl) {
+      const user =  new User ({
         name: this.username,
         email: this.useremail,
         id: this.userId,
-        profilepicture: this.selectedAvatar,
+        profilepicture: profilePictureUrl,
         chats: [],
         channels: []
-      }
-      console.log(this.userId, userData);
-
-      await this.firebaseService.updateDocument('users', this.userId, userData);
+      });
+      console.log(this.userId, user.toJSON());
+      await this.firebaseService.updateDocument('users', this.userId, user.toJSON());
       setTimeout(() => {
         this.router.navigate(['/main']);
       }, 500)
@@ -77,16 +81,7 @@ export class SelectAvatarComponent {
       this.disabled = false;
     };
     reader.readAsDataURL(this.uploadedAvatar);
+    console.log('Selected Avatar is: ' + this.selectedAvatar);
+    console.log('Uploaded Avatar is: ' + this.uploadedAvatar);
   }
-
-  async uploadAvatar() {
-    if (this.uploadedAvatar) {
-      const url = await this.storageService.uploadFile(this.uploadedAvatar);
-      this.selectedAvatar = url;
-      this.disabled = false;
-    }
-  }
-
-
-
 }

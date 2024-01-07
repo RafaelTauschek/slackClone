@@ -1,5 +1,5 @@
 <div class="chat-area-container">
-    <div *ngIf="channel[0].messages; else noMessages">
+    <div *ngIf="channel[0]?.messages; else noMessages">
         <div class="chat-area-wrapper" *ngFor="let key of this.sharedService.getKeys(formatedMessages)">
             <div class="date-container">
                 <div class="line"></div>
@@ -16,7 +16,7 @@
                         <div class="message-container-right">
                             <div class="message-content-container">
                                 <div class="message-header">
-                                    <span class="time">{{ message.timestamp | date: 'HH:mm'}} Uhr</span>
+                                    <span class="time">{{ message?.timestamp | date: 'HH:mm'}} Uhr</span>
                                     <span class="username">{{ this.userService.getUserName(message.senderId) }}</span>
                                 </div>
                                 <!-- <div class="message-overlay">
@@ -27,7 +27,7 @@
                                     <div><img src="./assets/img/icons/three-point-icon.png" alt="edit-message"></div>
                                 </div> -->
                                 <div class="message-content">
-                                    <span class="text">{{ message.content }}</span>
+                                    <span class="text">{{ message?.content }}</span>
                                 </div>
                                 <div class="message-footer">
                                     <span (click)="openThread(message)" class="answers">{{ message.answers.length }}
@@ -48,7 +48,7 @@
                             <div class="message-content-container">
                                 <div class="message-header">
                                     <span class="username">{{ this.userService.getUserName(message.senderId)}}</span>
-                                    <span class="time">{{ message.timestamp | date: 'HH:mm' }} Uhr</span>
+                                    <span class="time">{{ message?.timestamp | date: 'HH:mm' }} Uhr</span>
                                 </div>
                                 <!-- <div class="message-overlay">
                                     <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
@@ -57,7 +57,7 @@
                                     <div><img src="./assets/img/icons/comment2-icon.png" alt="add-comment"></div>
                                 </div> -->
                                 <div class="message-content">
-                                    <span class="text">{{ message.content }}</span>
+                                    <span class="text">{{ message?.content }}</span>
                                 </div>
                                 <div class="message-footer">
                                     <span class="answers">{{ message.answers.length }} Antworten</span>
@@ -72,8 +72,8 @@
     </div>
     <ng-template #noMessages>
         <div>
-            <span># {{ channel[0].name }}</span>
-            <span>Dieser Channel wurde am Datumeinfuegen von {{ userService.getUserName(channel[0].creator) }} erstellt. Das ist der Anfang des Channels # {{ channel[0].name }}.</span>
+            <span># {{ channel[0]?.name }}</span>
+            <span *ngIf="channel[0]">Dieser Channel wurde am Datumeinfuegen von {{ userService.getUserName(channel[0].creator) }} erstellt. Das ist der Anfang des Channels # {{ channel[0]?.name }}.</span>
         </div>
     </ng-template>
 </div>
