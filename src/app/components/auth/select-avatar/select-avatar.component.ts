@@ -60,7 +60,6 @@ export class SelectAvatarComponent {
       }, 500)
     } else {
       console.log('You did not select an avatar');
-
     }
   }
 
@@ -69,17 +68,14 @@ export class SelectAvatarComponent {
     if (this.selectedAvatar && this.uploadedAvatar) {
       URL.revokeObjectURL(this.selectedAvatar);
     }
-
     this.uploadedAvatar = event.target.files[0];
     this.selectedAvatar = URL.createObjectURL(this.uploadedAvatar);
     const reader = new FileReader();
-
     reader.onload = () => {
       this.selectedAvatar = reader.result as string;
       console.log(this.selectedAvatar);
       this.disabled = false;
     };
-
     reader.readAsDataURL(this.uploadedAvatar);
   }
 

@@ -160,7 +160,6 @@ export class HeaderComponent implements OnDestroy {
     const searchedUsers = this.searchService.filterUsers(this.availableUsers, this.searchTerm);
     const searchedDirectMessages = this.searchService.filterDirectMessages(this.chats, this.searchTerm);
     const searchedChannelMessages = this.searchService.filterChannelMessages(this.channelService.channelsSubscription.value, this.searchTerm);
-
     console.log('Searched Channels: ', searchedChannels);
     console.log('Searched Users: ', searchedUsers);
     console.log('Searched Direct Messages: ', searchedDirectMessages);

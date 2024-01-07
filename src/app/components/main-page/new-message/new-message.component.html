@@ -1,15 +1,35 @@
 <div class="new-message-container">
     <div class="header">
-        <span>Neue Nachricht</span>
-        <input type="text" placeholder="An: #channel, oder @jemanden oder E-Mail-Adresse">
+        <div class="new-message"><span>Neue Nachricht</span><span *ngIf="searchResult"> an: {{ searchResult }}</span></div>
+        <input [(ngModel)]="searchTerm" type="text" placeholder="An: #channel, oder @jemanden oder E-Mail-Adresse"
+            (input)="onSearch()">
+        <div class="search-output" *ngIf="searchActive">
+            <div class="channel-search-output" *ngIf="searchType == 'channel'">
+                <div class="single-channel-output" *ngFor="let channel of searchedChannels" (click)="setChannel(channel)">
+                    <img src="./assets/img/icons/channel-icon.png" alt="channel-icon">
+                    <span>{{ channel.name }}</span>
+                </div>
+            </div>
+            <div class="user-search-output" *ngIf="searchType == 'user'">
+                <div class="single-user-output" *ngFor="let user of searchedUsers" (click)="setUser(user)">
+                    <img src="./assets/img/avatars/{{ user.profilepicture }}.png" alt="user-avatar">
+                    <span>{{ user.name }}</span>
+                </div>
+            </div>
+            <div class="user-mail-output" *ngIf="searchType == 'email'">
+                <div class="single-mail-output" *ngFor="let mail of searchedEmails" (click)="setUser(mail)">
+                    <img src="./assets/img/avatars/{{ mail.profilepicture }}.png" alt="user-avatar">
+                    <span>{{ mail.name }}</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    
+
 
 
     <div class="new-message-textarea">
-        <textarea
-            placeholder="Starte eine neue Nachricht" cols="30" rows="3"></textarea>
+        <textarea [(ngModel)]="newMessage" placeholder="Starte eine neue Nachricht" cols="30" rows="3"></textarea>
         <div class="thread-icons">
             <div class="icons-left">
                 <img src="./assets/img/icons/add-icon-gray.png" alt="add-icon">
@@ -17,8 +37,8 @@
                 <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
                 <img src="./assets/img/icons/at-icon.png" alt="at-icon">
             </div>
-            <div class="icons-right">
-                <img src="./assets/img/icons/send-icon.png" alt="send-icon" (click)="sendMessage()">
+            <div class="icons-right" (click)="sendMessage()">
+                <img src="./assets/img/icons/send-icon.png" alt="send-icon">
             </div>
         </div>
     </div>

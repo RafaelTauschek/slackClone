@@ -1,3 +1,7 @@
+::-webkit-scrollbar {
+    width: 1px !important;
+}
+
 .new-message-container {
     background-color: white;
     height: calc(100% - 180px);
@@ -17,7 +21,7 @@
     align-self: stretch;
     gap: 20px;
     padding: 10px 30px;
-    
+
 
     span {
         font-size: 24px;
@@ -112,4 +116,109 @@
     width: 0px;
     border: 1px solid #ADB0D9;
     height: 24px;
+}
+
+
+.search-output {
+    max-height: 400px;
+}
+
+
+.channel-search-output {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 339px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    ::-webkit-scrollbar {
+        width: 1px;
+    }
+
+    .single-channel-output {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+
+        img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+        }
+
+        span {
+            font-size: 18px;
+            font-weight: 700;
+        }
+    
+    }
+
+
+}
+
+.user-search-output {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 339px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    ::-webkit-scrollbar {
+        width: 1px;
+    }
+
+    .single-user-output {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+
+        img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+        }
+
+        span {
+            font-size: 18px;
+            font-weight: 700;
+        }
+    }
+}
+
+.user-mail-output {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 339px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    ::-webkit-scrollbar {
+        width: 1px;
+    }
+
+    .single-mail-output {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+
+        img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+        }
+
+        span {
+            font-size: 18px;
+            font-weight: 700;
+        }
+    }
 }

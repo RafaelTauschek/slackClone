@@ -142,7 +142,7 @@ export class MessageService implements OnDestroy {
     await this.updateChatMessages(chatId);
   }
 
-  sendChannelMessage(newMessage: string) {
+  async sendChannelMessage(newMessage: string) {
     try {
       const date = new Date().getTime();
       const message = new Message({
@@ -154,11 +154,10 @@ export class MessageService implements OnDestroy {
         answers: [],
         file: null,
       });
-      this.firebaseService.updateMessages('channels', this.channelService.currentChannelId, message.toJSON())
-      this.channelService.updateChannel(this.channelService.currentChannelId);
+      await this.firebaseService.updateMessages('channels', this.channelService.currentChannelId, message.toJSON())
+      await this.channelService.updateChannel(this.channelService.currentChannelId);
     } catch (err) {
       console.log(err);
     }
-
   }
 }

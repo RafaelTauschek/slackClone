@@ -19,6 +19,13 @@
                                     <span class="time">{{ message.timestamp | date: 'HH:mm'}} Uhr</span>
                                     <span class="username">{{ this.userService.getUserName(message.senderId) }}</span>
                                 </div>
+                                <!-- <div class="message-overlay">
+                                    <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
+                                    <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji"></div>
+                                    <div><img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
+                                    <div><img src="./assets/img/icons/comment2-icon.png" alt="add-comment"></div>
+                                    <div><img src="./assets/img/icons/three-point-icon.png" alt="edit-message"></div>
+                                </div> -->
                                 <div class="message-content">
                                     <span class="text">{{ message.content }}</span>
                                 </div>
@@ -43,6 +50,12 @@
                                     <span class="username">{{ this.userService.getUserName(message.senderId)}}</span>
                                     <span class="time">{{ message.timestamp | date: 'HH:mm' }} Uhr</span>
                                 </div>
+                                <!-- <div class="message-overlay">
+                                    <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
+                                    <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji"></div>
+                                    <div><img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
+                                    <div><img src="./assets/img/icons/comment2-icon.png" alt="add-comment"></div>
+                                </div> -->
                                 <div class="message-content">
                                     <span class="text">{{ message.content }}</span>
                                 </div>

@@ -8,9 +8,7 @@ import { Chat } from '../models/chat.class';
   providedIn: 'root'
 })
 export class SearchService {
-
-  constructor() {}
-
+  
 
   filterChannels(channels: Channel[], searchTerm: string) {
     const searchedChannel: Channel[] = [];
@@ -27,6 +25,17 @@ export class SearchService {
     const searchedUser: User[] = [];
     users.forEach((user: User) => {
       if (user.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+        searchedUser.push(user);
+      }
+    });
+    return searchedUser;
+  }
+
+
+  filterUsersByMail(users: User[], searchTerm: string) {
+    const searchedUser: User[] = [];
+    users.forEach((user: User) => {
+      if (user.email.toLowerCase().includes(searchTerm.toLowerCase())) {
         searchedUser.push(user);
       }
     });
