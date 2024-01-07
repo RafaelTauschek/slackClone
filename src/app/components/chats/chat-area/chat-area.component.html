@@ -28,6 +28,18 @@
                                 </div> -->
                                 <div class="message-content">
                                     <span class="text">{{ message?.content }}</span>
+                                    <a *ngIf="message.fileUrl" [href]="message.fileUrl" target="_blank">{{
+                                        message.fileName }}</a>
+                                    <img class="message-img" *ngIf="sharedService.isImage(message.fileUrl)"
+                                        [src]="message.fileUrl" alt="{{ message.fileName }}" />
+                                    <object class="message-pdf"
+                                        *ngIf="sharedService.isPdf(message.fileUrl) && !sharedService.isImage(message.fileUrl)"
+                                        data="{{message.fileUrl}}" type="application/pdf" width="300" height="200">
+                                        <a [href]="message.fileUrl">{{ message.fileName }}</a>
+                                    </object>
+                                    <video class="message-video"
+                                        *ngIf="sharedService.isVideo(message.fileUrl) && !sharedService.isImage(message.fileUrl) && !sharedService.isPdf(message.fileUrl)"
+                                        [src]="message.fileUrl" controls width="300" height="200"></video>
                                 </div>
                                 <div class="message-footer">
                                     <span (click)="openThread(message)" class="answers">{{ message.answers.length }}
@@ -58,6 +70,18 @@
                                 </div> -->
                                 <div class="message-content">
                                     <span class="text">{{ message?.content }}</span>
+                                    <a *ngIf="message.fileUrl" [href]="message.fileUrl" target="_blank">{{
+                                        message.fileName }}</a>
+                                    <img class="message-image" *ngIf="sharedService.isImage(message.fileUrl)"
+                                        [src]="message.fileUrl" />
+                                    <object class="message-pdf"
+                                        *ngIf="sharedService.isPdf(message.fileUrl) && !sharedService.isImage(message.fileUrl)"
+                                        data="{{message.fileUrl}}" type="application/pdf" width="300" height="200">
+                                        <a [href]="message.fileUrl">{{ message.fileName }}</a>
+                                    </object>
+                                    <video class="message-video"
+                                        *ngIf="sharedService.isVideo(message.fileUrl) && !sharedService.isImage(message.fileUrl) && !sharedService.isPdf(message.fileUrl)"
+                                        [src]="message.fileUrl" controls width="300" height="200"></video>
                                 </div>
                                 <div class="message-footer">
                                     <span class="answers">{{ message.answers.length }} Antworten</span>
@@ -73,7 +97,9 @@
     <ng-template #noMessages>
         <div>
             <span># {{ channel[0]?.name }}</span>
-            <span *ngIf="channel[0]">Dieser Channel wurde am Datumeinfuegen von {{ userService.getUserName(channel[0].creator) }} erstellt. Das ist der Anfang des Channels # {{ channel[0]?.name }}.</span>
+            <span *ngIf="channel[0]">Dieser Channel wurde am Datumeinfuegen von {{
+                userService.getUserName(channel[0].creator) }} erstellt. Das ist der Anfang des Channels # {{
+                channel[0]?.name }}.</span>
         </div>
     </ng-template>
 </div>

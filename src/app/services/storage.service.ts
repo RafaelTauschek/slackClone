@@ -10,7 +10,8 @@ export class StorageService {
 
 
   async uploadFile(file: File): Promise<string> {
-    const storageRef = ref(this.storage, file.name);
+    const uniqueFileName = `${Date.now()}-${file.name}`;
+    const storageRef = ref(this.storage, uniqueFileName);
     const result = await uploadBytes(storageRef, file);
     return await getDownloadURL(result.ref);
   }

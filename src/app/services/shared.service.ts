@@ -24,6 +24,24 @@ export class SharedService {
   }
 
 
+  isPdf(url: string | undefined): boolean {
+    if (!url) return false;
+    const extension = url.split('?')[0].split('.').pop();
+    return extension ? extension === 'pdf' : false;
+  }
+  
+  isVideo(url: string | undefined): boolean {
+    if (!url) return false;
+    const extension = url.split('?')[0].split('.').pop();
+    return extension ? ['mp4', 'webm', 'ogg'].includes(extension) : false;
+  }
+  
+  isImage(url: string | undefined): boolean {
+    if (!url) return false;
+    const extension = url.split('?')[0].split('.').pop();
+    return extension ? ['jpeg', 'jpg', 'gif', 'png'].includes(extension) : false;
+  }
+
 
   public groupMessagesByDate(messages: Message[]) {
     messages.sort((a, b) => a.timestamp - b.timestamp);

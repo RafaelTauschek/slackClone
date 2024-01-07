@@ -73,7 +73,9 @@
             <img (click)="closeProfileMenu()" src="./assets/img/icons/close-icon.png" alt="close-icon">
         </div>
         <div class="profile-menu-img">
-            <img src="./assets/img/avatars/{{ currentUser[0].profilepicture }}.png" alt="user-avatar">
+            <img *ngIf="currentUser !== undefined" class="avatar" 
+     [src]="currentUser[0]?.profilepicture && currentUser[0].profilepicture?.startsWith('http') ? currentUser[0]?.profilepicture : './assets/img/avatars/' + currentUser[0]?.profilepicture + '.png'" 
+     alt="avatar">
         </div>
         <div class="profile-menu-name">
             <div class="profile-menu-name-header">
@@ -101,7 +103,9 @@
             <img (click)="closeEditMenu() " src="./assets/img/icons/close-icon.png" alt="close-icon">
         </div>
         <div class="edit-menu-userimage">
-            <img src="./assets/img/avatars/{{ currentUser[0].profilepicture }}.png" alt="user-avatar">
+            <img *ngIf="currentUser !== undefined" class="avatar" 
+            [src]="currentUser[0]?.profilepicture && currentUser[0].profilepicture?.startsWith('http') ? currentUser[0]?.profilepicture : './assets/img/avatars/' + currentUser[0]?.profilepicture + '.png'" 
+            alt="avatar">
         </div>
         <div class="edit-menu-inputs">
             <div class="edit-input-container">

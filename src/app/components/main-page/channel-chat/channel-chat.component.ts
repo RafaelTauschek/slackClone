@@ -25,6 +25,8 @@ export class ChannelChatComponent implements OnDestroy {
   message: string = '';
   memberInviteActive: boolean = false;
   memberListActive: boolean = false;
+  selectedFileName: string = '';
+  selectedFile: File | null = null;
 
   constructor(public channelService: ChannelService, private userService: UserService, private messageService: MessageService, private dialog: MatDialog ) {
     this.channelSubscription = this.channelService.channelSubscription$.subscribe((channel) => {
@@ -51,12 +53,7 @@ export class ChannelChatComponent implements OnDestroy {
     this.dialog.open(EditChannelDialogComponent, {});
   }
 
-  async sendMessage() {
-    if (this.message !== '') {
-      this.messageService.sendChannelMessage(this.message);
-      this.message = '';
-    }
-  }
+
 
   addEmoji(event: Event) {
     console.log('Event activated: ', event);
@@ -65,4 +62,50 @@ export class ChannelChatComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.channelSubscription.unsubscribe();
   }
+
+
+
+  onFileSelected(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      this.selectedFileName = this.selectedFile?.name ?? '';
+    }
+  }
+
+  async sendMessage() {
+    if (this.message !== '' || this.selectedFile) {
+      this.messageService.sendChannelMessage(this.message, this.selectedFile);
+    } 
+  }
+
+  // async sendMessage() {
+  //   if (this.message !== '') {
+  //     if (this.selectedFileName) {
+  //       this.messageService.sendChannelMessage(this.message, this.selectedFile);
+  //     } 
+      
+  //     this.message = '';
+  //   }
+  // }
+
+
+  // async sendMessage() {
+  //   if (this.selectedFile) {
+  //     const fileUrl = await this.uploadFile(this.selectedFile);
+  //     this.message = new Message({
+  //       // ...
+  //       content: this.messageText,
+  //       fileName: this.selectedFileName,
+  //       fileUrl: fileUrl,
+  //     });
+  //   } else {
+  //     this.message = new Message({
+  //       // ...
+  //       content: this.messageText,
+  //     });
+  //   }
+  //   // Send the message...
+  //   this.messageText = '';
+  //   this.selectedFile = null;
+  //}
 }

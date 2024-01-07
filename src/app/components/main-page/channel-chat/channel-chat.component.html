@@ -31,7 +31,8 @@
         </ng-template>
         <div class="thread-icons">
             <div class="icons-left">
-                <img src="./assets/img/icons/add-icon-gray.png" alt="add-icon">
+                <label for="file-input"><img src="./assets/img/icons/add-icon-gray.png" alt="add-icon"></label>
+                <input type="file" id="file-input" (change)="onFileSelected($event)">
                 <div class="seperator"></div>
                 <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
                 <img src="./assets/img/icons/at-icon.png" alt="at-icon">

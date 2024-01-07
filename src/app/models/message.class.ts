@@ -7,7 +7,8 @@ export class Message {
     content: string;
     emojis: Emoji[];
     answers: any[];
-    file: File;
+    fileName: string;
+    fileUrl: string;
 
 
 
@@ -18,10 +19,11 @@ export class Message {
         this.content = obj ? obj.content : '';
         this.emojis = obj ? obj.emojis : [];
         this.answers = obj ? obj.answers : [];
-        this.file = obj ? obj.file : null;
+        this.fileName = obj ? obj.fileName : '';
+        this.fileUrl = obj ? obj.fileUrl : '';
     }
 
-    public toJSON () {
+    public toJSON() {
         return {
             senderId: this.senderId,
             recieverId: this.recieverId,
@@ -29,7 +31,8 @@ export class Message {
             content: this.content,
             emojis: this.emojis,
             answers: this.answers,
-            file: this.file
+            fileName: this.fileName,
+            fileUrl: this.fileUrl,
         }
     }
 }

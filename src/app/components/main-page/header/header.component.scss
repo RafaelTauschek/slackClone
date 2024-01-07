@@ -149,7 +149,7 @@
         img {
             width: 200px;
             height: 200px;
-            object-fit: contain;
+            object-fit: fill;
             border-radius: 100px;
         }
     }
@@ -268,7 +268,7 @@
 
 
         img {
-            object-fit: contain;
+            object-fit: fill;
             width: 200px;
             height: 200px;
             border-radius: 100px;

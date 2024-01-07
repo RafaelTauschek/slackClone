@@ -59,6 +59,7 @@
         gap: 8px;
         align-items: flex-start;
 
+
         .message-header {
             display: flex;
             align-items: center;
@@ -186,4 +187,22 @@
             }
         }
     }
+}
+
+.message-img {
+    max-height: 200px;
+    max-width: 200px;
+    object-fit: contain;
+}
+
+.message-video {
+    max-height: 200px;
+    max-width: 200px;
+    object-fit: contain;
+}
+
+.message-pdf {
+    max-height: 200px;
+    max-width: 200px;
+    object-fit: contain;
 }

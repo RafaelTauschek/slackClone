@@ -31,7 +31,8 @@ export class NewMessageComponent implements OnDestroy {
   searchedEmails: User[] = [];
   searchResult: any;
   newMessage: string = '';
-
+  selectedFileName: string = '';
+  selectedFile: File | null = null;
 
 
   constructor(private userService: UserService, private channelService: ChannelService, private searchService: SearchService,
@@ -48,6 +49,14 @@ export class NewMessageComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.usersSubscription.unsubscribe();
     this.channelsSubscription.unsubscribe();
+  }
+
+  onFileSelected(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      this.selectedFileName = this.selectedFile?.name ?? '';
+      this.newMessage += '\n' + this.selectedFileName;
+    }
   }
 
   onSearch() {
@@ -94,7 +103,7 @@ export class NewMessageComponent implements OnDestroy {
     }
     switch (this.searchType) {
       case 'channel':
-        await this.messageService.sendChannelMessage(this.newMessage);
+        await this.messageService.sendChannelMessage(this.newMessage, this.selectedFile);
         this.newMessage = '';
         break;
       case 'user':
