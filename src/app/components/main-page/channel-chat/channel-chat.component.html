@@ -10,12 +10,16 @@
 
         <div class="header-right">
             <div class="channel-member" (click)="openMemberList()">
-                <img src="./assets/img/avatars/avatar.png" alt="member-avatar">
-                <img src="./assets/img/avatars/avatar.png" alt="member-avatar">
-                <img src="./assets/img/avatars/avatar.png" alt="member-avatar">
-                <span class="member-count">3</span>
+                @for (user of (channel[0].users | slice:0:3); track $index) {
+                    <img src="./assets/img/avatars/avatar.png" alt="member-avatar">
+                }
+                <span *ngIf="channel[0].users; else noUsers" class="member-count">{{ channel[0].users.length }}</span>
+                <ng-template #noUsers>
+                    <span class="member-count">0</span>
+                </ng-template>
             </div>
-            <img class="add-member" src="./assets/img/icons/add-person-icon.png" alt="add-member-icon" (click)="memberInviteActive = true">
+            <img class="add-member" src="./assets/img/icons/add-person-icon.png" alt="add-member-icon"
+                (click)="memberInviteActive = true">
         </div>
     </div>
 
@@ -77,9 +81,27 @@
         </div>
 
         <div class="invite-input">
-            <input type="text" placeholder="Name eingeben">
+            <input [(ngModel)]="searchTerm" type="text" placeholder="Name eingeben" (input)="onSearch()">
         </div>
-        
-        <button>Hinzufügen</button>
+
+        <div class="search-menu" *ngIf="searchActive">
+                <div class="single-user" *ngFor="let user of searchedUsers" (click)="addUserToChannel(user.id)">
+                    <img class="single-user-avatar" 
+                    [src]="user.profilepicture && user.profilepicture.startsWith('http') ? user.profilepicture : './assets/img/avatars/' + user.profilepicture + '.png'" 
+                    alt="avatar">
+                <span>{{ user.name }}</span>
+            </div>
+        </div>
+
+        <div class="invite-user-list" *ngIf="userToAdd.length > 0">
+            <div class="single-user" *ngFor="let user of userToAdd">
+                <img class="single-user-avatar" 
+                [src]="userService.getUserProfilePicture(user) && userService.getUserProfilePicture(user).startsWith('http') ? userService.getUserProfilePicture(user) : './assets/img/avatars/' + userService.getUserProfilePicture(user) + '.png'" 
+                alt="avatar">
+            <span>{{ userService.getUserName(user) }}</span>
+            <img (click)="removeUser(user)" src="./assets/img/icons/close-icon.png" alt="close-icon">
+            </div>
+        </div>
+        <button [class.enabled]="userToAdd.length > 0" [class.disabled]="userToAdd.length <= 0" [disabled]="userToAdd.length <= 0">Hinzufügen</button>
     </div>
 </div>

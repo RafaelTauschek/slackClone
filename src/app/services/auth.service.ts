@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, onAuthStateChanged, getAuth, createUserWithEmailAndPassword, 
-  signOut, signInWithRedirect, sendPasswordResetEmail, getRedirectResult, updateEmail, updatePassword } from "firebase/auth";
+import {
+  Auth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, onAuthStateChanged, getAuth, createUserWithEmailAndPassword,
+  signOut, sendPasswordResetEmail, signInWithRedirect, getRedirectResult
+} from "firebase/auth";
 import { UserService } from './user.service';
 import { Router } from '@angular/router';
 import { initializeApp } from 'firebase/app';
@@ -23,8 +25,10 @@ export class AuthService {
 
   constructor(
     private userService: UserService, private router: Router, private firebaseService: FirebaseService, private channelService: ChannelService, private messageService: MessageService) {
-      this.setupAuthStateListener();
+    this.setupAuthStateListener();
   }
+
+
 
 
 
@@ -50,34 +54,37 @@ export class AuthService {
   handleUserLoggedOut(): void {
   }
 
-  async loginGoogle() {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(this.auth, provider).then(async (user) => {
-      const userSnap = await this.firebaseService.getDocument('users', user.user.uid);
-      if (userSnap.exists()) {
-        setTimeout(() => {
-          this.router.navigate(['/main'])
-        }, 500);
-      } else {
-        const userData = {
-          name: user.user.displayName,
-          email: user.user.email,
-          id: user.user.uid,
-          profilepicture: '',
-          chats: [],
-          channels: [],
-        };
-        await this.firebaseService.setDocument(this.userDocId, 'users', userData);
-        this.router.navigate(['/select-avatar', { docId: this.userDocId, name: userData.name, email: userData.email }]);
-      }
-    }, err => {
-      console.log(err);
-    })
-  }
+
+
+
+   async loginGoogle() {
+     const provider = new GoogleAuthProvider();
+     signInWithPopup(this.auth, provider).then(async (user) => {
+       const userSnap = await this.firebaseService.getDocument('users', user.user.uid);
+       if (userSnap.exists()) {
+         setTimeout(() => {
+           this.router.navigate(['/main'])
+         }, 500);
+       } else {
+         const userData = {
+           name: user.user.displayName,
+           email: user.user.email,
+           id: user.user.uid,
+           profilepicture: '',
+           chats: [],
+           channels: [],
+         };
+         await this.firebaseService.setDocument(this.userDocId, 'users', userData);
+         this.router.navigate(['/select-avatar', { docId: this.userDocId, name: userData.name, email: userData.email }]);
+       }
+     }, err => {
+       console.log(err);
+     })
+   }
 
   async login(email: string, password: string) {
     await signInWithEmailAndPassword(this.auth, email, password).then(() => {
-      setTimeout( () => {
+      setTimeout(() => {
         this.router.navigate(['/main'])
       }, 500);
     }, err => {
@@ -110,18 +117,6 @@ export class AuthService {
     })
   }
 
-  // async loginWithRedirect() { 
-  //   const provider = new GoogleAuthProvider();
-  //   signInWithRedirect(this.auth, provider);
-  //   await this.auth.getRedirectResult().then((result) => {
-  //     const credential = GoogleAuthProvider.credentialFromResult(result);
-  //     const token = credential?.accessToken;
-  //     const user = result.user;
-  //     console.log(user);
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   });
-  // }
 
 
   logout() {

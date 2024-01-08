@@ -69,6 +69,7 @@ export class ChannelService {
       id: channel.id,
       messages: channel.messages,
       creationDate: channel.creationDate,
+      users: channel.users,
     });
     await this.firebaseService.updateDocument('channels', channel.id, newChannel.toJSON());
     await this.updateChannel(channel.id);
@@ -83,6 +84,7 @@ export class ChannelService {
       id: channel.id,
       messages: channel.messages,
       creationDate: channel.creationDate,
+      users: channel.users,
     });
     await this.firebaseService.updateDocument('channels', channel.id, newChannel.toJSON());
     await this.updateChannel(channel.id);

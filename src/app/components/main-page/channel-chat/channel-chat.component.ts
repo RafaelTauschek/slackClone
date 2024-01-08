@@ -11,6 +11,8 @@ import { UserService } from '../../../services/user.service';
 import { MessageService } from '../../../services/message.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditChannelDialogComponent } from '../../dialogs/edit-channel-dialog/edit-channel-dialog.component';
+import { User } from '../../../models/user.class';
+import { SearchService } from '../../../services/search.service';
 
 @Component({
   selector: 'app-channel-chat',
@@ -27,11 +29,37 @@ export class ChannelChatComponent implements OnDestroy {
   memberListActive: boolean = false;
   selectedFileName: string = '';
   selectedFile: File | null = null;
+  searchActive: boolean = false;
+  searchedUsers: User[] = [];
+  searchTerm: string = '';
 
-  constructor(public channelService: ChannelService, private userService: UserService, private messageService: MessageService, private dialog: MatDialog ) {
+  constructor(public channelService: ChannelService, public userService: UserService, 
+    private messageService: MessageService, private dialog: MatDialog, private searchService: SearchService ) {
     this.channelSubscription = this.channelService.channelSubscription$.subscribe((channel) => {
       this.channel = channel;
     });
+  }
+
+
+  onSearch() {
+    if (this.searchTerm !== '') {
+      this.searchActive = true;
+      this.searchedUsers = this.searchService.filterUsers(this.userService.availableUsers ,this.searchTerm);
+    } else {
+      this.searchActive = false;
+    }
+  }
+
+  userToAdd: string[] = [];
+
+  addUserToChannel(userId: string) {
+    this.userToAdd.push(userId);
+    this.searchActive = false;
+    this.searchTerm = '';
+  }
+
+  removeUser(user: string) {
+    this.userToAdd = this.userToAdd.filter((u) => u !== user);
   }
 
   openMemberList() {
@@ -78,34 +106,5 @@ export class ChannelChatComponent implements OnDestroy {
     } 
   }
 
-  // async sendMessage() {
-  //   if (this.message !== '') {
-  //     if (this.selectedFileName) {
-  //       this.messageService.sendChannelMessage(this.message, this.selectedFile);
-  //     } 
-      
-  //     this.message = '';
-  //   }
-  // }
 
-
-  // async sendMessage() {
-  //   if (this.selectedFile) {
-  //     const fileUrl = await this.uploadFile(this.selectedFile);
-  //     this.message = new Message({
-  //       // ...
-  //       content: this.messageText,
-  //       fileName: this.selectedFileName,
-  //       fileUrl: fileUrl,
-  //     });
-  //   } else {
-  //     this.message = new Message({
-  //       // ...
-  //       content: this.messageText,
-  //     });
-  //   }
-  //   // Send the message...
-  //   this.messageText = '';
-  //   this.selectedFile = null;
-  //}
 }

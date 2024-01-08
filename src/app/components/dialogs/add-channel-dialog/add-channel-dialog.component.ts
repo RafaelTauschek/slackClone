@@ -41,6 +41,7 @@ export class AddChannelDialogComponent {
         id: '',
         messages: [],
         creationDate: date,
+        users: [this.activeUser[0].id],
       }
 
       const docRef = await this.firebaseService.addCollection('channels', channelData);

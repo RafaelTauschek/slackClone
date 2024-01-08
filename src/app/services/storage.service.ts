@@ -8,8 +8,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 export class StorageService {
   storage = getStorage();
 
-
-  async uploadFile(file: File): Promise<string> {
+    async uploadFile(file: File): Promise<string> {
     const uniqueFileName = `${Date.now()}-${file.name}`;
     const storageRef = ref(this.storage, uniqueFileName);
     const result = await uploadBytes(storageRef, file);

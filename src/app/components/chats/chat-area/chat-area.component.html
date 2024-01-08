@@ -28,8 +28,6 @@
                                 </div> -->
                                 <div class="message-content">
                                     <span class="text">{{ message?.content }}</span>
-                                    <a *ngIf="message.fileUrl" [href]="message.fileUrl" target="_blank">{{
-                                        message.fileName }}</a>
                                     <img class="message-img" *ngIf="sharedService.isImage(message.fileUrl)"
                                         [src]="message.fileUrl" alt="{{ message.fileName }}" />
                                     <object class="message-pdf"
@@ -70,8 +68,6 @@
                                 </div> -->
                                 <div class="message-content">
                                     <span class="text">{{ message?.content }}</span>
-                                    <a *ngIf="message.fileUrl" [href]="message.fileUrl" target="_blank">{{
-                                        message.fileName }}</a>
                                     <img class="message-image" *ngIf="sharedService.isImage(message.fileUrl)"
                                         [src]="message.fileUrl" />
                                     <object class="message-pdf"
