@@ -102,6 +102,6 @@
             <img (click)="removeUser(user)" src="./assets/img/icons/close-icon.png" alt="close-icon">
             </div>
         </div>
-        <button [class.enabled]="userToAdd.length > 0" [class.disabled]="userToAdd.length <= 0" [disabled]="userToAdd.length <= 0">Hinzufügen</button>
+        <button (click)="updateUsersOnChannel()" [class.enabled]="userToAdd.length > 0" [class.disabled]="userToAdd.length <= 0" [disabled]="userToAdd.length <= 0">Hinzufügen</button>
     </div>
 </div>

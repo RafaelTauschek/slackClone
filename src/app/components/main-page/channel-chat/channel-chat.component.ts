@@ -62,6 +62,13 @@ export class ChannelChatComponent implements OnDestroy {
     this.userToAdd = this.userToAdd.filter((u) => u !== user);
   }
 
+  async updateUsersOnChannel() {
+    const users: string[] = this.userToAdd;
+    this.userToAdd = [];
+    await this.channelService.addUsersToChannel(users);
+    await this.userService.addChannelToUsers(users, this.channel[0].id);
+  }
+
   openMemberList() {
     this.memberListActive = true;
   }

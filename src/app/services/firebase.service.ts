@@ -61,13 +61,19 @@ export class FirebaseService {
 
 
   async getUserChannels(user: User) {
-    const channelsCollectionRef = collection(this.firestore, 'channels');
-    const channelIds = user.channels;
-    const q = query(channelsCollectionRef, where('id', 'in', channelIds));
-    const querySnapshot = await getDocs(q);
-    const channels: Channel[] = [];
-    querySnapshot.forEach((doc) => {
-      channels.push(doc.data() as Channel)
-    });
+    if (user) {
+      try {
+        const channelsCollectionRef = collection(this.firestore, 'channels');
+        const channelIds = user.channels;
+        const q = query(channelsCollectionRef, where('id', 'in', channelIds));
+        const querySnapshot = await getDocs(q);
+        const channels: Channel[] = [];
+        querySnapshot.forEach((doc) => {
+          channels.push(doc.data() as Channel)
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 }

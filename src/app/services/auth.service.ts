@@ -43,10 +43,10 @@ export class AuthService {
     });
   }
 
-  handeUserLoggedIn(user: any): void {
-    this.userService.loadUser(user.uid);
-    this.channelService.loadChannels(user.uid);
-    this.messageService.loadChats(user.uid);
+  async handeUserLoggedIn(user: any) {
+    await this.userService.loadUser(user.uid);
+    await this.channelService.loadChannels(user.uid);
+    await this.messageService.loadChats(user.uid);
   }
 
 

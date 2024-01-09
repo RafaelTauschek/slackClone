@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.class';
 import { FirebaseService } from './firebase.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { Channel } from '../models/channel.class';
-import { ChannelService } from './channel.service';
+import { BehaviorSubject } from 'rxjs';
 import { Chat } from '../models/chat.class';
 
 @Injectable({
@@ -82,19 +80,23 @@ export class UserService {
   }
 
   async editUserName(newName: string) {
+    const name = newName;
     const user = this.activeUser.value[0];
     const newUser = new User({
-      name: newName,
+      name: name,
       email: user.email,
       profilepicture: user.profilepicture,
       channels: user.channels,
       chats: user.chats,
       id: user.id,
     });
+    console.log('new User: ', newUser);
     await this.firebaseService.updateDocument('users', user.id, newUser.toJSON());
+    await this.loadUser(user.id);
   } 
 
   async editUserMail(newMail: string) {
+    console.log('new Mail: ', newMail);
     const user = this.activeUser.value[0];
     const newUser = new User({
       name: user.name,
@@ -105,5 +107,23 @@ export class UserService {
       id: user.id,
     });
     await this.firebaseService.updateDocument('users', user.id, newUser.toJSON());
+    await this.loadUser(user.id);
+  }
+
+
+  async addChannelToUsers(users: string[], channelId: string) {
+    users.forEach(async (user) => {
+      const docSnap = await this.firebaseService.getDocument('users', user);
+      const userData = docSnap.data() as User;
+      const newUser = new User({
+        name: userData.name,
+        email: userData.email,
+        profilepicture: userData.profilepicture,
+        channels: [...userData.channels, channelId],
+        chats: userData.chats,
+        id: userData.id,
+      });
+      await this.firebaseService.updateDocument('users', userData.id, newUser.toJSON());
+    })
   }
 }

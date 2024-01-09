@@ -7,6 +7,7 @@ import { UserService } from '../../../services/user.service';
 import { Message } from '../../../models/message.class';
 import { CommonModule } from '@angular/common';
 import { SharedService } from '../../../services/shared.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class ChatAreaComponent implements OnDestroy {
   messageSubscription: Subscription;
   formatedMessages: { [key: string]: Message[] } = {};
 
-  constructor(private channelService: ChannelService, private messageService: MessageService, public userService: UserService, public sharedService: SharedService) {
+  constructor(private channelService: ChannelService, private messageService: MessageService, 
+    public userService: UserService, public sharedService: SharedService, public sanitizer: DomSanitizer) {
     this.channelSubscription = this.channelService.channelSubscription$.subscribe((channel) => {
       this.channel = channel;
     });

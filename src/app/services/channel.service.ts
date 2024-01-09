@@ -58,6 +58,21 @@ export class ChannelService {
     this.channelsSubscription.next(channels);
   }
 
+
+  async addUsersToChannel(users: string[]) {
+    const channel = this.channelSubscription.value[0];
+    const newChannel = new Channel({
+      name: channel.name,
+      description: channel.description,
+      creator: channel.creator,
+      id: channel.id,
+      messages: channel.messages,
+      creationDate: channel.creationDate,
+      users: [...channel.users, ...users],
+    });
+    await this.firebaseService.updateDocument('channels', channel.id, newChannel.toJSON());
+    await this.updateChannel(channel.id);
+  }
   
 
   async editChannelName(newChannelName: string) {

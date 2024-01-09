@@ -57,7 +57,6 @@ export class SearchService {
 
 
   filterChannelMessages(channels: Channel[], searchTerm: string) {
-    console.log(channels);
     const searchedChannelMessages: { message: Message, channel: Channel }[] = [];
     channels.forEach(channel => {
       if (channel.messages && Array.isArray(channel.messages)) {

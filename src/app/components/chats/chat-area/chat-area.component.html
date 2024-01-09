@@ -32,12 +32,16 @@
                                         [src]="message.fileUrl" alt="{{ message.fileName }}" />
                                     <object class="message-pdf"
                                         *ngIf="sharedService.isPdf(message.fileUrl) && !sharedService.isImage(message.fileUrl)"
-                                        data="{{message.fileUrl}}" type="application/pdf" width="300" height="200">
-                                        <a [href]="message.fileUrl">{{ message.fileName }}</a>
+                                        [data]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
+                                        type="application/pdf" width="300" height="200">
+                                        <a [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)">{{
+                                            message.fileName }}</a>
                                     </object>
                                     <video class="message-video"
                                         *ngIf="sharedService.isVideo(message.fileUrl) && !sharedService.isImage(message.fileUrl) && !sharedService.isPdf(message.fileUrl)"
-                                        [src]="message.fileUrl" controls width="300" height="200"></video>
+                                        [src]="message.fileUrl" controls width="300" height="200">
+                                    </video>
+                                    <a [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)" target="_blank">Datei öffnen</a>
                                 </div>
                                 <div class="message-footer">
                                     <span (click)="openThread(message)" class="answers">{{ message.answers.length }}
@@ -72,12 +76,16 @@
                                         [src]="message.fileUrl" />
                                     <object class="message-pdf"
                                         *ngIf="sharedService.isPdf(message.fileUrl) && !sharedService.isImage(message.fileUrl)"
-                                        data="{{message.fileUrl}}" type="application/pdf" width="300" height="200">
-                                        <a [href]="message.fileUrl">{{ message.fileName }}</a>
+                                        [data]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
+                                        type="application/pdf" width="300" height="200">
+                                        <a [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)">{{
+                                            message.fileName }}</a>
                                     </object>
                                     <video class="message-video"
                                         *ngIf="sharedService.isVideo(message.fileUrl) && !sharedService.isImage(message.fileUrl) && !sharedService.isPdf(message.fileUrl)"
-                                        [src]="message.fileUrl" controls width="300" height="200"></video>
+                                        [src]="message.fileUrl" controls width="300" height="200">
+                                    </video>
+                                    <a [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)" target="_blank">Datei öffnen</a>
                                 </div>
                                 <div class="message-footer">
                                     <span class="answers">{{ message.answers.length }} Antworten</span>
