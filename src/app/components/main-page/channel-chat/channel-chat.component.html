@@ -9,7 +9,7 @@
         </div>
 
         <div class="header-right">
-            <div class="channel-member" (click)="openMemberList()">
+            <div *ngIf="channel[0]" class="channel-member" (click)="openMemberList()">
                 @for (user of (channel[0].users | slice:0:3); track $index) {
                     <img src="./assets/img/avatars/avatar.png" alt="member-avatar">
                 }

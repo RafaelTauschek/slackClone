@@ -45,13 +45,13 @@
 
         </div>
     </div>
-    <div class="user-container">
-        <span *ngIf="currentUser !== undefined; else noName">{{ currentUser[0]?.name }}</span>
+    <div class="user-container" *ngIf="currentUser[0]">
+        <span *ngIf="currentUser !== undefined; else noName">{{ currentUser[0].name }}</span>
         <ng-template #noName>
             <span>Gast</span>
         </ng-template>
         <img *ngIf="currentUser !== undefined" class="avatar" 
-     [src]="currentUser[0]?.profilepicture && currentUser[0].profilepicture?.startsWith('http') ? currentUser[0]?.profilepicture : './assets/img/avatars/' + currentUser[0]?.profilepicture + '.png'" 
+     [src]="currentUser[0].profilepicture && currentUser[0].profilepicture.startsWith('http') ? currentUser[0].profilepicture : './assets/img/avatars/' + currentUser[0].profilepicture + '.png'" 
      alt="avatar">
         <img (click)="userMenu = !userMenu" class="dropdown" src="./assets/img/icons/arrow-drop-down.png" alt="arrow-dropdown">
     </div>
@@ -72,9 +72,9 @@
             <span>Profil</span>
             <img (click)="closeProfileMenu()" src="./assets/img/icons/close-icon.png" alt="close-icon">
         </div>
-        <div class="profile-menu-img">
+        <div class="profile-menu-img" *ngIf="currentUser[0]">
             <img *ngIf="currentUser !== undefined" class="avatar" 
-     [src]="currentUser[0]?.profilepicture && currentUser[0].profilepicture?.startsWith('http') ? currentUser[0]?.profilepicture : './assets/img/avatars/' + currentUser[0]?.profilepicture + '.png'" 
+     [src]="currentUser[0].profilepicture && currentUser[0].profilepicture.startsWith('http') ? currentUser[0].profilepicture : './assets/img/avatars/' + currentUser[0].profilepicture + '.png'" 
      alt="avatar">
         </div>
         <div class="profile-menu-name">
@@ -102,9 +102,9 @@
             <span>Dein Profil bearbeiten</span>
             <img (click)="closeEditMenu() " src="./assets/img/icons/close-icon.png" alt="close-icon">
         </div>
-        <div class="edit-menu-userimage">
+        <div class="edit-menu-userimage" *ngIf="currentUser[0]">
             <img *ngIf="currentUser !== undefined" class="avatar" 
-            [src]="currentUser[0]?.profilepicture && currentUser[0].profilepicture?.startsWith('http') ? currentUser[0]?.profilepicture : './assets/img/avatars/' + currentUser[0]?.profilepicture + '.png'" 
+            [src]="currentUser[0].profilepicture && currentUser[0].profilepicture.startsWith('http') ? currentUser[0].profilepicture : './assets/img/avatars/' + currentUser[0].profilepicture + '.png'" 
             alt="avatar">
         </div>
         <div class="edit-menu-inputs">

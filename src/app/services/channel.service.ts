@@ -19,7 +19,6 @@ export class ChannelService {
   constructor(private firebaseService: FirebaseService) {}
 
 
-
   async loadChannels(userId: string) {
     this.channels = [];
     const docSnap = await this.firebaseService.getDocument('users', userId);
