@@ -76,3 +76,27 @@
         width: 30%;
     }
 }
+
+.answer-container {
+    display: flex;
+    position: relative;
+    padding: 6px 30px;
+    margin-bottom: 0px;
+    margin-top: 4px;
+    gap: 16px;
+
+    &:hover { 
+        background-color: #ECEEFE;
+        width: calc(100% + 60px);
+        padding: 6px 30px;
+    }
+
+    img {
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+    }
+
+
+
+}

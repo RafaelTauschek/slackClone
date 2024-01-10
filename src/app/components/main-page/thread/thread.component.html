@@ -12,7 +12,7 @@
         <app-thread-chat></app-thread-chat>
     </div>
     <div class="textarea">
-        <textarea placeholder="Antworten..." cols="30" rows="3"></textarea>
+        <textarea [(ngModel)]="answer"  placeholder="Antworten..." cols="30" rows="3"></textarea>
         <div class="iconbar">
             <div class="icons-left">
                 <img src="./assets/img/icons/add-icon-gray.png" alt="add-icon">
@@ -20,7 +20,7 @@
                 <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
                 <img src="./assets/img/icons/at-icon.png" alt="at-icon">
             </div>
-            <div class="icons-right">
+            <div class="icons-right" (click)="sendMessage()">
                 <img src="./assets/img/icons/send-icon.png" alt="send-icon">
             </div>
         </div>

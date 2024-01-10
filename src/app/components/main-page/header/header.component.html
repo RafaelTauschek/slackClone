@@ -6,13 +6,13 @@
         <input type="text" placeholder="Code learning durchsuchen" [(ngModel)]="searchTerm" (input)="onSearch()">
         <img class="search-icon" src="./assets/img/icons/search-icon.png" alt="search-icon">
         <div class="hiddens-search-container" *ngIf="searchActive">
-            <div *ngIf="searchChannel" class="searched-channel">
+            <div *ngIf="searchedChannel" class="searched-channel">
                 <div class="single-channel" *ngFor="let channel of searchedChannel" (click)="openChannel(channel.id)">
                     <span># {{ channel.name}}</span>
                 </div>
             </div>
 
-            <div *ngIf="searchUser" class="searched-user">
+            <div *ngIf="searchedUser" class="searched-user">
                 <div class="singleUser" *ngFor="let user of searchedUser" (click)="openUser(user.id)">
                     <img class="user-image" src="./assets/img/avatars/{{ user.profilepicture }}.png" alt="">
                     <span>&#64; {{ user.name }}</span>
@@ -23,22 +23,25 @@
                 <div class="single-channel-message" *ngFor="let message of searchedChannelMessages">
                     <div class="single-channel-header">
                         <img src="./assets/img/icons/channel-icon.png" alt="channel-icon">
-                        <span>{{ message.channelName }}</span>
+                        <span>{{ message.channel.name }}</span>
                     </div>
-                    <span>{{ userService.getUserName(message.senderId) }}</span>
+                    <span>{{ userService.getUserName(message.message.senderId) }}</span>
                     <div class="single-channel-content">
-                        <span>{{ message.content }}</span>
+                        <span>{{ message.message.content }}</span>
                     </div>
                 </div>
             </div>
 
             <div *ngIf="searchedDirectMessages" class="searched-direct-message">
-                <div class="single-direct-message">
+                <div class="single-direct-message" *ngFor="let message of searchedDirectMessages">
                     <div class="single-direct-header">
-
+                        <img class="avatar" 
+                        [src]="userService.getUserProfilePicture(message.senderId) && userService.getUserProfilePicture(message.senderId).startsWith('http') ? userService.getUserProfilePicture(message.senderId) : './assets/img/avatars/' + userService.getUserProfilePicture(message.senderId) + '.png'" 
+                        alt="avatar">
+                        <span>{{ userService.getUserName(message.senderId) }}</span>
                     </div>
                     <div class="single-direct-content">
-
+                        <span>{{ message.content }}</span>
                     </div>
                 </div>
             </div>

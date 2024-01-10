@@ -48,7 +48,7 @@ export class HeaderComponent implements OnDestroy{
   searchTerm: string = '';
   editedUserName: string = '';
   editedUserMail: string = '';
-  searchedChannelMessages!: MessageWithChannel[];
+  searchedChannelMessages!: any;
   searchedDirectMessages!: Message[];
   chats: Chat[] = [];
   chatSubscription: Subscription; 
@@ -164,14 +164,16 @@ export class HeaderComponent implements OnDestroy{
   }
 
   onSearch() {
-    const searchedChannels = this.searchService.filterChannels(this.channelService.channelsSubscription.value, this.searchTerm);
-    const searchedUsers = this.searchService.filterUsers(this.availableUsers, this.searchTerm);
-    const searchedDirectMessages = this.searchService.filterDirectMessages(this.chats, this.searchTerm);
-    const searchedChannelMessages = this.searchService.filterChannelMessages(this.channelService.channelsSubscription.value, this.searchTerm);
-    console.log('Searched Channels: ', searchedChannels);
-    console.log('Searched Users: ', searchedUsers);
-    console.log('Searched Direct Messages: ', searchedDirectMessages);
-    console.log('Searched Channel Messages: ', searchedChannelMessages);  
+    if (this.searchTerm !== '') {
+      this.searchActive = true;
+      this.searchedChannel = this.searchService.filterChannels(this.channelService.channelsSubscription.value, this.searchTerm);
+      this.searchedUser = this.searchService.filterUsers(this.availableUsers, this.searchTerm);
+      this.searchedDirectMessages = this.searchService.filterDirectMessages(this.chats, this.searchTerm);
+      this.searchedChannelMessages = this.searchService.filterChannelMessages(this.channelService.channelsSubscription.value, this.searchTerm);
+    } else {
+      this.searchActive = false;
+    }
+
   }
 
  

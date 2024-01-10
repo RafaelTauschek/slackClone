@@ -6,23 +6,41 @@ import { SharedService } from '../../../services/shared.service';
 import { ChannelService } from '../../../services/channel.service';
 import { Channel } from '../../../models/channel.class';
 import { Subscription } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { Message } from '../../../models/message.class';
+import { UserService } from '../../../services/user.service';
+import { MessageService } from '../../../services/message.service';
+import { User } from '../../../models/user.class';
+import { FirebaseService } from '../../../services/firebase.service';
 
 @Component({
   selector: 'app-thread',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, ThreadChatComponent],
+  imports: [CommonModule, RouterModule, RouterOutlet, ThreadChatComponent, FormsModule],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss'
 })
 export class ThreadComponent implements OnDestroy {
   channel: Channel[] = [];
   channelSubscription: Subscription
+  userSubscription: Subscription;
+  messageSubscription: Subscription;
+  answer: string = '';
+  user: User[] = [];
+  message: Message[] = [];  
 
-
-  constructor(private sharedService: SharedService, private channelService: ChannelService) {
+  constructor(private sharedService: SharedService, private channelService: ChannelService, 
+    private userService: UserService, private messageService: MessageService, private firebaseService: FirebaseService) {
       this.channelSubscription = this.channelService.channelSubscription$.subscribe((channel) => { 
         this.channel = channel;
       });
+      this.userSubscription = this.userService.activeUserObservable$.subscribe((user) => {
+        this.user = user;
+      });
+      this.messageSubscription = this.messageService.singleMessageSubscription$.subscribe((message) => {
+        this.message = message;
+      });
+
   }
 
   ngOnDestroy(): void {
@@ -32,4 +50,47 @@ export class ThreadComponent implements OnDestroy {
   closeThread() {
     this.sharedService.threadActive = false;
   }
+
+  async sendMessage() {
+    if (this.answer !== '') {
+      const answer = new Message({
+        senderId: this.user[0].id,
+        recieverId: this.message[0].senderId,
+        timestamp: new Date().getTime(),
+        content: this.answer,
+        emojis: [],
+        answers: [],
+        fileName: '',
+        fileUrl: '',
+      });
+      let index: number = this.findMessageIndex();
+      this.channel[0].messages[index].answers.push(answer.toJSON());
+      const channelInstance = new Channel(this.channel[0])
+      const channelData = channelInstance.toJSON();
+      await this.firebaseService.updateDocument('channels', this.channel[0].id, channelData);
+      this.answer = '';
+    }
+  }
+
+
+  findMessageIndex() {
+    const timestampToFind = this.message[0].timestamp;
+    const channelIndex = this.channel.findIndex((channel) => {
+      return channel.messages.some((message) => {
+        return message.timestamp === timestampToFind;
+      });
+    });
+    if (channelIndex !== -1) {
+      const messageIndex = this.channel[channelIndex].messages.findIndex((message) => {
+        return message.timestamp === timestampToFind;
+      });
+      return messageIndex;
+    } else {
+      return -1;
+    }
+  }
+
+
 }
+
+

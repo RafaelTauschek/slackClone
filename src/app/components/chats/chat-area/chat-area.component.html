@@ -41,7 +41,7 @@
                                         *ngIf="sharedService.isVideo(message.fileUrl) && !sharedService.isImage(message.fileUrl) && !sharedService.isPdf(message.fileUrl)"
                                         [src]="message.fileUrl" controls width="300" height="200">
                                     </video>
-                                    <a [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)" target="_blank">Datei öffnen</a>
+                                    <a *ngIf="message.fileUrl" [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)" target="_blank">Datei öffnen</a>
                                 </div>
                                 <div class="message-footer">
                                     <span (click)="openThread(message)" class="answers">{{ message.answers.length }}
@@ -85,7 +85,7 @@
                                         *ngIf="sharedService.isVideo(message.fileUrl) && !sharedService.isImage(message.fileUrl) && !sharedService.isPdf(message.fileUrl)"
                                         [src]="message.fileUrl" controls width="300" height="200">
                                     </video>
-                                    <a [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)" target="_blank">Datei öffnen</a>
+                                    <a *ngIf="message.fileUrl" [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)" target="_blank">Datei öffnen</a>
                                 </div>
                                 <div class="message-footer">
                                     <span class="answers">{{ message.answers.length }} Antworten</span>

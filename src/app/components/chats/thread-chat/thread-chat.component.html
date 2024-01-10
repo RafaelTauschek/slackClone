@@ -17,4 +17,18 @@
         <img src="./assets/img/line.png" alt="line">
     </div>
 
+    <div class="answer-container" *ngIf="message !== undefined && message !== null">
+        <div class="answer" *ngFor="let answer of message[0].answers">
+            <img src="./assets/img/avatars/avatar6.png" alt="avatar">
+            <div class="answer-content">
+                <div class="answer-header">
+                    <span class="user-name">{{ this.userService.getUserName(answer.senderId) }}</span>
+                    <span class="time">{{ this.sharedService.formatTimestampToTime(answer.timestamp) }} Uhr</span>
+                </div>
+                <div class="answer-main">
+                    <span>{{ answer.content }}</span>
+                </div>
+            </div>
+        </div>
+
 </div>
