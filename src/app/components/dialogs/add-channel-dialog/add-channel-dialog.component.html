@@ -29,5 +29,5 @@
 
 
 
-    <button (click)="addChannel()">Erstellen</button>
+    <button [disabled]="!channelName || addingChannel" (click)="addChannel()">Erstellen</button>
 </div>

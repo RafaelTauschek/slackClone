@@ -68,6 +68,7 @@ export class ThreadComponent implements OnDestroy {
       const channelInstance = new Channel(this.channel[0])
       const channelData = channelInstance.toJSON();
       await this.firebaseService.updateDocument('channels', this.channel[0].id, channelData);
+      await this.channelService.updateChannel(this.channel[0].id);
       this.answer = '';
     }
   }

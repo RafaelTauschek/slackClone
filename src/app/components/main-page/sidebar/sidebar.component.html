@@ -57,7 +57,10 @@
         <div class="available-chats">
             @for (chat of chats; track $index) {
             <div class="single-direct-chat" (click)="openDirectChat(userService.getChatPartnerId(chat, user[0].id) || '', chat)">
-                <img src="./assets/img/avatars/{{ userService.getUserProfilePicture(userService.getChatPartnerId(chat, user[0].id) || 'avatar1') }}.png" alt="avatar">
+                <img [src]="userService.getUserProfilePicture(userService.getChatPartnerId(chat, user[0].id) || '') &&
+                userService.getUserProfilePicture(userService.getChatPartnerId(chat, user[0].id) || '').startsWith('http') ?
+                userService.getUserProfilePicture(userService.getChatPartnerId(chat, user[0].id) || '') : 
+                './assets/img/avatars/' + userService.getUserProfilePicture(userService.getChatPartnerId(chat, user[0].id) || '') + '.png'">
                 <span>{{ userService.getUserName(userService.getChatPartnerId(chat, user[0].id) || '')}}</span>
             </div>
             }

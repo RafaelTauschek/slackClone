@@ -37,7 +37,7 @@ export class SelectAvatarComponent {
   }
 
   setSelectedAvatar(avatar: string) {
-    this.selectedAvatar = `./assets/img/avatars/${avatar}.png`;
+    this.selectedAvatar = avatar;
     this.uploadedAvatar = null as any;
     this.disabled = false;
 

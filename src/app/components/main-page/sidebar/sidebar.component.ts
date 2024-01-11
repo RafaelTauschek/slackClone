@@ -32,7 +32,7 @@ export class SidebarComponent implements OnDestroy {
     this.chatSubscription = this.messageService.chatsSubscription$.subscribe((chats) => { 
       this.chats = chats;
     });
-    this.userSubscription = this.userService.usersObservable$.subscribe((user) => {
+    this.userSubscription = this.userService.activeUserObservable$.subscribe((user) => {
       this.user = user;
     }); 
   }
@@ -63,7 +63,6 @@ export class SidebarComponent implements OnDestroy {
   }
 
   async openDirectChat(chatpartnerId: string, chat: Chat) {
-    console.log('chatpartnerId', chatpartnerId);
     this.sharedService.setCurrentChatPartnerId(chatpartnerId);
     this.messageService.setCurrentChat([chat]);
     this.sharedService.channelChatActive = false;

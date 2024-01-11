@@ -69,4 +69,22 @@ export class SearchService {
     });
     return searchedChannelMessages;
   }
+
+
+  findMessageIndex(timestamp: number, channel: Channel[]) {
+    const channelIndex = channel.findIndex((channel) => {
+      return channel.messages.some((message) => {
+        return message.timestamp === timestamp;
+      });
+    });
+    if (channelIndex !== -1) {
+      const messageIndex = channel[channelIndex].messages.findIndex((message) => {
+        return message.timestamp === timestamp;
+      });
+      return messageIndex;
+    } else {
+      return -1;
+    }
+  }
+
 }

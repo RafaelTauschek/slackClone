@@ -18,6 +18,7 @@ export class AddChannelDialogComponent {
   activeUser: User[] = []
   channelName: string = '';
   channelDescription: string = '';
+  addingChannel: boolean = false;
 
   constructor(private dialog: MatDialogRef<AddChannelDialogComponent>, private firebaseService: FirebaseService, 
     private userService: UserService, private channelService: ChannelService) { 
@@ -30,6 +31,7 @@ export class AddChannelDialogComponent {
   }
 
   async addChannel() {
+    this.addingChannel = true;
     if (this.channelName == '') {
       console.log('Name is empty');
     } else {
@@ -60,6 +62,7 @@ export class AddChannelDialogComponent {
       }
       await this.firebaseService.updateDocument('users', this.activeUser[0].id, userData);
       this.channelService.loadChannels(this.activeUser[0].id);
+      this.addingChannel = false;
       this.closeDialog();
     }
   }

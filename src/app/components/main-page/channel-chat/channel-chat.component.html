@@ -11,7 +11,9 @@
         <div class="header-right">
             <div *ngIf="channel[0]" class="channel-member" (click)="openMemberList()">
                 @for (user of (channel[0].users | slice:0:3); track $index) {
-                    <img src="./assets/img/avatars/avatar.png" alt="member-avatar">
+                    <img class="avatar" 
+                    [src]="userService.getUserProfilePicture(user) && userService.getUserProfilePicture(user).startsWith('http') ? userService.getUserProfilePicture(user) : './assets/img/avatars/' + userService.getUserProfilePicture(user) + '.png'" 
+                    alt="avatar">
                 }
                 <span *ngIf="channel[0].users; else noUsers" class="member-count">{{ channel[0].users.length }}</span>
                 <ng-template #noUsers>
@@ -87,7 +89,7 @@
         <div class="search-menu" *ngIf="searchActive">
                 <div class="single-user" *ngFor="let user of searchedUsers" (click)="addUserToChannel(user.id)">
                     <img class="single-user-avatar" 
-                    [src]="user.profilepicture && user.profilepicture.startsWith('http') ? user.profilepicture : './assets/img/avatars/' + user.profilepicture + '.png'" 
+                    [src]="userService.getUserProfilePicture(user.id) && userService.getUserProfilePicture(user.id).startsWith('http') ? userService.getUserProfilePicture(user.id) : './assets/img/avatars/' + userService.getUserProfilePicture(user.id) + '.png'" 
                     alt="avatar">
                 <span>{{ user.name }}</span>
             </div>

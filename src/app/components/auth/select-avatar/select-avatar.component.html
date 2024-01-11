@@ -11,7 +11,7 @@
             </div>
             <ng-template #avatarSelected>
                 <div class="selected-avatar">
-                    <img *ngIf="selectedAvatar" [src]="selectedAvatar" alt="Selected Avatar">
+                    <img *ngIf="selectedAvatar" [src]="'./assets/img/avatars/' + selectedAvatar + '.png'" alt="Selected Avatar">
                 </div>
             </ng-template>
             <div class="avatar-selection-content">

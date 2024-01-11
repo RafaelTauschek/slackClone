@@ -15,7 +15,7 @@
                     <div class="message-container-right">
                         <div class="message-content-container">
                             <div class="message-header">
-                                <span class="time">{{ message.timestamp }}</span>
+                                <span class="time">{{ sharedService.formatTimestampToTime(message.timestamp) }}</span>
                                 <span class="username">{{ userService.getUserName(message.senderId) }}</span>
                             </div>
                             <div class="message-content">
@@ -23,22 +23,26 @@
                             </div>
                         </div>
                         <div class="profile-img-container">
-                            <img src="./assets/img/avatars/avatar6.png" alt="avatar">
+                            <img class="avatar" 
+                            [src]="userService.getUserProfilePicture(message.senderId) && userService.getUserProfilePicture(message.senderId).startsWith('http') ? userService.getUserProfilePicture(message.senderId) : './assets/img/avatars/' + userService.getUserProfilePicture(message.senderId) + '.png'" 
+                            alt="avatar">
                         </div>
                     </div>
                 </ng-container>
                 <ng-template #leftContainer>
                     <div class="message-container-left">
                         <div class="profile-img-container">
-                            <img src="./assets/img/avatars/avatar6.png" alt="avatar">
+                            <img class="avatar" 
+                            [src]="userService.getUserProfilePicture(message.senderId) && userService.getUserProfilePicture(message.senderId).startsWith('http') ? userService.getUserProfilePicture(message.senderId) : './assets/img/avatars/' + userService.getUserProfilePicture(message.senderId) + '.png'" 
+                            alt="avatar">
                         </div>
                         <div class="message-content-container">
                             <div class="message-header">
-                                <span class="username">Username</span>
-                                <span class="time">Time</span>
+                                <span class="username">{{ userService.getUserName(message.senderId) }}</span>
+                                <span class="time">{{ sharedService.formatTimestampToTime(message.timestamp) }}</span>
                             </div>
                             <div class="message-content">
-                                <span class="text">Message Content</span>
+                                <span class="text">{{ message.content }}</span>
                             </div>
                         </div>
                     </div>

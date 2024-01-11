@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Chat } from '../../../models/chat.class';
 import { MessageService } from '../../../services/message.service';
+import { SharedService } from '../../../services/shared.service';
 
 @Component({
   selector: 'app-direct-chat-chatarea',
@@ -19,7 +20,7 @@ export class DirectChatChatareaComponent {
   messagesAvailable: boolean = false;
   chat: Chat[] = [];
 
-  constructor(public userService: UserService, private messageService: MessageService) {
+  constructor(public userService: UserService, private messageService: MessageService, public sharedService: SharedService) {
     this.userSubscription = this.userService.activeUserObservable$.subscribe((user) => {
       this.user = user;
     });
