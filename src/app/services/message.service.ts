@@ -93,6 +93,7 @@ export class MessageService implements OnDestroy {
       answers: [],
       fileName: '',
       fileUrl: '',
+      editMessage: false,
     });
     await this.firebaseService.updateMessages('chats', chatId, message.toJSON());
     await this.firebaseService.updateChats('users', activeUserId, chatId);
@@ -141,6 +142,7 @@ export class MessageService implements OnDestroy {
       answers: [],
       fileName: '',
       fileUrl: '',
+      editMessage: false,
     });
     await this.firebaseService.updateMessages('chats', chatId, message.toJSON());
     await this.updateChatMessages(chatId);
@@ -169,47 +171,6 @@ export class MessageService implements OnDestroy {
     }
   }
 
-
-  // async sendChannelMessage(newMessage: string) {
-  //   try {
-  //     const date = new Date().getTime();
-  //     const message = new Message({
-  //       senderId: this.user[0].id,
-  //       recieverId: '',
-  //       timestamp: date,
-  //       content: newMessage,
-  //       emojis: [],
-  //       answers: [],
-  //       fileName: '',
-  //       fileUrl: '',
-  //     });
-  //     await this.firebaseService.updateMessages('channels', this.channelService.currentChannelId, message.toJSON())
-  //     await this.channelService.updateChannel(this.channelService.currentChannelId);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
-
-  // async sendMessage() {
-  //   if (this.selectedFile) {
-  //     const fileUrl = await this.uploadFile(this.selectedFile);
-  //     this.message = new Message({
-  //       // ...
-  //       content: this.messageText,
-  //       fileName: this.selectedFileName,
-  //       fileUrl: fileUrl,
-  //     });
-  //   } else {
-  //     this.message = new Message({
-  //       // ...
-  //       content: this.messageText,
-  //     });
-  //   }
-  //   // Send the message...
-  //   this.messageText = '';
-  //   this.selectedFile = null;
-  //}
-
   generateNewMessage(newMessage: string, fileName: string, fileUrl: string) {
     const date = new Date().getTime();
     const message = new Message({
@@ -221,6 +182,7 @@ export class MessageService implements OnDestroy {
       answers: [],
       fileName: fileName,
       fileUrl: fileUrl,
+      editMessage: false,
     });
     return message;
   }

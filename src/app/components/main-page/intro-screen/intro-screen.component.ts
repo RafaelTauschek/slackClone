@@ -14,14 +14,16 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './intro-screen.component.scss',
 })
 export class IntroScreenComponent implements OnInit {
-
+  animationStart: boolean = false;
   animationEnd: boolean = false;
 
 
   constructor(public route: ActivatedRoute, public router: Router) { }
 
   ngOnInit(): void {
+    this.animationStart = true;
     setTimeout(() => {
+      this.animationStart = false;
       this.animationEnd = true;
     }, 2000)
   }

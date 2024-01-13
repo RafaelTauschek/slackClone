@@ -4,16 +4,15 @@
     flex-direction: column;
     height: 100vh;
     margin: 0;
-    padding: 0;
-    overflow: hidden;
+    padding: 25px;
+    overflow: hidden !important; 
 }
 
 main {
     display: flex;
     gap: 20px;
-    height: 100%;
-    width: calc(100% - 108px);
-    margin-left: 24px;
+    max-height: calc(100% - 140px);
+    width: calc(100% - 50px);
 
     app-sidebar {
         flex: 0 0 12%;

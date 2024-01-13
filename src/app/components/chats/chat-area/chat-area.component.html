@@ -25,10 +25,13 @@
                                     </div>
                                     <div><img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
                                     <div><img src="./assets/img/icons/comment2-icon.png" alt="add-comment"></div>
-                                    <div><img src="./assets/img/icons/three-point-icon.png" alt="edit-message"></div>
+                                    <div (click)="openEditMenu(message)"><img src="./assets/img/icons/three-point-icon.png" alt="edit-message"></div>
+                                </div>
+                                <div class="edit-message-overlay" *ngIf="message.editMessage" >
+                                    <span (click)="editMessage(message)">Nachricht bearbeiten</span>
                                 </div>
                                 <div class="message-content">
-                                    <span class="text">{{ message?.content }}</span>
+                                    <span class="text">{{ message.content }}</span>
                                     <img class="message-img" *ngIf="sharedService.isImage(message.fileUrl)"
                                         [src]="message.fileUrl" alt="{{ message.fileName }}" />
                                     <object class="message-pdf"
