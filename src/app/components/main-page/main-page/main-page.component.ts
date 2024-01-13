@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { ThreadComponent } from '../thread/thread.component';
@@ -18,8 +18,6 @@ import { NewMessageComponent } from '../new-message/new-message.component';
 })
 export class MainPageComponent {
   isSidebarOpen: boolean = true;
-
-
 
   constructor(public sharedService: SharedService) {
   }

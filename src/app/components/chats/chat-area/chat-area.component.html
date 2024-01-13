@@ -59,10 +59,10 @@
                                         target="_blank">Datei öffnen</a>
                                 </div>
                                 <div class="message-footer">
-                                    <div class="answer-container">
+                                    <div class="answer-container" *ngIf="message.answers.length > 0">
                                         <span (click)="openThread(message)" class="answers">{{ message.answers.length }}
                                             Antworten</span>
-                                        <span class="last-answer">Letzte Antwort 14:56</span>
+                                        <span class="last-answer">Letzte Antwort {{ sharedService.formatTimestampToTime(message.answers[message.answers.length - 1].timestamp) }}</span>
                                     </div>
                                     <div class="emoji-container">
                                         <div class="single-emoji">

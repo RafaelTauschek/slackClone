@@ -4,47 +4,79 @@
     align-items: center;
     height: 70px;
     padding: 20px 30px;
+
+    @media only screen and (max-width: 768px) {
+        padding: 15px 16px;
+    }
 }
 
 .logo {
     margin-left: 20px;
+
+    @media only screen and (max-width: 768px) {
+        margin-left: 0;
+
+        height: 45px;
+    }
 }
 
 .user-container {
     display: flex;
     align-items: center;
+    position: relative;
     gap: 20px;
 
     .online-dot {
         height: 17px;
         width: 17px;
         position: absolute;
-        right: 108px;
-        top: 99px;
+        right: 50px;
+        top: 52px;
         border: 2px solid #ECEEFE;
         border-radius: 100px;
         background: #ECEEFE;
+        
+        @media only screen and (max-width: 768px) {
+            display: none;
+        }
     }
 
     span {
         font-size: 32px;
         font-weight: 700;
+
+        @media only screen and (max-width: 768px) {
+            display: none;
+        }
     }
 
     .avatar {
         width: 70px;
         height: 70px;
         border-radius: 100px;
+
+        @media only screen and (max-width: 768px) {
+            width: 50px;
+            height: 50px;
+        }
     }
 
     .dropdown {
         width: 30px;
         height: 30px;
+
+        @media only screen and (max-width: 768px) {
+            display: none;
+        }
     }
 }
 
 .search-menu {
     position: relative;
+
+    @media only screen and (max-width: 768px) {
+        display: none;
+    }
 
     input {
         width: 550px;

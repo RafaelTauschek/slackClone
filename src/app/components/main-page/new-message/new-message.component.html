@@ -12,13 +12,13 @@
             </div>
             <div class="user-search-output" *ngIf="searchType == 'user'">
                 <div class="single-user-output" *ngFor="let user of searchedUsers" (click)="setUser(user)">
-                    <img src="./assets/img/avatars/{{ user.profilepicture }}.png" alt="user-avatar">
+                    <img [src]="userService.getProfilePictureURL(user.id)" alt="user-avatar">
                     <span>{{ user.name }}</span>
                 </div>
             </div>
             <div class="user-mail-output" *ngIf="searchType == 'email'">
                 <div class="single-mail-output" *ngFor="let mail of searchedEmails" (click)="setUser(mail)">
-                    <img src="./assets/img/avatars/{{ mail.profilepicture }}.png" alt="user-avatar">
+                    <img [src]="userService.getProfilePictureURL(mail.id)" alt="user-avatar">
                     <span>{{ mail.name }}</span>
                 </div>
             </div>

@@ -4,7 +4,7 @@
     flex-direction: column;
     height: 100vh;
     margin: 0;
-    padding: 25px;
+    padding: 0;
     overflow: hidden !important; 
 }
 
@@ -14,18 +14,17 @@ main {
     max-height: calc(100% - 140px);
     width: calc(100% - 50px);
 
+
     app-sidebar {
         flex: 0 0 12%;
+        margin-left: 35px;
     }
-
     .chats {
         flex: 1;
     }
-
     app-thread {
         flex: 0 0 12%;
     }
-
 }
 
 .workspace-menu {
@@ -42,6 +41,10 @@ main {
     left: -140px;
     transform: rotate(270deg);
     cursor: pointer;
+
+    @media only screen and (max-width: 768px) {
+        display: none;
+    }
 
     &:hover {
         span {

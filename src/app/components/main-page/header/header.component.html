@@ -14,9 +14,7 @@
 
             <div *ngIf="searchedUser" class="searched-user">
                 <div class="singleUser" *ngFor="let user of searchedUser" (click)="openUser(user.id)">
-                    <img class="user-image"
-                        [src]="user.profilepicture && user.profilepicture.startsWith('http') ? user.profilepicture : './assets/img/avatars/' + user.profilepicture + '.png'"
-                        alt="avatar">
+                    <img class="user-image" [src]="userService.getProfilePictureURL(user.id)" alt="avatar">
                     <span>&#64; {{ user.name }}</span>
                 </div>
             </div>
@@ -38,7 +36,7 @@
                 <div class="single-direct-message" *ngFor="let message of searchedDirectMessages">
                     <div class="single-direct-header">
                         <img class="avatar"
-                            [src]="userService.getUserProfilePicture(message.senderId) && userService.getUserProfilePicture(message.senderId).startsWith('http') ? userService.getUserProfilePicture(message.senderId) : './assets/img/avatars/' + userService.getUserProfilePicture(message.senderId) + '.png'"
+                            [src]="userService.getProfilePictureURL(message.senderId)"
                             alt="avatar">
                         <span>{{ userService.getUserName(message.senderId) }}</span>
                     </div>
@@ -79,7 +77,7 @@
         </div>
         <div class="profile-menu-img" *ngIf="currentUser[0]">
             <img *ngIf="currentUser !== undefined" class="avatar"
-                [src]="currentUser[0].profilepicture && currentUser[0].profilepicture.startsWith('http') ? currentUser[0].profilepicture : './assets/img/avatars/' + currentUser[0].profilepicture + '.png'"
+                [src]="userService.getProfilePictureURL(currentUser[0].id)"
                 alt="avatar">
         </div>
         <div class="profile-menu-name">
@@ -109,7 +107,7 @@
         </div>
         <div class="edit-menu-userimage" *ngIf="currentUser[0]">
             <img *ngIf="currentUser !== undefined" class="avatar"
-                [src]="currentUser[0].profilepicture && currentUser[0].profilepicture.startsWith('http') ? currentUser[0].profilepicture : './assets/img/avatars/' + currentUser[0].profilepicture + '.png'"
+                [src]="userService.getProfilePictureURL(currentUser[0].id)"
                 alt="avatar">
         </div>
         <div class="edit-menu-inputs">

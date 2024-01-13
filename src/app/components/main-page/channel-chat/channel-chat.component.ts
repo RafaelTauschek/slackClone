@@ -114,6 +114,4 @@ export class ChannelChatComponent implements OnDestroy {
     this.message = '';
     this.selectedFile = null;
   }
-
-
 }

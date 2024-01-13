@@ -35,7 +35,7 @@ export class NewMessageComponent implements OnDestroy {
   selectedFile: File | null = null;
 
 
-  constructor(private userService: UserService, private channelService: ChannelService, private searchService: SearchService,
+  constructor(public userService: UserService, private channelService: ChannelService, private searchService: SearchService,
     private sharedService: SharedService, private messageService: MessageService) {
     this.usersSubscription = this.userService.usersObservable$.subscribe((users) => {
       this.users = users;
