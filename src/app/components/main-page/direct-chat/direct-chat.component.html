@@ -1,7 +1,9 @@
 <div class="direct-chat-container">
     <div class="direct-chat-header">
-        <img src="./assets/img/avatars/avatar4.png" alt="avatar-icon">
-        <span>Sofia Mueller</span>
+        <img class="avatar"
+            [src]="userService.getUserProfilePicture(sharedService.currentPartner) && userService.getUserProfilePicture(sharedService.currentPartner).startsWith('http') ? userService.getUserProfilePicture(sharedService.currentPartner) : './assets/img/avatars/' + userService.getUserProfilePicture(sharedService.currentPartner) + '.png'"
+            alt="avatar">
+        <span>{{ userService.getUserName(sharedService.currentPartner) }}</span>
     </div>
 
     <div class="chat-area">
@@ -9,10 +11,11 @@
     </div>
 
     <div class="direct-chat-textarea">
-        <textarea [(ngModel)]="message" placeholder="Nachricht an Sofia Mueller" cols="30" rows="3"></textarea>
+        <textarea [(ngModel)]="message" placeholder="Nachricht an {{ userService.getUserName(sharedService.currentPartner) }}" cols="30" rows="3"></textarea>
         <div class="thread-icons">
             <div class="icons-left">
-                <img src="./assets/img/icons/add-icon-gray.png" alt="add-icon">
+                <label for="file-input"><img src="./assets/img/icons/add-icon-gray.png" alt="add-icon"></label>
+                <input type="file" id="file-input" (change)="onFileSelected($event)">
                 <div class="seperator"></div>
                 <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
                 <img src="./assets/img/icons/at-icon.png" alt="at-icon">

@@ -219,9 +219,20 @@
         cursor: pointer;
 
 
-        img {
+        .avatar {
             width: 50px;
             height: 50px;
+            border-radius: 100px;
+        }
+
+        .online-dot {
+            height: 14px;
+            width: 14px;
+            position: absolute;
+            margin-left: 35px;
+            margin-top: 33px;
+            border: 2px solid white;
+            background: white;
             border-radius: 100px;
         }
 

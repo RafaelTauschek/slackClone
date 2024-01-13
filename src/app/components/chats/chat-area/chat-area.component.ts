@@ -8,12 +8,14 @@ import { Message } from '../../../models/message.class';
 import { CommonModule } from '@angular/common';
 import { SharedService } from '../../../services/shared.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+
 
 
 @Component({
   selector: 'app-chat-area',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PickerComponent],
   templateUrl: './chat-area.component.html',
   styleUrl: './chat-area.component.scss'
 })
@@ -23,6 +25,8 @@ export class ChatAreaComponent implements OnDestroy {
   channelSubscription: Subscription;
   messageSubscription: Subscription;
   formatedMessages: { [key: string]: Message[] } = {};
+  showEmojiPicker = false;
+  isEditing: boolean = false;
 
   constructor(private channelService: ChannelService, private messageService: MessageService, 
     public userService: UserService, public sharedService: SharedService, public sanitizer: DomSanitizer) {
@@ -37,6 +41,16 @@ export class ChatAreaComponent implements OnDestroy {
     });
   }
 
+  toggleEmojiPicker(message: any) {
+    console.log('toggleEmojiPicker');
+    console.log(message);
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(event: any) {
+    console.log(event);
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
 
   openThread(message: any) {
     this.messageService.setCurrentMessage([message]);

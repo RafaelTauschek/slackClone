@@ -22,13 +22,22 @@ export class DirectChatComponent {
   message: string = '';
   chatSubscription: Subscription;
   chat: Chat[] = [];
+  selectedFileName: string = '';
+  selectedFile: File | null = null;
 
-  constructor(private userService: UserService, private messageService: MessageService, private firebaseService: FirebaseService, private sharedService: SharedService) {
+  constructor(public userService: UserService, private messageService: MessageService, private firebaseService: FirebaseService, public sharedService: SharedService) {
     this.chatSubscription = this.messageService.chatSubscription$.subscribe((chat) => {
       this.chat = chat;
     });
   }
 
+  
+  onFileSelected(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      this.selectedFileName = this.selectedFile?.name ?? '';
+    }
+  }
 
   async addMessageToChat() {
     if (this.message !== '') {

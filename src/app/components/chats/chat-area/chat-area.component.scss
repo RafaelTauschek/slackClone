@@ -5,6 +5,7 @@
 .chat-area-container {
     padding: 60px 35px;
     max-height: 100%;
+    height: 100vh;
 }
 
 .date-container {
@@ -120,17 +121,26 @@
         .message-footer {
             display: flex;
             align-items: center;
+            flex-direction: column;
             gap: 20px;
 
-            .answers {
-                font-size: 18px;
-                color: #535AF1;
-                cursor: pointer;
+            .answer-container {
+                .answers {
+                    font-size: 18px;
+                    color: #535AF1;
+                    cursor: pointer;
+                }
+
+                .last-answers {
+                    font-size: 14px;
+                    color: #686868;
+                }
             }
 
-            .last-answers {
-                font-size: 14px;
-                color: #686868;
+            .emoji-container {
+                display: flex;
+                gap: 10px;
+                align-items: center;
             }
         }
     }
@@ -222,19 +232,55 @@
 
         .message-footer {
             display: flex;
+            flex-direction: column;
+            gap: 8px;
             align-items: flex-end;
-            gap: 20px;
-            align-self: flex-end;
 
-            .answers {
-                font-size: 18px;
-                color: #535AF1;
-                cursor: pointer;
+            .answer-container {
+                display: flex;
+                gap: 20px;
+                
+                .answers {
+                    font-size: 18px;
+                    color: #535AF1;
+                    cursor: pointer;
+                }
+
+                .last-answers {
+                    font-size: 14px;
+                    color: #686868;
+                }
             }
 
-            .last-answers {
-                font-size: 14px;
-                color: #686868;
+            .emoji-container {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+
+                .add-emoji {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                .single-emoji {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    border-radius: 20px;
+                    border: 1px solid  #ADB0D9;
+                    background-color: white;
+                    padding: 5px 10px;
+
+
+                    img {
+                        width: 24px;
+                        height: 24px;
+                    }
+
+                    span {
+                        font-size: 16px;
+                    }
+                }
             }
         }
     }
@@ -280,4 +326,11 @@
             background-color: #ECEEFE;
         }
     }
+}
+
+.emoji-mart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

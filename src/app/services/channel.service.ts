@@ -36,6 +36,7 @@ export class ChannelService {
   }
 
   async updateChannel(channelId: string) {
+    this.channels = [];
     const docSnap = await this.firebaseService.getDocument('channels', channelId);
     const channel = docSnap.data() as Channel;
     this.channels.push(channel);

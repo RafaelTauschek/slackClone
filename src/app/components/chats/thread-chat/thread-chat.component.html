@@ -1,6 +1,8 @@
 <div class="thread-chat-section">
     <div class="message-container" *ngIf="message !== undefined && message !== null">
-        <img src="./assets/img/avatars/avatar6.png" alt="avatar">
+        <img class="single-user-avatar" 
+                [src]="userService.getUserProfilePicture(message[0].senderId) && userService.getUserProfilePicture(message[0].senderId).startsWith('http') ? userService.getUserProfilePicture(message[0].senderId) : './assets/img/avatars/' + userService.getUserProfilePicture(message[0].senderId) + '.png'" 
+                alt="avatar">
         <div class="message-content">
             <div class="message-header" *ngIf="message.length > 0">
                 <span class="user-name">{{ this.userService.getUserName(message[0].senderId) }}</span>

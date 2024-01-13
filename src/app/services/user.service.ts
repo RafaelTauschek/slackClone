@@ -54,6 +54,16 @@ export class UserService {
     }   
   }
 
+  getProfilePictureURL(userId: string): string {
+    const userProfilePicture = this.getUserProfilePicture(userId);
+    if (userProfilePicture && userProfilePicture.startsWith('http')) {
+      return userProfilePicture;
+    } else {
+      return './assets/img/avatars/' + userProfilePicture + '.png';
+    }
+  }
+
+
   getChatPartnerId(chat: Chat, userId: string) {
     const chatPartnerId = chat.users.find(user => user !== userId);
     return chatPartnerId;

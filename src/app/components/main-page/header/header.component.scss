@@ -15,6 +15,17 @@
     align-items: center;
     gap: 20px;
 
+    .online-dot {
+        height: 17px;
+        width: 17px;
+        position: absolute;
+        right: 108px;
+        top: 99px;
+        border: 2px solid #ECEEFE;
+        border-radius: 100px;
+        background: #ECEEFE;
+    }
+
     span {
         font-size: 32px;
         font-weight: 700;
@@ -375,6 +386,9 @@
     position: absolute;
     width: 550px;
     z-index: 2;
+    max-height: 250px;
+    overflow: scroll;
+    border-radius: 30px;
 }
 
 .searched-user,

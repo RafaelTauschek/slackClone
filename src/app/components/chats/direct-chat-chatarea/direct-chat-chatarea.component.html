@@ -20,6 +20,22 @@
                             </div>
                             <div class="message-content">
                                 <span class="text">{{ message.content }}</span>
+                                <img class="message-img" *ngIf="sharedService.isImage(message.fileUrl)"
+                                        [src]="message.fileUrl" alt="{{ message.fileName }}" />
+                                    <object class="message-pdf"
+                                        *ngIf="sharedService.isPdf(message.fileUrl) && !sharedService.isImage(message.fileUrl)"
+                                        [data]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
+                                        type="application/pdf" width="300" height="200">
+                                        <a [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)">{{
+                                            message.fileName }}</a>
+                                    </object>
+                                    <video class="message-video"
+                                        *ngIf="sharedService.isVideo(message.fileUrl) && !sharedService.isImage(message.fileUrl) && !sharedService.isPdf(message.fileUrl)"
+                                        [src]="message.fileUrl" controls width="300" height="200">
+                                    </video>
+                                    <a *ngIf="message.fileUrl"
+                                        [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
+                                        target="_blank">Datei öffnen</a>
                             </div>
                         </div>
                         <div class="profile-img-container">
@@ -43,6 +59,22 @@
                             </div>
                             <div class="message-content">
                                 <span class="text">{{ message.content }}</span>
+                                <img class="message-img" *ngIf="sharedService.isImage(message.fileUrl)"
+                                [src]="message.fileUrl" alt="{{ message.fileName }}" />
+                            <object class="message-pdf"
+                                *ngIf="sharedService.isPdf(message.fileUrl) && !sharedService.isImage(message.fileUrl)"
+                                [data]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
+                                type="application/pdf" width="300" height="200">
+                                <a [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)">{{
+                                    message.fileName }}</a>
+                            </object>
+                            <video class="message-video"
+                                *ngIf="sharedService.isVideo(message.fileUrl) && !sharedService.isImage(message.fileUrl) && !sharedService.isPdf(message.fileUrl)"
+                                [src]="message.fileUrl" controls width="300" height="200">
+                            </video>
+                            <a *ngIf="message.fileUrl"
+                                [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
+                                target="_blank">Datei öffnen</a>
                             </div>
                         </div>
                     </div>
@@ -55,10 +87,12 @@
     <ng-template #noMessages>
         <div class="no-messages">
             <div class="no-message-header">
-                <img src="./assets/img/avatars/avatar4.png" alt="user-avatar">
-                <span>Sofia Mueller</span>
+                <img class="avatar" 
+                [src]="userService.getUserProfilePicture(sharedService.currentPartner) && userService.getUserProfilePicture(sharedService.currentPartner).startsWith('http') ? userService.getUserProfilePicture(sharedService.currentPartner) : './assets/img/avatars/' + userService.getUserProfilePicture(sharedService.currentPartner) + '.png'" 
+                alt="avatar">
+                <span>{{ userService.getUserName(sharedService.currentPartner) }}</span>
             </div>
-            <span>Diese Unterhaltung findet nur zwischen <a>&#64;Sofia Mueller</a> und dir statt</span>
+            <span>Diese Unterhaltung findet nur zwischen <a>&#64;{{ userService.getUserName(sharedService.currentPartner) }}</a> und dir statt</span>
         </div>
     </ng-template>
 </div>

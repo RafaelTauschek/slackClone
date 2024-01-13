@@ -24,7 +24,8 @@ export class AuthService {
 
 
   constructor(
-    private userService: UserService, private router: Router, private firebaseService: FirebaseService, private channelService: ChannelService, private messageService: MessageService) {
+    private userService: UserService, private router: Router, private firebaseService: FirebaseService, 
+    private channelService: ChannelService, private messageService: MessageService) {
     this.setupAuthStateListener();
   }
 
@@ -38,7 +39,7 @@ export class AuthService {
       if (user) {
         this.handeUserLoggedIn(user);
       } else {
-        this.handleUserLoggedOut();
+        this.handleUserLoggedOut(user);
       }
     });
   }
@@ -49,9 +50,8 @@ export class AuthService {
     await this.messageService.loadChats(user.uid);
   }
 
+  async handleUserLoggedOut(user: any) {
 
-
-  handleUserLoggedOut(): void {
   }
 
 

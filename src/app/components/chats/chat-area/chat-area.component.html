@@ -23,36 +23,55 @@
                                     <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
                                     <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji">
                                     </div>
-                                    <div><img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
-                                    <div><img src="./assets/img/icons/comment2-icon.png" alt="add-comment"></div>
-                                    <div (click)="openEditMenu(message)"><img src="./assets/img/icons/three-point-icon.png" alt="edit-message"></div>
+                                    <div (click)="toggleEmojiPicker(message)"><img
+                                            src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
+                                    <div><img (click)="openThread(message)" src="./assets/img/icons/comment2-icon.png"
+                                            alt="add-comment"></div>
+                                    <div (click)="openEditMenu(message)"><img
+                                            src="./assets/img/icons/three-point-icon.png" alt="edit-message"></div>
                                 </div>
-                                <div class="edit-message-overlay" *ngIf="message.editMessage" >
+                                <div class="edit-message-overlay" *ngIf="message.editMessage">
                                     <span (click)="editMessage(message)">Nachricht bearbeiten</span>
-                                </div>
-                                <div class="message-content">
+                                </div> 
+                                <div class="message-content" [ngSwitch]="message.fileType">
+                                    <div class="editing-container" *ngIf="isEditing">
+                                        <textarea name="message" [value]="message.content"></textarea>
+                                        <div class="editing-footer">
+                                            <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
+                                            <div class="editing-btn-container">
+                                                <button>Abbrechen</button>
+                                                <button>Speichern</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <span class="text">{{ message.content }}</span>
-                                    <img class="message-img" *ngIf="sharedService.isImage(message.fileUrl)"
-                                        [src]="message.fileUrl" alt="{{ message.fileName }}" />
-                                    <object class="message-pdf"
-                                        *ngIf="sharedService.isPdf(message.fileUrl) && !sharedService.isImage(message.fileUrl)"
+                                    <img class="message-image" *ngSwitchCase="'image'" [src]="message.fileUrl" />
+                                    <object class="message-pdf" *ngSwitchCase="'pdf'"
                                         [data]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
                                         type="application/pdf" width="300" height="200">
                                         <a [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)">{{
                                             message.fileName }}</a>
                                     </object>
-                                    <video class="message-video"
-                                        *ngIf="sharedService.isVideo(message.fileUrl) && !sharedService.isImage(message.fileUrl) && !sharedService.isPdf(message.fileUrl)"
-                                        [src]="message.fileUrl" controls width="300" height="200">
-                                    </video>
+                                    <video class="message-video" *ngSwitchCase="'video'" [src]="message.fileUrl"
+                                        controls width="300" height="200"></video>
                                     <a *ngIf="message.fileUrl"
                                         [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
                                         target="_blank">Datei öffnen</a>
                                 </div>
                                 <div class="message-footer">
-                                    <span (click)="openThread(message)" class="answers">{{ message.answers.length }}
-                                        Antworten</span>
-                                    <span class="last-answer">Letzte Antwort 14:56</span>
+                                    <div class="answer-container">
+                                        <span (click)="openThread(message)" class="answers">{{ message.answers.length }}
+                                            Antworten</span>
+                                        <span class="last-answer">Letzte Antwort 14:56</span>
+                                    </div>
+                                    <div class="emoji-container">
+                                        <div class="single-emoji">
+                                            <img src="./assets/img/emojis/rocket.png" alt="emoji">
+                                            <span class="emoji-count">1</span>
+                                        </div>
+                                        <img class="add-emoji" src="./assets/img/icons/add-emoji-icon.png"
+                                            alt="add-emoji-icon">
+                                    </div>
                                 </div>
                             </div>
                             <div class="profile-img-container">
@@ -78,31 +97,39 @@
                                     <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
                                     <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji">
                                     </div>
-                                    <div><img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
-                                    <div><img src="./assets/img/icons/comment2-icon.png" alt="add-comment"></div>
+                                    <div (click)="toggleEmojiPicker(message)"><img
+                                            src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
+                                    <div><img (click)="openThread(message)" src="./assets/img/icons/comment2-icon.png"
+                                            alt="add-comment"></div>
                                 </div>
-                                <div class="message-content">
+
+                                <div class="message-content" [ngSwitch]="message.fileType">
                                     <span class="text">{{ message?.content }}</span>
-                                    <img class="message-image" *ngIf="sharedService.isImage(message.fileUrl)"
-                                        [src]="message.fileUrl" />
-                                    <object class="message-pdf"
-                                        *ngIf="sharedService.isPdf(message.fileUrl) && !sharedService.isImage(message.fileUrl)"
+                                    <img class="message-image" *ngSwitchCase="'image'" [src]="message.fileUrl" />
+                                    <object class="message-pdf" *ngSwitchCase="'pdf'"
                                         [data]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
                                         type="application/pdf" width="300" height="200">
                                         <a [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)">{{
                                             message.fileName }}</a>
                                     </object>
-                                    <video class="message-video"
-                                        *ngIf="sharedService.isVideo(message.fileUrl) && !sharedService.isImage(message.fileUrl) && !sharedService.isPdf(message.fileUrl)"
-                                        [src]="message.fileUrl" controls width="300" height="200">
-                                    </video>
+                                    <video class="message-video" *ngSwitchCase="'video'" [src]="message.fileUrl"
+                                        controls width="300" height="200"></video>
                                     <a *ngIf="message.fileUrl"
                                         [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
                                         target="_blank">Datei öffnen</a>
                                 </div>
                                 <div class="message-footer">
-                                    <span class="answers">{{ message.answers.length }} Antworten</span>
-                                    <span class="last-answer">Letzte Antwort 14:56</span>
+                                    <div class="answer-container">
+                                        <span class="answers">{{ message.answers.length }} Antworten</span>
+                                        <span class="last-answer">Letzte Antwort 14:56</span>
+                                    </div>
+                                    <div class="emoji-container">
+                                        <div class="single-emoji">
+                                            <img src="./assets/img/emojis/rocket.png" alt="emoji">
+                                            <span class="emoji-count">1</span>
+                                        </div>
+                                        <img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji-icon">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -111,10 +138,14 @@
             </div>
         </div>
     </div>
+    <div class="emoji-picker" *ngIf="showEmojiPicker">
+        <emoji-mart class="emoji-mart" (emojiClick)="addEmoji($event)"></emoji-mart>
+    </div>
     <ng-template #noMessages>
         <div *ngIf="channel[0]">
             <span># {{ channel[0].name }}</span>
-            <span *ngIf="channel[0]">Dieser Channel wurde am Datumeinfuegen von {{
+            <span *ngIf="channel[0]">Dieser Channel wurde am {{ sharedService.formatDate(channel[0].creationDate) }} von
+                {{
                 userService.getUserName(channel[0].creator) }} erstellt. Das ist der Anfang des Channels # {{
                 channel[0].name }}.</span>
         </div>

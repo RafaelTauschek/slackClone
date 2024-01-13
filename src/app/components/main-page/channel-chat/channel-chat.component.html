@@ -56,10 +56,12 @@
             <span>Mitglieder</span>
             <img src="./assets/img/icons/close-icon.png" alt="close-icon" (click)="memberListActive = false">
         </div>
-        <div>
+        <div *ngFor="let member of channel[0].users">
             <div class="single-member">
-                <img src="./assets/img/avatars/avatar5.png" alt="user-avatar">
-                <span>Username</span>
+                <img class="single-user-avatar" 
+                    [src]="userService.getUserProfilePicture(member) && userService.getUserProfilePicture(member).startsWith('http') ? userService.getUserProfilePicture(member) : './assets/img/avatars/' + userService.getUserProfilePicture(member) + '.png'" 
+                    alt="avatar">
+                <span>{{ userService.getUserName(member)}}</span>
             </div>
         </div>
         <div class="member-list-add-member" (click)="openInviteList()">

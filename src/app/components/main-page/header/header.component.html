@@ -14,9 +14,9 @@
 
             <div *ngIf="searchedUser" class="searched-user">
                 <div class="singleUser" *ngFor="let user of searchedUser" (click)="openUser(user.id)">
-                    <img class="user-image" 
-                    [src]="user.profilepicture && user.profilepicture.startsWith('http') ? user.profilepicture : './assets/img/avatars/' + user.profilepicture + '.png'" 
-                    alt="avatar">
+                    <img class="user-image"
+                        [src]="user.profilepicture && user.profilepicture.startsWith('http') ? user.profilepicture : './assets/img/avatars/' + user.profilepicture + '.png'"
+                        alt="avatar">
                     <span>&#64; {{ user.name }}</span>
                 </div>
             </div>
@@ -37,9 +37,9 @@
             <div *ngIf="searchedDirectMessages" class="searched-direct-message">
                 <div class="single-direct-message" *ngFor="let message of searchedDirectMessages">
                     <div class="single-direct-header">
-                        <img class="avatar" 
-                        [src]="userService.getUserProfilePicture(message.senderId) && userService.getUserProfilePicture(message.senderId).startsWith('http') ? userService.getUserProfilePicture(message.senderId) : './assets/img/avatars/' + userService.getUserProfilePicture(message.senderId) + '.png'" 
-                        alt="avatar">
+                        <img class="avatar"
+                            [src]="userService.getUserProfilePicture(message.senderId) && userService.getUserProfilePicture(message.senderId).startsWith('http') ? userService.getUserProfilePicture(message.senderId) : './assets/img/avatars/' + userService.getUserProfilePicture(message.senderId) + '.png'"
+                            alt="avatar">
                         <span>{{ userService.getUserName(message.senderId) }}</span>
                     </div>
                     <div class="single-direct-content">
@@ -55,13 +55,13 @@
         <ng-template #noName>
             <span>Gast</span>
         </ng-template>
-        <img *ngIf="currentUser !== undefined" class="avatar" 
-     [src]="currentUser[0].profilepicture && currentUser[0].profilepicture.startsWith('http') ? currentUser[0].profilepicture : './assets/img/avatars/' + currentUser[0].profilepicture + '.png'" 
-     alt="avatar">
-        <img (click)="userMenu = !userMenu" class="dropdown" src="./assets/img/icons/arrow-drop-down.png" alt="arrow-dropdown">
+        <img *ngIf="currentUser !== undefined" class="avatar" [src]="userService.getProfilePictureURL(currentUser[0].id)" alt="avatar">
+        <img class="online-dot" src="./assets/img/online-dot.png" alt="online-dot">
+        <img (click)="userMenu = !userMenu" class="dropdown" src="./assets/img/icons/arrow-drop-down.png"
+            alt="arrow-dropdown">
     </div>
 
-    
+
     <div *ngIf="userMenu || profileMenu || editMenu" class="overlay" (click)="closeMenus()"></div>
     <div class="user-menu" *ngIf="userMenu">
         <div class="user-menu-option">
@@ -78,9 +78,9 @@
             <img (click)="closeProfileMenu()" src="./assets/img/icons/close-icon.png" alt="close-icon">
         </div>
         <div class="profile-menu-img" *ngIf="currentUser[0]">
-            <img *ngIf="currentUser !== undefined" class="avatar" 
-     [src]="currentUser[0].profilepicture && currentUser[0].profilepicture.startsWith('http') ? currentUser[0].profilepicture : './assets/img/avatars/' + currentUser[0].profilepicture + '.png'" 
-     alt="avatar">
+            <img *ngIf="currentUser !== undefined" class="avatar"
+                [src]="currentUser[0].profilepicture && currentUser[0].profilepicture.startsWith('http') ? currentUser[0].profilepicture : './assets/img/avatars/' + currentUser[0].profilepicture + '.png'"
+                alt="avatar">
         </div>
         <div class="profile-menu-name">
             <div class="profile-menu-name-header">
@@ -108,9 +108,9 @@
             <img (click)="closeEditMenu() " src="./assets/img/icons/close-icon.png" alt="close-icon">
         </div>
         <div class="edit-menu-userimage" *ngIf="currentUser[0]">
-            <img *ngIf="currentUser !== undefined" class="avatar" 
-            [src]="currentUser[0].profilepicture && currentUser[0].profilepicture.startsWith('http') ? currentUser[0].profilepicture : './assets/img/avatars/' + currentUser[0].profilepicture + '.png'" 
-            alt="avatar">
+            <img *ngIf="currentUser !== undefined" class="avatar"
+                [src]="currentUser[0].profilepicture && currentUser[0].profilepicture.startsWith('http') ? currentUser[0].profilepicture : './assets/img/avatars/' + currentUser[0].profilepicture + '.png'"
+                alt="avatar">
         </div>
         <div class="edit-menu-inputs">
             <div class="edit-input-container">
@@ -135,5 +135,3 @@
     </div>
 
 </div>
-
-

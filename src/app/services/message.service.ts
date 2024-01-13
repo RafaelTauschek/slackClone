@@ -160,9 +160,6 @@ export class MessageService implements OnDestroy {
         fileUrl = await this.storageService.uploadFile(file);
       }
       const message = this.generateNewMessage(newMessage, fileName, fileUrl);
-      console.log('file Url: ' + fileUrl);
-      console.log('isImage:', this.sharedService.isImage(message.fileUrl));
-      
       await this.firebaseService.updateMessages('channels', this.channelService.currentChannelId, message.toJSON())
       await this.channelService.updateChannel(this.channelService.currentChannelId);
     }
@@ -182,9 +179,22 @@ export class MessageService implements OnDestroy {
       answers: [],
       fileName: fileName,
       fileUrl: fileUrl,
+      fileType: this.determineFileType(fileName),
       editMessage: false,
     });
     return message;
+  }
+
+  determineFileType(fileName: string) {
+    if (this.sharedService.isImage(fileName)) {
+      return 'image';
+    } else if (this.sharedService.isPdf(fileName)) {
+      return 'pdf';
+    } else if (this.sharedService.isVideo(fileName)) {
+      return 'video';
+    } else {
+      return 'unknown';
+    }
   }
 
 
