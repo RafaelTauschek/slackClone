@@ -1,9 +1,9 @@
 .channel-chat-container {
     background-color: white;
-    height: calc(100% - 180px);
     width: auto;
     padding: 32px 0px;
     display: flex;
+    max-height: calc(100% - 90px);
     flex-direction: column;
     align-items: flex-start;
     border-radius: 30px;
@@ -98,7 +98,6 @@
 
 .chat-area {
     width: 100%;
-    margin: 16px 0px;
     flex: 1 1 auto;
     overflow-y: auto;
 }

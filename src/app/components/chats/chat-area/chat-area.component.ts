@@ -50,4 +50,13 @@ export class ChatAreaComponent implements OnDestroy {
     this.messageSubscription.unsubscribe();
   }
 
+
+  openEditMenu(message: any) {
+    message.editMessage = true;
+  }
+
+  editMessage(message: any) {
+    message.editMessage = false;
+  }
+
 }

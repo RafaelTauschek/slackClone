@@ -62,6 +62,7 @@ export class ThreadComponent implements OnDestroy {
         answers: [],
         fileName: '',
         fileUrl: '',
+        editMessage: false,
       });
       let index: number = this.findMessageIndex();
       this.channel[0].messages[index].answers.push(answer.toJSON());

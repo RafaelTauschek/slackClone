@@ -14,7 +14,9 @@
 
             <div *ngIf="searchedUser" class="searched-user">
                 <div class="singleUser" *ngFor="let user of searchedUser" (click)="openUser(user.id)">
-                    <img class="user-image" src="./assets/img/avatars/{{ user.profilepicture }}.png" alt="">
+                    <img class="user-image" 
+                    [src]="user.profilepicture && user.profilepicture.startsWith('http') ? user.profilepicture : './assets/img/avatars/' + user.profilepicture + '.png'" 
+                    alt="avatar">
                     <span>&#64; {{ user.name }}</span>
                 </div>
             </div>

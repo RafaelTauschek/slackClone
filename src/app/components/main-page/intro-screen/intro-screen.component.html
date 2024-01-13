@@ -1,16 +1,25 @@
 
 
-<div class="start-section">
-    <header>
+<div class="into-overlay" *ngIf="animationStart">
+    <img class="logo" src="./assets/img/logo.png">
+    <div class="logo-text"><span>DABubble</span></div>
+</div>
+
+<div class="intro-section" >
+    <div class="header">
         <img src="./assets/img/logo_top.png" alt="logo">
-    </header>
+        <div class="register">
+            <span class="new">Neu bei DABubble?</span>
+            <span class="register-user" [routerLink]="['/registration']">Konto erstellen</span>
+        </div>
+    </div>
 
-    <router-outlet></router-outlet>
+    <div class="content"><router-outlet></router-outlet></div>
 
-    <footer>
-        <span>Neu bei DABubble?</span>
-        <button [routerLink]="['/registration']">Konto erstellen</button>
-    </footer>
+    <div class="footer">
+        <span>Impressum</span>
+        <span>Datenschutz</span>
+    </div>
 </div>
 
 
