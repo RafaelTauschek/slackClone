@@ -6,14 +6,19 @@
     margin: 0;
     padding: 0;
     overflow: hidden !important; 
+
+    @media only screen and (max-width: 768px) {
+        width: 100%;
+        background-color: white;
+        overflow: auto !important;
+    }
 }
 
-main {
+.desktop-main {
     display: flex;
     gap: 20px;
     max-height: calc(100% - 140px);
     width: calc(100% - 50px);
-
 
     app-sidebar {
         flex: 0 0 12%;
@@ -24,6 +29,22 @@ main {
     }
     app-thread {
         flex: 0 0 12%;
+    }
+
+}
+
+.mobile-main {
+    box-sizing: border-box;
+    flex-grow: 1;
+    overflow: auto;
+    gap: 0px;
+
+    app-sidebar,
+    app-thread,
+    app-direct-chat,
+    app-channel-chat,
+    app-new-message {
+        margin: 0;
     }
 }
 

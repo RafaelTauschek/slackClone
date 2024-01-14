@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable,  } from '@angular/core';
 import { Message } from '../models/message.class';
 import { UserService } from './user.service';
 import { Subject } from 'rxjs';
@@ -12,11 +12,13 @@ export class SharedService {
   channelChatActive: Boolean = true;
   messageActive: Boolean = false;
   currentPartner: string = '';
+  isMobile: boolean = false;
   currentChatPartnerId = new Subject<string>();
   currentChatPartnerId$ = this.currentChatPartnerId.asObservable();
+  activeComponent = 'sidebar';
 
   constructor(private userService: UserService) {}
-
+  
 
   setCurrentChatPartnerId(id: string) {
     this.currentChatPartnerId.next(id);

@@ -12,6 +12,11 @@
     align-items: flex-start;
     border-radius: 30px;
     justify-content: space-between;
+
+    @media only screen and (max-width: 768px) {
+        width: 100vw;
+        height: calc(100% - 140px);
+    }
 }
 
 

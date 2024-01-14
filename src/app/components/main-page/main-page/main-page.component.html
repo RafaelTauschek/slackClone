@@ -1,6 +1,6 @@
 <div class="mainpage-container">
     <app-header></app-header>
-    <main>
+    <main class="desktop-main" *ngIf="!sharedService.isMobile">
         <app-sidebar *ngIf="isSidebarOpen"></app-sidebar>
         <div class="chats">
             <app-channel-chat *ngIf="this.sharedService.channelChatActive"></app-channel-chat>
@@ -10,7 +10,17 @@
         <app-thread *ngIf="this.sharedService.threadActive"></app-thread>
     </main>
 
-    <div class="workspace-menu" (click)="isSidebarOpen = !isSidebarOpen">
+    <main class="mobile-main" *ngIf="sharedService.isMobile">
+        <app-sidebar *ngIf="sharedService.activeComponent === 'sidebar'"></app-sidebar>
+        <app-channel-chat *ngIf="sharedService.activeComponent === 'channel-chat'"></app-channel-chat>
+        <app-direct-chat *ngIf="sharedService.activeComponent === 'direct-chat'"></app-direct-chat>
+        <app-new-message *ngIf="sharedService.activeComponent === 'new-message'"></app-new-message>
+        <app-thread *ngIf="sharedService.activeComponent === 'thread'"></app-thread>
+    </main>
+
+
+
+    <div *ngIf="!sharedService.isMobile" class="workspace-menu" (click)="isSidebarOpen = !isSidebarOpen">
         <span *ngIf="isSidebarOpen">Workspace-Menü schließen</span>
         <span *ngIf="!isSidebarOpen">Workspace-Menü öffnen</span>
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">

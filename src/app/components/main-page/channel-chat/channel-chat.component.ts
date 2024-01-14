@@ -13,6 +13,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditChannelDialogComponent } from '../../dialogs/edit-channel-dialog/edit-channel-dialog.component';
 import { User } from '../../../models/user.class';
 import { SearchService } from '../../../services/search.service';
+import { SharedService } from '../../../services/shared.service';
 
 @Component({
   selector: 'app-channel-chat',
@@ -34,7 +35,7 @@ export class ChannelChatComponent implements OnDestroy {
   searchTerm: string = '';
 
   constructor(public channelService: ChannelService, public userService: UserService, 
-    private messageService: MessageService, private dialog: MatDialog, private searchService: SearchService ) {
+    private messageService: MessageService, private dialog: MatDialog, private searchService: SearchService, public sharedService: SharedService ) {
     this.channelSubscription = this.channelService.channelSubscription$.subscribe((channel) => {
       this.channel = channel;
     });

@@ -38,10 +38,14 @@ export class SidebarComponent implements OnDestroy {
   }
 
   selectChannel(channelId: string) {
+    if (this.sharedService.isMobile) {
+      this.sharedService.activeComponent = 'channel-chat';
+    }
     this.channelService.setSelectedChannel(channelId);
     this.sharedService.messageActive = false;
     this.sharedService.directChatActive = false;
     this.sharedService.channelChatActive = true;
+
 
   }
 
@@ -56,18 +60,27 @@ export class SidebarComponent implements OnDestroy {
   }
 
   openNewMessage() {
-    this.sharedService.channelChatActive = false;
-    this.sharedService.directChatActive = false;
-    this.sharedService.threadActive = false;
-    this.sharedService.messageActive = true;
+    if (this.sharedService.isMobile) {
+      this.sharedService.activeComponent = 'new-message';
+    } else {
+      this.sharedService.channelChatActive = false;
+      this.sharedService.directChatActive = false;
+      this.sharedService.threadActive = false;
+      this.sharedService.messageActive = true;
+    }
   }
 
   async openDirectChat(chatpartnerId: string, chat: Chat) {
     this.sharedService.setCurrentChatPartnerId(chatpartnerId);
     this.messageService.setCurrentChat([chat]);
-    this.sharedService.channelChatActive = false;
-    this.sharedService.messageActive = false;
-    this.sharedService.threadActive = false;
-    this.sharedService.directChatActive = true;
+
+    if (this.sharedService.isMobile) {
+      this.sharedService.activeComponent = 'direct-chat';
+    } else {
+      this.sharedService.channelChatActive = false;
+      this.sharedService.messageActive = false;
+      this.sharedService.threadActive = false;
+      this.sharedService.directChatActive = true;
+    }
   }
 }

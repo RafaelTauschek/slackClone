@@ -71,6 +71,7 @@ export class ChatAreaComponent implements OnDestroy {
 
   editMessage(message: any) {
     message.editMessage = false;
+    this.isEditing = true;
   }
 
 }

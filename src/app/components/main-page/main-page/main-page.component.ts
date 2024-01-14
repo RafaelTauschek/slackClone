@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { ThreadComponent } from '../thread/thread.component';
@@ -16,11 +16,25 @@ import { NewMessageComponent } from '../new-message/new-message.component';
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
-export class MainPageComponent {
+export class MainPageComponent implements OnInit {
   isSidebarOpen: boolean = true;
 
   constructor(public sharedService: SharedService) {
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkIfMobile();
+  }
+
+  ngOnInit(): void {
+    this.checkIfMobile();
+  }
+
+  checkIfMobile() {
+    this.sharedService.isMobile = window.matchMedia('(max-width: 768px)').matches;
+  }
+
+  
 
 }

@@ -9,7 +9,7 @@
         </div>
 
         <div class="header-right">
-            <div *ngIf="channel[0]" class="channel-member" (click)="openMemberList()">
+            <div *ngIf="channel[0] && !sharedService.isMobile" class="channel-member" (click)="openMemberList()">
                 @for (user of (channel[0].users | slice:0:3); track $index) {
                     <img class="avatar" 
                     [src]="userService.getUserProfilePicture(user) && userService.getUserProfilePicture(user).startsWith('http') ? userService.getUserProfilePicture(user) : './assets/img/avatars/' + userService.getUserProfilePicture(user) + '.png'" 
@@ -80,7 +80,7 @@
             </div>
             <div class="header-bottom">
                 <img src="./assets/img/icons/tag-blue-icon.png" alt="tag-icon">
-                <span>Channelname</span>
+                <span>{{ channel[0].name }}</span>
             </div>
         </div>
 
