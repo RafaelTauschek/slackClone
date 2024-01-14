@@ -54,7 +54,15 @@ export class ChatAreaComponent implements OnDestroy {
 
   openThread(message: any) {
     this.messageService.setCurrentMessage([message]);
-      this.sharedService.threadActive = true;
+    if (this.sharedService.isMobile) {
+      this.sharedService.activeComponent = 'thread';
+    }
+
+    if (this.sharedService.isTablet) {
+      this.sharedService.channelChatActive = false;
+    }
+    this.sharedService.threadActive = true;
+    this.sharedService.changeWidth = 'calc(100% - 108px)';
   }
 
 

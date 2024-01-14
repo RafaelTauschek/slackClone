@@ -13,10 +13,11 @@ export class SharedService {
   messageActive: Boolean = false;
   currentPartner: string = '';
   isMobile: boolean = false;
+  isTablet: boolean = false;
   currentChatPartnerId = new Subject<string>();
   currentChatPartnerId$ = this.currentChatPartnerId.asObservable();
   activeComponent = 'sidebar';
-
+  changeWidth = 'calc(100% - 48px)';
   constructor(private userService: UserService) {}
   
 

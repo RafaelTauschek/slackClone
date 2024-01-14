@@ -1,13 +1,13 @@
 <div class="mainpage-container">
     <app-header></app-header>
-    <main class="desktop-main" *ngIf="!sharedService.isMobile">
+    <main class="desktop-main" *ngIf="!sharedService.isMobile" [style.width]="sharedService.changeWidth">
         <app-sidebar *ngIf="isSidebarOpen"></app-sidebar>
-        <div class="chats">
-            <app-channel-chat *ngIf="this.sharedService.channelChatActive"></app-channel-chat>
-            <app-direct-chat *ngIf="this.sharedService.directChatActive"></app-direct-chat>
-            <app-new-message *ngIf="this.sharedService.messageActive"></app-new-message>
+        <div class="chats" [class.flex-0]="sharedService.isTablet && sharedService.threadActive" >
+            <app-channel-chat *ngIf="sharedService.channelChatActive"></app-channel-chat>
+            <app-direct-chat *ngIf="sharedService.directChatActive"></app-direct-chat>
+            <app-new-message *ngIf="sharedService.messageActive"></app-new-message>
         </div>
-        <app-thread *ngIf="this.sharedService.threadActive"></app-thread>
+        <app-thread *ngIf="sharedService.threadActive"></app-thread>
     </main>
 
     <main class="mobile-main" *ngIf="sharedService.isMobile">

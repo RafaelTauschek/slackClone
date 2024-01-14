@@ -48,7 +48,14 @@ export class ThreadComponent implements OnDestroy {
   }
 
   closeThread() {
+    if (this.sharedService.isMobile) {
+      this.sharedService.activeComponent = 'sidebar';
+    }
+    if (this.sharedService.isTablet) {
+      this.sharedService.channelChatActive = true;
+    }
     this.sharedService.threadActive = false;
+    this.sharedService.changeWidth = 'calc(100% - 48px)';
   }
 
   async sendMessage() {

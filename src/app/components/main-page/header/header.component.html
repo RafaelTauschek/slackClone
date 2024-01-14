@@ -1,8 +1,8 @@
 <div class="header">
     <div class="logo">
-        <img class="logo" src="./assets/img/logo_top.png" alt="logo">
-        <div class="workspace-header">
-            <img class="arrow-back" src="./assets/img/icons/arrow-back.png" alt="arrow-back">
+        <img *ngIf="sharedService.activeComponent === 'sidebar' || !sharedService.isMobile" class="logo" src="./assets/img/logo_top.png" alt="logo">
+        <div *ngIf="sharedService.isMobile && sharedService.activeComponent !== 'sidebar'" class="workspace-header">
+            <img (click)="goToSidebar()" class="arrow-back" src="./assets/img/icons/workspace-arrow.png" alt="arrow-back">
             <div class="workspace-logo">
                 <img src="./assets/img/workspace-logo.png" alt="workspace-logo">
                 <span>Code learning</span>
@@ -56,10 +56,8 @@
         </div>
     </div>
     <div class="user-container" *ngIf="currentUser[0]">
-        <span *ngIf="currentUser !== undefined; else noName">{{ currentUser[0].name }}</span>
-        <ng-template #noName>
-            <span>Gast</span>
-        </ng-template>
+        <span *ngIf="currentUser !== undefined && !sharedService.isTablet">{{ currentUser[0].name }}</span>
+        <span *ngIf="currentUser !== undefined && sharedService.isTablet">{{ userService.getInitials() }}</span>
         <img *ngIf="currentUser !== undefined" class="avatar" [src]="userService.getProfilePictureURL(currentUser[0].id)" alt="avatar">
         <img class="online-dot" src="./assets/img/online-dot.png" alt="online-dot">
         <img (click)="userMenu = !userMenu" class="dropdown" src="./assets/img/icons/arrow-drop-down.png"

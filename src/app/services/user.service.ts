@@ -63,6 +63,12 @@ export class UserService {
     }
   }
 
+  getInitials() {
+    const user = this.activeUser.value[0];
+    const name = user.name.split(' ');
+    const initials = name[0].charAt(0).toUpperCase() + '.' + name[name.length - 1].charAt(0).toUpperCase() + '.';
+    return initials;
+  }
 
   getChatPartnerId(chat: Chat, userId: string) {
     const chatPartnerId = chat.users.find(user => user !== userId);

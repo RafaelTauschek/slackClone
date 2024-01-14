@@ -58,7 +58,7 @@ export class HeaderComponent implements OnDestroy{
 
   constructor(public userService: UserService, private authService: AuthService,
     private channelService: ChannelService, private dialog: MatDialog, 
-    private sharedService: SharedService, private messageService: MessageService, private searchService: SearchService) {
+    public sharedService: SharedService, private messageService: MessageService, private searchService: SearchService) {
     this.currentUserSubscription = this.userService.activeUserObservable$.subscribe((currentUser) => {
       this.currentUser = currentUser;
       if (this.currentUser && this.currentUser[0] && !this.isEditing) {
@@ -118,6 +118,10 @@ export class HeaderComponent implements OnDestroy{
 
   openDialog() {
     this.dialog.open(UserPofileDialogComponent, {});
+  }
+
+  goToSidebar() {
+    this.sharedService.activeComponent = 'sidebar';
   }
 
 

@@ -19,7 +19,7 @@ import { User } from '../../../models/user.class';
 })
 export class SidebarComponent implements OnDestroy {
   channelsSubscription: Subscription;
-  chatSubscription: Subscription; 
+  chatSubscription: Subscription;
   userSubscription: Subscription;
   channels: Channel[] = [];
   chats: Chat[] = [];
@@ -29,12 +29,12 @@ export class SidebarComponent implements OnDestroy {
     this.channelsSubscription = this.channelService.channelsSubscription$.subscribe((channels) => {
       this.channels = channels;
     })
-    this.chatSubscription = this.messageService.chatsSubscription$.subscribe((chats) => { 
+    this.chatSubscription = this.messageService.chatsSubscription$.subscribe((chats) => {
       this.chats = chats;
     });
     this.userSubscription = this.userService.activeUserObservable$.subscribe((user) => {
       this.user = user;
-    }); 
+    });
   }
 
   selectChannel(channelId: string) {
@@ -82,5 +82,6 @@ export class SidebarComponent implements OnDestroy {
       this.sharedService.threadActive = false;
       this.sharedService.directChatActive = true;
     }
+    this.sharedService.changeWidth = 'calc(100% - 48px)';
   }
 }

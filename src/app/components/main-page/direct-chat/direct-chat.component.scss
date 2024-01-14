@@ -8,9 +8,10 @@
     align-items: flex-start;
     border-radius: 30px;
 
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: 1024px) {
         padding: 0;
         width: 100dvw;
+        max-height: none;
     }
 }
 
@@ -26,8 +27,7 @@
     flex: 0 0 auto;
     gap: 15px;
 
-    @media only screen and (max-width: 768px) {
-        width: 100%;
+    @media only screen and (max-width: 1024px) {
         margin: 0;
         height: auto;
         padding: 10px 16px;
@@ -64,7 +64,6 @@
     flex: 1 1 auto;
     overflow-y: auto;
 
-
 }
 
 app-direct-chat-chatarea {
@@ -79,6 +78,11 @@ app-direct-chat-chatarea {
 
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
+
+
+    @media only screen and (max-width: 1024px) {
+        margin-top: 70px;
+    }
 
 
 }
@@ -97,8 +101,9 @@ app-direct-chat-chatarea {
     box-sizing: border-box;
     flex: 0 0 auto;
 
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: 1024px) {
         margin-bottom: 30px;
+        margin-top: 10px;
     }
 
     textarea {

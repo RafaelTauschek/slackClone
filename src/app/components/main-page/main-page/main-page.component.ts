@@ -25,14 +25,20 @@ export class MainPageComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.checkIfMobile();
+    this.checkIfTablet();
   }
 
   ngOnInit(): void {
     this.checkIfMobile();
+    this.checkIfTablet();
   }
 
   checkIfMobile() {
-    this.sharedService.isMobile = window.matchMedia('(max-width: 768px)').matches;
+    this.sharedService.isMobile = window.matchMedia('(max-width: 1024px)').matches;
+  }
+
+  checkIfTablet() {
+    this.sharedService.isTablet = window.matchMedia('(min-width: 1025px) and (max-width: 1280px)').matches;
   }
 
   
