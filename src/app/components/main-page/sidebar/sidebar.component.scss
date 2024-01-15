@@ -272,3 +272,22 @@
         height: 32px;
     }
 }
+
+.edit-btn {
+    position: absolute;
+    right: 20px;
+    bottom: 30px;
+    background: #444DF2;
+    border-radius: 100px;
+    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 10px 12px 10px;
+
+
+    img {
+        height: 24px;
+        width: 24px;
+    }
+}

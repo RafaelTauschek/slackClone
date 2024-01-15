@@ -1,7 +1,23 @@
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
     border-radius: 30px;
     border-top-left-radius: 0px;
+
+    @media only screen and (max-width: 1024px) {
+        border-radius: 0px;
+    }
 }
+
+::ng-deep .mat-mdc-dialog-surface .mdc-dialog__surface {
+    @media only screen and (max-width: 1024px) {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        top: 110px;
+        border-radius: 0px;
+        width: 100vw;
+    }
+}
+
 
 .edit-channel-container {
     padding: 40px;
@@ -14,6 +30,10 @@
     border-radius: 0px 30px 30px 30px;
     background-color: white;
     width: 792px;
+
+    @media only screen and (max-width: 1024px) {
+        width: auto;
+    }
 }
 
 .header {
@@ -220,5 +240,5 @@
         outline: none;
         box-sizing: border-box;
     }
-    
+
 }

@@ -47,5 +47,9 @@ export class EditChannelDialogComponent {
   }
   
   leaveChannel() {
+    //get Channel id + get Userid
+    //delete channel from user  + delete user from channel
+    //if channel has no users delete channel
+    
   }
 }

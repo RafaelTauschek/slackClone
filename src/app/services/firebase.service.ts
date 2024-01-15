@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { collection, addDoc, updateDoc, doc, setDoc, getDoc, query, getDocs, where, arrayUnion } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { User } from '../models/user.class';
 import { Channel } from '../models/channel.class';
 
@@ -12,7 +13,7 @@ import { Channel } from '../models/channel.class';
 })
 export class FirebaseService {
   firestore: Firestore = inject(Firestore);
-
+  storage = getStorage();
 
   getCollectionRef(colId: string) {
     return collection(this.firestore, colId);
@@ -75,5 +76,12 @@ export class FirebaseService {
         console.log(err);
       }
     }
+  }
+
+  async uploadFile(file: File): Promise<string> {
+    const uniqueFileName = `${Date.now()}-${file.name}`;
+    const storageRef = ref(this.storage, uniqueFileName);
+    const result = await uploadBytes(storageRef, file);
+    return await getDownloadURL(result.ref);
   }
 }

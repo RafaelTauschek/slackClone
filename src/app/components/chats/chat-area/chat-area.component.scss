@@ -135,11 +135,23 @@
                     font-size: 18px;
                     color: #535AF1;
                     cursor: pointer;
+
+                    @media only screen and (max-width: 450px) {
+                        font-size: 16px;
+                    }
+
+                    @media only screen and (max-width: 380px) {
+                        font-size: 14px;
+                    }
                 }
 
-                .last-answers {
+                .last-answer {
                     font-size: 14px;
                     color: #686868;
+
+                    @media only screen and (max-width: 450px) {
+                        font-size: 12px;
+                    }
                 }
             }
 
@@ -164,6 +176,10 @@
     padding: 10px 16px 10px 50px;
     gap: 16px;
     align-items: flex-start;
+
+    @media  only screen and (max-width: 768px) {
+       padding: 10px 16px;;
+    }
 
 
     .profile-img-container {
@@ -250,11 +266,23 @@
                     font-size: 18px;
                     color: #535AF1;
                     cursor: pointer;
+
+                    @media only screen and (max-width: 450px) {
+                        font-size: 16px;
+                    }
+
+                    @media only screen and (max-width: 380px) {
+                        font-size: 14px;
+                    }
                 }
 
-                .last-answers {
+                .last-answer {
                     font-size: 14px;
                     color: #686868;
+
+                    @media only screen and (max-width: 450px) {
+                        font-size: 12px;
+                    }
                 }
             }
 

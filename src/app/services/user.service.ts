@@ -75,10 +75,13 @@ export class UserService {
     return chatPartnerId;
   }
 
+  testuser: User[] = [];
 
   async loadUser(userId: string) {
       const docSnap = await this.firebaseService.getDocument('users', userId);
       const user = docSnap.data() as User;
+      this.testuser = [user];
+      console.log('testuser: ', this.testuser);
       this.setActiveUser(user);
       if (user.channels.length > 0) {
         await this.firebaseService.getUserChannels(user);

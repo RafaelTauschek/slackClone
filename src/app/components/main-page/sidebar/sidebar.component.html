@@ -16,7 +16,7 @@
     <div class="channel-container">
         <div class="channel-header">
             <div class="channel-header-start">
-                <div class="dropdown-container">
+                <div class="dropdown-container" (click)="toggleChannel()">
                     <img src="./assets/img/icons/arrow-drop-down.png">
                 </div>
                 <div class="channel-title-container">
@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <div class="available-channels">
+        <div class="available-channels" *ngIf="showChannels">
             @for (channel of channels; track $index) {
             <div class="single-channel" (click)="selectChannel(channel.id)">
                 <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
@@ -46,7 +46,7 @@
 
     <div class="direct-chat-container">
         <div class="direct-chat-header">
-            <div class="dropdown-container">
+            <div class="dropdown-container" (click)="toggleDirectChat()">
                 <img src="./assets/img/icons/arrow-drop-down.png" alt="drop-down-icon">
             </div>
 
@@ -55,18 +55,18 @@
                 <span>Direktnachrichten</span>
             </div>
         </div>
-
-        <div class="available-chats">
+        
+        <div class="available-chats" *ngIf="showDirectChats"> 
             @for (chat of chats; track $index) {
             <div class="single-direct-chat" (click)="openDirectChat(userService.getChatPartnerId(chat, user[0].id) || '', chat)">
-                <img class="avatar" [src]="userService.getUserProfilePicture(userService.getChatPartnerId(chat, user[0].id) || '') &&
-                userService.getUserProfilePicture(userService.getChatPartnerId(chat, user[0].id) || '').startsWith('http') ?
-                userService.getUserProfilePicture(userService.getChatPartnerId(chat, user[0].id) || '') : 
-                './assets/img/avatars/' + userService.getUserProfilePicture(userService.getChatPartnerId(chat, user[0].id) || '') + '.png'">
+                <img class="avatar" [src]="userService.getProfilePictureURL(userService.getChatPartnerId(chat, user[0].id) || '')">
                 <img class="online-dot" src="./assets/img/online-dot.png">
                 <span>{{ userService.getUserName(userService.getChatPartnerId(chat, user[0].id) || '')}}</span>
             </div>
             }
         </div>
+    </div>
+    <div class="edit-btn" *ngIf="sharedService.isMobile" (click)="openNewMessage()">
+        <img src="./assets/img/icons/edit-white-icon.png" alt="edit-icon">
     </div>
 </div>

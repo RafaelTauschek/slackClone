@@ -1,5 +1,4 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { UserService } from './user.service';
 import { Channel } from '../models/channel.class';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { User } from '../models/user.class';

@@ -11,17 +11,15 @@
         <div class="header-right">
             <div *ngIf="channel[0] && !sharedService.isMobile" class="channel-member" (click)="openMemberList()">
                 @for (user of (channel[0].users | slice:0:3); track $index) {
-                    <img class="avatar" 
-                    [src]="userService.getUserProfilePicture(user) && userService.getUserProfilePicture(user).startsWith('http') ? userService.getUserProfilePicture(user) : './assets/img/avatars/' + userService.getUserProfilePicture(user) + '.png'" 
-                    alt="avatar">
+                    <img class="avatar" [src]="userService.getProfilePictureURL(user)" alt="avatar">
                 }
                 <span *ngIf="channel[0].users; else noUsers" class="member-count">{{ channel[0].users.length }}</span>
                 <ng-template #noUsers>
                     <span class="member-count">0</span>
                 </ng-template>
             </div>
-            <img class="add-member" src="./assets/img/icons/add-person-icon.png" alt="add-member-icon"
-                (click)="memberInviteActive = true">
+            <img *ngIf="!sharedService.isMobile" class="add-member" src="./assets/img/icons/add-person-icon.png" alt="add-member-icon"(click)="memberInviteActive = true">
+            <img *ngIf="sharedService.isMobile" src="./assets/img/icons/add-person-icon.png" alt="add-member-icon" (click)="openMemberList()">
         </div>
     </div>
 

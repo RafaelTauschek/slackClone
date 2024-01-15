@@ -30,9 +30,6 @@ export class AuthService {
   }
 
 
-
-
-
   setupAuthStateListener(): void {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -44,17 +41,16 @@ export class AuthService {
     });
   }
 
+
   async handeUserLoggedIn(user: any) {
     await this.userService.loadUser(user.uid);
     await this.channelService.loadChannels(user.uid);
     await this.messageService.loadChats(user.uid);
   }
 
+
   async handleUserLoggedOut(user: any) {
-
   }
-
-
 
 
    async loginGoogle() {
@@ -81,6 +77,7 @@ export class AuthService {
        console.log(err);
      })
    }
+
 
   async login(email: string, password: string) {
     await signInWithEmailAndPassword(this.auth, email, password).then(() => {
@@ -116,7 +113,6 @@ export class AuthService {
       console.log(err);
     })
   }
-
 
 
   logout() {

@@ -3,7 +3,6 @@ import { UserService } from '../../../services/user.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FirebaseService } from '../../../services/firebase.service';
-import { StorageService } from '../../../services/storage.service';
 import { User } from '../../../models/user.class';
 
 @Component({
@@ -23,7 +22,7 @@ export class SelectAvatarComponent {
   userId: string = '';
 
   constructor(private userService: UserService,
-    private route: ActivatedRoute, private firebaseService: FirebaseService, private router: Router, private storageService: StorageService) {
+    private route: ActivatedRoute, private firebaseService: FirebaseService, private router: Router) {
     console.log(this.selectedAvatar);
 
     this.route.paramMap.subscribe((paramMap) => {
@@ -46,7 +45,7 @@ export class SelectAvatarComponent {
   async submitSelectedAvatar() {
     let profilePictureUrl = this.selectedAvatar;
     if (this.uploadedAvatar) {
-      profilePictureUrl = await this.storageService.uploadFile(this.uploadedAvatar);
+      profilePictureUrl = await this.firebaseService.uploadFile(this.uploadedAvatar);
     }
     if (profilePictureUrl) {
       const user =  new User ({

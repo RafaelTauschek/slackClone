@@ -7,7 +7,6 @@ import { ChannelService } from './channel.service';
 import { Message } from '../models/message.class';
 import { FirebaseService } from './firebase.service';
 import { Chat } from '../models/chat.class';
-import { StorageService } from './storage.service';
 import { SharedService } from './shared.service';
 
 @Injectable({
@@ -30,7 +29,7 @@ export class MessageService implements OnDestroy {
 
 
   constructor(private userService: UserService, private channelService: ChannelService,
-    private firebaseService: FirebaseService, private storageService: StorageService, private sharedService: SharedService) {
+    private firebaseService: FirebaseService, private sharedService: SharedService) {
     this.userSubscription = this.userService.activeUserObservable$.subscribe((activeUser) => {
       this.user = activeUser;
     });
@@ -157,7 +156,7 @@ export class MessageService implements OnDestroy {
     try {
       if (file) {
         fileName = file.name;
-        fileUrl = await this.storageService.uploadFile(file);
+        fileUrl = await this.firebaseService.uploadFile(file);
       }
       const message = this.generateNewMessage(newMessage, fileName, fileUrl);
       await this.firebaseService.updateMessages('channels', this.channelService.currentChannelId, message.toJSON())

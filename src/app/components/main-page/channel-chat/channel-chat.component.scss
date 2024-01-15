@@ -264,6 +264,22 @@ app-chat-area {
     padding: 40px;
     z-index: 999;
 
+    @media only screen and (max-width: 1024px) {
+        right: 30px;
+        top: 160px;
+    }
+
+    @media only screen and (max-width: 420px) {
+        right: 20px;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    @media only screen and (max-width: 360px) {
+        right: 10px;
+    }
+
+
 
     .invite-header {
         display: flex;
@@ -383,6 +399,21 @@ app-chat-area {
     top: 190px;
     z-index: 999;
 
+    @media only screen and (max-width: 1024px) {
+        right: 30px;
+        top: 160px;
+    }
+
+    @media only screen and (max-width: 420px) {
+        right: 20px;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    @media only screen and (max-width: 360px) {
+        right: 10px;
+    }
+
 
     .member-list-header {
         display: flex;
@@ -397,8 +428,8 @@ app-chat-area {
         }
 
         img {
-            width: 40px;
-            height: 40px;
+            width: 25px;
+            height: 25px;
             cursor: pointer;
         }
     }

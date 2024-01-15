@@ -24,6 +24,8 @@ export class SidebarComponent implements OnDestroy {
   channels: Channel[] = [];
   chats: Chat[] = [];
   user: User[] = [];
+  showChannels: boolean = true;
+  showDirectChats: boolean = true;  
 
   constructor(private dialog: MatDialog, private channelService: ChannelService, public sharedService: SharedService, private messageService: MessageService, public userService: UserService) {
     this.channelsSubscription = this.channelService.channelsSubscription$.subscribe((channels) => {
@@ -68,6 +70,7 @@ export class SidebarComponent implements OnDestroy {
       this.sharedService.threadActive = false;
       this.sharedService.messageActive = true;
     }
+    this.sharedService.changeWidth = 'calc(100% - 48px)';
   }
 
   async openDirectChat(chatpartnerId: string, chat: Chat) {
@@ -83,5 +86,13 @@ export class SidebarComponent implements OnDestroy {
       this.sharedService.directChatActive = true;
     }
     this.sharedService.changeWidth = 'calc(100% - 48px)';
+  }
+
+  toggleChannel() {
+    this.showChannels = !this.showChannels;
+  }
+
+  toggleDirectChat() {
+    this.showDirectChats = !this.showDirectChats;
   }
 }
