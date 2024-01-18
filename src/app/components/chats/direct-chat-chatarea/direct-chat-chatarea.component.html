@@ -89,10 +89,11 @@
             <div class="no-message-header">
                 <img class="avatar" 
                 [src]="userService.getUserProfilePicture(sharedService.currentPartner) && userService.getUserProfilePicture(sharedService.currentPartner).startsWith('http') ? userService.getUserProfilePicture(sharedService.currentPartner) : './assets/img/avatars/' + userService.getUserProfilePicture(sharedService.currentPartner) + '.png'" 
-                alt="avatar">
+                alt="avatar">span
                 <span>{{ userService.getUserName(sharedService.currentPartner) }}</span>
             </div>
             <span>Diese Unterhaltung findet nur zwischen <a>&#64;{{ userService.getUserName(sharedService.currentPartner) }}</a> und dir statt</span>
+            <span><b>Dieser Raum is nur für dich da.</b> Mache dir Notizen, liste deine To-dos auf oder bewahre Links und Dateien griffbereit auf. Du kannst hier auch gerne Dinge mit dir selbst besprechen.</span>
         </div>
     </ng-template>
 </div>

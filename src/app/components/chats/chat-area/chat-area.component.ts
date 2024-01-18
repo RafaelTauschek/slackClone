@@ -9,13 +9,13 @@ import { CommonModule } from '@angular/common';
 import { SharedService } from '../../../services/shared.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
-
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-chat-area',
   standalone: true,
-  imports: [CommonModule, PickerComponent],
+  imports: [CommonModule, PickerComponent, FormsModule],
   templateUrl: './chat-area.component.html',
   styleUrl: './chat-area.component.scss'
 })
@@ -27,6 +27,7 @@ export class ChatAreaComponent implements OnDestroy {
   formatedMessages: { [key: string]: Message[] } = {};
   showEmojiPicker = false;
   isEditing: boolean = false;
+  messageContent: string = '';
 
   constructor(private channelService: ChannelService, private messageService: MessageService, 
     public userService: UserService, public sharedService: SharedService, public sanitizer: DomSanitizer) {

@@ -10,6 +10,7 @@ import { Chat } from '../../../models/chat.class';
 import { MessageService } from '../../../services/message.service';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user.class';
+import { UserDataService } from '../../../services/data.service';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -27,7 +28,8 @@ export class SidebarComponent implements OnDestroy {
   showChannels: boolean = true;
   showDirectChats: boolean = true;  
 
-  constructor(private dialog: MatDialog, private channelService: ChannelService, public sharedService: SharedService, private messageService: MessageService, public userService: UserService) {
+  constructor(private dialog: MatDialog, private channelService: ChannelService, public sharedService: SharedService, 
+    private messageService: MessageService, public userService: UserService, public data: UserDataService) {
     this.channelsSubscription = this.channelService.channelsSubscription$.subscribe((channels) => {
       this.channels = channels;
     })
@@ -44,11 +46,10 @@ export class SidebarComponent implements OnDestroy {
       this.sharedService.activeComponent = 'channel-chat';
     }
     this.channelService.setSelectedChannel(channelId);
+    this.data.setChannel(channelId);
     this.sharedService.messageActive = false;
     this.sharedService.directChatActive = false;
     this.sharedService.channelChatActive = true;
-
-
   }
 
   ngOnDestroy(): void {

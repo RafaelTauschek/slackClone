@@ -14,6 +14,7 @@ import { MessageService } from '../../../services/message.service';
 import { Message } from '../../../models/message.class';
 import { Chat } from '../../../models/chat.class';
 import { SearchService } from '../../../services/search.service';
+import { UserDataService } from '../../../services/data.service';
 
 interface MessageWithChannel extends Message {
   channelName: string;
@@ -58,7 +59,7 @@ export class HeaderComponent implements OnDestroy{
 
   constructor(public userService: UserService, private authService: AuthService,
     private channelService: ChannelService, private dialog: MatDialog, 
-    public sharedService: SharedService, private messageService: MessageService, private searchService: SearchService) {
+    public sharedService: SharedService, private messageService: MessageService, private searchService: SearchService, public data: UserDataService) {
     this.currentUserSubscription = this.userService.activeUserObservable$.subscribe((currentUser) => {
       this.currentUser = currentUser;
       if (this.currentUser && this.currentUser[0] && !this.isEditing) {

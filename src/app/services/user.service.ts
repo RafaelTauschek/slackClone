@@ -3,6 +3,7 @@ import { User } from '../models/user.class';
 import { FirebaseService } from './firebase.service';
 import { BehaviorSubject } from 'rxjs';
 import { Chat } from '../models/chat.class';
+import { UserDataService } from './data.service';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ export class UserService {
   usersObservable$ = this.users.asObservable(); 
 
 
-  constructor(private firebaseService: FirebaseService) {
+  constructor(private firebaseService: FirebaseService, private userData: UserDataService) {
     this.loadAvailableUsers();
   }
 
@@ -75,25 +76,25 @@ export class UserService {
     return chatPartnerId;
   }
 
-  testuser: User[] = [];
 
   async loadUser(userId: string) {
       const docSnap = await this.firebaseService.getDocument('users', userId);
       const user = docSnap.data() as User;
-      this.testuser = [user];
-      console.log('testuser: ', this.testuser);
       this.setActiveUser(user);
+      this.userData.activeUser = [user];
       if (user.channels.length > 0) {
         await this.firebaseService.getUserChannels(user);
       }
   }
 
   async loadAvailableUsers() {
+    this.availableUsers = [];
     await this.firebaseService.getCollection('users').then((user) => {
       user.forEach((userdata) => {
         this.availableUsers.push(userdata.data() as User)
       })
     })
+    this.userData.users = this.availableUsers;
     this.setUsers();
   }
 

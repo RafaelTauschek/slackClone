@@ -60,6 +60,12 @@ export class FirebaseService {
     });
   }
 
+  async updateCollection(colId: string, docId: string, field: string, item: {}) {
+    updateDoc(this.getDocumentRef(colId, docId), {
+      [field]: arrayUnion(item)
+    });
+  }
+
 
   async getUserChannels(user: User) {
     if (user) {

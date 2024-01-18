@@ -14,28 +14,32 @@
                 <div class="message-container" *ngFor="let message of formatedMessages[key]">
                     <ng-container *ngIf="this.sharedService.getMessageAlignment(message.senderId); else leftContainer">
                         <div class="message-container-right">
+                            <div class="message-overlay">
+                                <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
+                                <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji">
+                                </div>
+                                <div (click)="toggleEmojiPicker(message)">
+                                    <img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji">
+                                </div>
+                                <div>
+                                    <img (click)="openThread(message)" src="./assets/img/icons/comment2-icon.png"
+                                        alt="add-comment">
+                                </div>
+                                <div (click)="openEditMenu(message)">
+                                    <img src="./assets/img/icons/three-point-icon.png" alt="edit-message">
+                                </div>
+                            </div>
+                            <div class="edit-message-overlay" *ngIf="message.editMessage && isEditing">
+                                <span (click)="editMessage(message)">Nachricht bearbeiten</span>
+                            </div>
                             <div class="message-content-container">
                                 <div class="message-header">
                                     <span class="time">{{ message?.timestamp | date: 'HH:mm'}} Uhr</span>
                                     <span class="username">{{ this.userService.getUserName(message.senderId) }}</span>
                                 </div>
-                                <div class="message-overlay">
-                                    <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
-                                    <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji">
-                                    </div>
-                                    <div (click)="toggleEmojiPicker(message)"><img
-                                            src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
-                                    <div><img (click)="openThread(message)" src="./assets/img/icons/comment2-icon.png"
-                                            alt="add-comment"></div>
-                                    <div (click)="openEditMenu(message)"><img
-                                            src="./assets/img/icons/three-point-icon.png" alt="edit-message"></div>
-                                </div>
-                                <div class="edit-message-overlay" *ngIf="message.editMessage">
-                                    <span (click)="editMessage(message)">Nachricht bearbeiten</span>
-                                </div>
                                 <div class="message-content" [ngSwitch]="message.fileType">
-                                    <div class="editing-container" *ngIf="isEditing">
-                                        <textarea name="message" [value]="message.content"></textarea>
+                                    <div class="editing-container" *ngIf="!message.editMessage && !isEditing">
+                                        <textarea name="message" [(ngModel)]="messageContent"></textarea>
                                         <div class="editing-footer">
                                             <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
                                             <div class="editing-btn-container">
@@ -77,17 +81,24 @@
                                 </div>
                             </div>
                             <div class="profile-img-container">
-                                <img class="avatar"
-                                    [src]="userService.getUserProfilePicture(message.senderId) && userService.getUserProfilePicture(message.senderId).startsWith('http') ? userService.getUserProfilePicture(message.senderId) : './assets/img/avatars/' + userService.getUserProfilePicture(message.senderId) + '.png'"
+                                <img class="avatar" [src]="userService.getProfilePictureURL(message.senderId)"
                                     alt="avatar">
                             </div>
                         </div>
                     </ng-container>
                     <ng-template #leftContainer>
                         <div class="message-container-left">
+                            <div class="message-overlay">
+                                <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
+                                <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji">
+                                </div>
+                                <div (click)="toggleEmojiPicker(message)"><img
+                                        src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
+                                <div><img (click)="openThread(message)" src="./assets/img/icons/comment2-icon.png"
+                                        alt="add-comment"></div>
+                            </div>
                             <div class="profile-img-container">
-                                <img class="avatar"
-                                    [src]="userService.getUserProfilePicture(message.senderId) && userService.getUserProfilePicture(message.senderId).startsWith('http') ? userService.getUserProfilePicture(message.senderId) : './assets/img/avatars/' + userService.getUserProfilePicture(message.senderId) + '.png'"
+                                <img class="avatar" [src]="userService.getProfilePictureURL(message.senderId)"
                                     alt="avatar">
                             </div>
                             <div class="message-content-container">
@@ -95,16 +106,6 @@
                                     <span class="username">{{ this.userService.getUserName(message.senderId)}}</span>
                                     <span class="time">{{ message?.timestamp | date: 'HH:mm' }} Uhr</span>
                                 </div>
-                                <div class="message-overlay">
-                                    <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
-                                    <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji">
-                                    </div>
-                                    <div (click)="toggleEmojiPicker(message)"><img
-                                            src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
-                                    <div><img (click)="openThread(message)" src="./assets/img/icons/comment2-icon.png"
-                                            alt="add-comment"></div>
-                                </div>
-
                                 <div class="message-content" [ngSwitch]="message.fileType">
                                     <span class="text">{{ message?.content }}</span>
                                     <img class="message-image" *ngSwitchCase="'image'" [src]="message.fileUrl" />
@@ -121,7 +122,7 @@
                                         target="_blank">Datei öffnen</a>
                                 </div>
                                 <div class="message-footer">
-                                    <div class="answer-container">
+                                    <div class="answer-container" *ngIf="message.answers.length > 0">
                                         <span class="answers">{{ message.answers.length }} Antworten</span>
                                         <span class="last-answer">Letzte Antwort 14:56</span>
                                     </div>

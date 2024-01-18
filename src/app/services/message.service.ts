@@ -8,6 +8,7 @@ import { Message } from '../models/message.class';
 import { FirebaseService } from './firebase.service';
 import { Chat } from '../models/chat.class';
 import { SharedService } from './shared.service';
+import { UserDataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class MessageService implements OnDestroy {
 
 
   constructor(private userService: UserService, private channelService: ChannelService,
-    private firebaseService: FirebaseService, private sharedService: SharedService) {
+    private firebaseService: FirebaseService, private sharedService: SharedService, private userData: UserDataService) {
     this.userSubscription = this.userService.activeUserObservable$.subscribe((activeUser) => {
       this.user = activeUser;
     });
@@ -53,6 +54,7 @@ export class MessageService implements OnDestroy {
         chats.push(docSnap.data() as Chat);
       }
       this.setChats(chats);
+      this.userData.chats = chats;
     } else {
       console.log('No Chats available for the user');
     }
@@ -103,19 +105,23 @@ export class MessageService implements OnDestroy {
   async updateChatMessages(chatId: string) {
     const docSnap = await this.firebaseService.getDocument('chats', chatId);
     const chat = docSnap.data() as Chat;
+    this.userData.currentChat = [chat];
     this.setCurrentChat([chat]);
   }
 
 
   setChats(chats: Chat[]) {
     this.chatsSubscription.next(chats);
+    this.userData.chats = chats;
   }
 
   setCurrentChat(chat: Chat[]) {
     this.chatSubscription.next(chat);
+    this.userData.currentChat = chat;
   }
 
   setCurrentMessage(message: Message[]) {
+    this.userData.message = message;
     this.singleMessageSubscription.next(message)
   }
 

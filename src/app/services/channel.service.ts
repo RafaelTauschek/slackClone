@@ -3,6 +3,7 @@ import { Channel } from '../models/channel.class';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { User } from '../models/user.class';
 import { FirebaseService } from './firebase.service';
+import { UserDataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class ChannelService {
   channels: Channel[] = [];
   currentChannelId: string = '';
 
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(private firebaseService: FirebaseService, private userData: UserDataService) {}
 
 
   async loadChannels(userId: string) {
@@ -29,6 +30,7 @@ export class ChannelService {
         this.setChannels(this.channels);
         this.setChannel([this.channels[0]])
       }
+
     } else {
       console.log('No Channel available for the user');
     }
@@ -51,9 +53,11 @@ export class ChannelService {
   setChannel(channel: Channel[]): void {
     this.channelSubscription.next(channel);
     this.currentChannelId = channel[0].id;
+    this.userData.currentChannel
   }
 
   setChannels(channels: Channel[]): void {
+    this.userData.channelList = channels;
     this.channelsSubscription.next(channels);
   }
 

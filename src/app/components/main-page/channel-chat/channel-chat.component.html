@@ -57,7 +57,7 @@
         <div *ngFor="let member of channel[0].users">
             <div class="single-member">
                 <img class="single-user-avatar" 
-                    [src]="userService.getUserProfilePicture(member) && userService.getUserProfilePicture(member).startsWith('http') ? userService.getUserProfilePicture(member) : './assets/img/avatars/' + userService.getUserProfilePicture(member) + '.png'" 
+                    [src]="userService.getProfilePictureURL(member)" 
                     alt="avatar">
                 <span>{{ userService.getUserName(member)}}</span>
             </div>
@@ -89,7 +89,7 @@
         <div class="search-menu" *ngIf="searchActive">
                 <div class="single-user" *ngFor="let user of searchedUsers" (click)="addUserToChannel(user.id)">
                     <img class="single-user-avatar" 
-                    [src]="userService.getUserProfilePicture(user.id) && userService.getUserProfilePicture(user.id).startsWith('http') ? userService.getUserProfilePicture(user.id) : './assets/img/avatars/' + userService.getUserProfilePicture(user.id) + '.png'" 
+                    [src]="userService.getProfilePictureURL(user.id)" 
                     alt="avatar">
                 <span>{{ user.name }}</span>
             </div>
@@ -98,7 +98,7 @@
         <div class="invite-user-list" *ngIf="userToAdd.length > 0">
             <div class="single-user" *ngFor="let user of userToAdd">
                 <img class="single-user-avatar" 
-                [src]="userService.getUserProfilePicture(user) && userService.getUserProfilePicture(user).startsWith('http') ? userService.getUserProfilePicture(user) : './assets/img/avatars/' + userService.getUserProfilePicture(user) + '.png'" 
+                [src]="userService.getProfilePictureURL(user)" 
                 alt="avatar">
             <span>{{ userService.getUserName(user) }}</span>
             <img (click)="removeUser(user)" src="./assets/img/icons/close-icon.png" alt="close-icon">

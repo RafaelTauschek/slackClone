@@ -30,7 +30,7 @@
         </div>
 
         <div class="available-channels" *ngIf="showChannels">
-            @for (channel of channels; track $index) {
+            @for (channel of data.userChannels; track $index) {
             <div class="single-channel" (click)="selectChannel(channel.id)">
                 <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
                 <span>{{ channel.name }}</span>
