@@ -3,9 +3,8 @@ import { Component } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { FirebaseService } from '../../../services/firebase.service';
-import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user.class';
-import { ChannelService } from '../../../services/channel.service';
+import { UserDataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-add-channel-dialog',
@@ -20,10 +19,8 @@ export class AddChannelDialogComponent {
   channelDescription: string = '';
   addingChannel: boolean = false;
 
-  constructor(private dialog: MatDialogRef<AddChannelDialogComponent>, private firebaseService: FirebaseService, 
-    private userService: UserService, private channelService: ChannelService) { 
-    this.activeUser = this.userService.activeUser.value;
-    console.log(this.activeUser);  
+  constructor(private dialog: MatDialogRef<AddChannelDialogComponent>, private firebaseService: FirebaseService, private data: UserDataService) { 
+    this.activeUser = this.data.activeUser;
   }
 
   closeDialog() {
@@ -45,7 +42,6 @@ export class AddChannelDialogComponent {
         creationDate: date,
         users: [this.activeUser[0].id],
       }
-
       const docRef = await this.firebaseService.addCollection('channels', channelData);
       console.log(docRef);
       channelData.id = docRef
@@ -61,7 +57,6 @@ export class AddChannelDialogComponent {
         chats: this.activeUser[0].chats,
       }
       await this.firebaseService.updateDocument('users', this.activeUser[0].id, userData);
-      this.channelService.loadChannels(this.activeUser[0].id);
       this.addingChannel = false;
       this.closeDialog();
     }

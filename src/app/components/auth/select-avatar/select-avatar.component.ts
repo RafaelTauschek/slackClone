@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { UserService } from '../../../services/user.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FirebaseService } from '../../../services/firebase.service';
@@ -21,10 +20,7 @@ export class SelectAvatarComponent {
   useremail: string = '';
   userId: string = '';
 
-  constructor(private userService: UserService,
-    private route: ActivatedRoute, private firebaseService: FirebaseService, private router: Router) {
-    console.log(this.selectedAvatar);
-
+  constructor(private route: ActivatedRoute, private firebaseService: FirebaseService, private router: Router) {
     this.route.paramMap.subscribe((paramMap) => {
       const name = paramMap.get('name') || '';
       this.username = name.toString();

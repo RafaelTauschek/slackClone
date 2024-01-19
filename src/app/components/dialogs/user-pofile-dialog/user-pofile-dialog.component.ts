@@ -1,9 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { SharedService } from '../../../services/shared.service';
-import { Subscription } from 'rxjs';
-import { UserService } from '../../../services/user.service';
-import { MessageService } from '../../../services/message.service';
+import { UserDataService } from '../../../services/data.service';
+
 
 @Component({
   selector: 'app-user-pofile-dialog',
@@ -12,21 +11,14 @@ import { MessageService } from '../../../services/message.service';
   templateUrl: './user-pofile-dialog.component.html',
   styleUrl: './user-pofile-dialog.component.scss'
 })
-export class UserPofileDialogComponent implements OnDestroy {
+export class UserPofileDialogComponent {
   currentUserId: string = '';
-  currentUserIdSubscription: Subscription;
 
-  constructor(public dialogRef: MatDialogRef<UserPofileDialogComponent>, public sharedService: SharedService, public userService: UserService, private messageService: MessageService) { 
-    this.currentUserIdSubscription = this.sharedService.currentChatPartnerId$.subscribe((currentUserId) => {
-      this.currentUserId = currentUserId;
-      console.log(this.currentUserId);
-    });
+  constructor(public dialogRef: MatDialogRef<UserPofileDialogComponent>, public sharedService: SharedService, public data: UserDataService) { 
   }
 
 
-  ngOnDestroy(): void {
-    this.currentUserIdSubscription.unsubscribe();
-  }
+
 
   closeDialog() {
     this.dialogRef.close();
@@ -39,9 +31,8 @@ export class UserPofileDialogComponent implements OnDestroy {
     this.sharedService.threadActive = false;
     this.sharedService.directChatActive = true;
     const chatPartnerId = this.currentUserId;
-    const userId = this.userService.activeUser.value[0].id;
-    const chatExits = this.messageService.checkIfChatExists(userId, chatPartnerId);
-    
+    const userId = this.data.activeUser[0].id;
+    const chatExits = this.data.checkIfChatExists(userId, chatPartnerId);
     this.closeDialog();
   }
 

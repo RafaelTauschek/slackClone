@@ -1,5 +1,5 @@
-<div class="direct-chat-area-container" [class.no-message-container]="!messagesAvailable">
-    <div class="chat-area-wrapper" *ngIf="messagesAvailable; else noMessages">
+<div class="direct-chat-area-container" [class.no-message-container]="!data.currentChat">
+    <div class="chat-area-wrapper" *ngIf="data.currentChat; else noMessages">
         <div class="date-container">
             <div class="line"></div>
             <div class="date">
@@ -9,14 +9,14 @@
             <div class="line"></div>
         </div>
 
-        <div class="message-wrapper" *ngFor="let message of chat[0].messages">
+        <div class="message-wrapper" *ngFor="let message of data.currentChat[0].messages">
             <div class="message-container">
                 <ng-container>
                     <div class="message-container-right">
                         <div class="message-content-container">
                             <div class="message-header">
                                 <span class="time">{{ sharedService.formatTimestampToTime(message.timestamp) }}</span>
-                                <span class="username">{{ userService.getUserName(message.senderId) }}</span>
+                                <span class="username">{{ data.getUserName(message.senderId) }}</span>
                             </div>
                             <div class="message-content">
                                 <span class="text">{{ message.content }}</span>
@@ -40,21 +40,18 @@
                         </div>
                         <div class="profile-img-container">
                             <img class="avatar" 
-                            [src]="userService.getUserProfilePicture(message.senderId) && userService.getUserProfilePicture(message.senderId).startsWith('http') ? userService.getUserProfilePicture(message.senderId) : './assets/img/avatars/' + userService.getUserProfilePicture(message.senderId) + '.png'" 
-                            alt="avatar">
+                            [src]="data.getProfilePictureURL(message.senderId)" alt= "avatar">
                         </div>
                     </div>
                 </ng-container>
                 <ng-template #leftContainer>
                     <div class="message-container-left">
                         <div class="profile-img-container">
-                            <img class="avatar" 
-                            [src]="userService.getUserProfilePicture(message.senderId) && userService.getUserProfilePicture(message.senderId).startsWith('http') ? userService.getUserProfilePicture(message.senderId) : './assets/img/avatars/' + userService.getUserProfilePicture(message.senderId) + '.png'" 
-                            alt="avatar">
+                            <img class="avatar" [src]="data.getProfilePictureURL(message.senderId)" alt= "avatar">
                         </div>
                         <div class="message-content-container">
                             <div class="message-header">
-                                <span class="username">{{ userService.getUserName(message.senderId) }}</span>
+                                <span class="username">{{ data.getUserName(message.senderId) }}</span>
                                 <span class="time">{{ sharedService.formatTimestampToTime(message.timestamp) }}</span>
                             </div>
                             <div class="message-content">
@@ -88,11 +85,10 @@
         <div class="no-messages">
             <div class="no-message-header">
                 <img class="avatar" 
-                [src]="userService.getUserProfilePicture(sharedService.currentPartner) && userService.getUserProfilePicture(sharedService.currentPartner).startsWith('http') ? userService.getUserProfilePicture(sharedService.currentPartner) : './assets/img/avatars/' + userService.getUserProfilePicture(sharedService.currentPartner) + '.png'" 
-                alt="avatar">span
-                <span>{{ userService.getUserName(sharedService.currentPartner) }}</span>
+                [src]="data.getProfilePictureURL(sharedService.currentPartner)" alt= "avatar">
+                <span>{{ data.getUserName(sharedService.currentPartner) }}</span>
             </div>
-            <span>Diese Unterhaltung findet nur zwischen <a>&#64;{{ userService.getUserName(sharedService.currentPartner) }}</a> und dir statt</span>
+            <span>Diese Unterhaltung findet nur zwischen <a>&#64;{{ data.getUserName(sharedService.currentPartner) }}</a> und dir statt</span>
             <span><b>Dieser Raum is nur für dich da.</b> Mache dir Notizen, liste deine To-dos auf oder bewahre Links und Dateien griffbereit auf. Du kannst hier auch gerne Dinge mit dir selbst besprechen.</span>
         </div>
     </ng-template>

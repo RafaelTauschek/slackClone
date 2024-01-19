@@ -1,17 +1,17 @@
 <div class="chat-area-container">
-    <div *ngIf="channel[0]?.messages; else noMessages">
-        <div class="chat-area-wrapper" *ngFor="let key of this.sharedService.getKeys(formatedMessages)">
+    <div *ngIf="data.messages; else noMessages">
+        <div class="chat-area-wrapper" *ngFor="let day of data.messages">
             <div class="date-container">
                 <div class="line"></div>
                 <div class="date">
                     <div class="date-border"></div>
-                    <span>{{ key }}</span>
+                    <span>{{ day.date }}</span>
                 </div>
                 <div class="line"></div>
             </div>
 
             <div class="message-wrapper">
-                <div class="message-container" *ngFor="let message of formatedMessages[key]">
+                <div class="message-container" *ngFor="let message of day.messages">
                     <ng-container *ngIf="this.sharedService.getMessageAlignment(message.senderId); else leftContainer">
                         <div class="message-container-right">
                             <div class="message-overlay">
@@ -35,10 +35,10 @@
                             <div class="message-content-container">
                                 <div class="message-header">
                                     <span class="time">{{ message?.timestamp | date: 'HH:mm'}} Uhr</span>
-                                    <span class="username">{{ this.userService.getUserName(message.senderId) }}</span>
+                                    <span class="username">{{ data.getUserName(message.senderId) }}</span>
                                 </div>
                                 <div class="message-content" [ngSwitch]="message.fileType">
-                                    <div class="editing-container" *ngIf="!message.editMessage && !isEditing">
+                                    <div class="editing-container" *ngIf="!message.editMessage">
                                         <textarea name="message" [(ngModel)]="messageContent"></textarea>
                                         <div class="editing-footer">
                                             <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
@@ -81,7 +81,7 @@
                                 </div>
                             </div>
                             <div class="profile-img-container">
-                                <img class="avatar" [src]="userService.getProfilePictureURL(message.senderId)"
+                                <img class="avatar" [src]="data.getProfilePictureURL(message.senderId)"
                                     alt="avatar">
                             </div>
                         </div>
@@ -98,12 +98,12 @@
                                         alt="add-comment"></div>
                             </div>
                             <div class="profile-img-container">
-                                <img class="avatar" [src]="userService.getProfilePictureURL(message.senderId)"
+                                <img class="avatar" [src]="data.getProfilePictureURL(message.senderId)"
                                     alt="avatar">
                             </div>
                             <div class="message-content-container">
                                 <div class="message-header">
-                                    <span class="username">{{ this.userService.getUserName(message.senderId)}}</span>
+                                    <span class="username">{{ data.getUserName(message.senderId)}}</span>
                                     <span class="time">{{ message?.timestamp | date: 'HH:mm' }} Uhr</span>
                                 </div>
                                 <div class="message-content" [ngSwitch]="message.fileType">
@@ -145,12 +145,12 @@
         <emoji-mart class="emoji-mart" (emojiClick)="addEmoji($event)"></emoji-mart>
     </div>
     <ng-template #noMessages>
-        <div *ngIf="channel[0]">
-            <span># {{ channel[0].name }}</span>
-            <span *ngIf="channel[0]">Dieser Channel wurde am {{ sharedService.formatDate(channel[0].creationDate) }} von
+        <div *ngIf="data.currentChannel">
+            <span># {{ data.currentChannel.name }}</span>
+            <span *ngIf="data.currentChannel">Dieser Channel wurde am {{ sharedService.formatDate(data.currentChannel.creationDate) }} von
                 {{
-                userService.getUserName(channel[0].creator) }} erstellt. Das ist der Anfang des Channels # {{
-                channel[0].name }}.</span>
+                data.getUserName(data.currentChannel.creator) }} erstellt. Das ist der Anfang des Channels # {{
+                data.currentChannel.name }}.</span>
         </div>
     </ng-template>
 </div>

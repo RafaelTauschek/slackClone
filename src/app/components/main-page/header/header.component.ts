@@ -1,19 +1,14 @@
-import { Component, OnDestroy } from '@angular/core';
-import { UserService } from '../../../services/user.service';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
 import { User } from '../../../models/user.class';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { Channel } from '../../../models/channel.class';
-import { ChannelService } from '../../../services/channel.service';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UserPofileDialogComponent } from '../../dialogs/user-pofile-dialog/user-pofile-dialog.component';
 import { SharedService } from '../../../services/shared.service';
-import { MessageService } from '../../../services/message.service';
 import { Message } from '../../../models/message.class';
 import { Chat } from '../../../models/chat.class';
-import { SearchService } from '../../../services/search.service';
 import { UserDataService } from '../../../services/data.service';
 
 interface MessageWithChannel extends Message {
@@ -29,13 +24,8 @@ interface MessageWithChannel extends Message {
 
 
 
-export class HeaderComponent implements OnDestroy{
-
-
-
-
+export class HeaderComponent{
   currentUser: User[] = []
-  currentUserSubscription: Subscription;
   userMenu: boolean = false;
   profileMenu: boolean = false;
   editMenu: boolean = false;
@@ -43,7 +33,6 @@ export class HeaderComponent implements OnDestroy{
   searchChannel: boolean = false;
   searchedChannel: Channel[] = [];
   searchedUser: User[] = [];
-  availableUsersSubscription: Subscription;
   availableUsers: User[] = [];
   searchActive: boolean = false;
   searchTerm: string = '';
@@ -52,36 +41,15 @@ export class HeaderComponent implements OnDestroy{
   searchedChannelMessages!: any;
   searchedDirectMessages!: Message[];
   chats: Chat[] = [];
-  chatSubscription: Subscription; 
   isEditing: boolean = false; 
 
 
 
-  constructor(public userService: UserService, private authService: AuthService,
-    private channelService: ChannelService, private dialog: MatDialog, 
-    public sharedService: SharedService, private messageService: MessageService, private searchService: SearchService, public data: UserDataService) {
-    this.currentUserSubscription = this.userService.activeUserObservable$.subscribe((currentUser) => {
-      this.currentUser = currentUser;
-      if (this.currentUser && this.currentUser[0] && !this.isEditing) {
-        this.editedUserName = this.currentUser[0].name;
-        this.editedUserMail = this.currentUser[0].email;
-      }
-    });
-    this.availableUsersSubscription = this.userService.usersObservable$.subscribe((availableUsers) => {
-      this.availableUsers = availableUsers;
-    });
-    this.chatSubscription = this.messageService.chatSubscription$.subscribe((chats) => {
-      this.chats = chats;
-    });
-  }
+  constructor(private authService: AuthService,private dialog: MatDialog, public sharedService: SharedService, public data: UserDataService) {}
 
 
 
-  ngOnDestroy(): void {
-    this.currentUserSubscription.unsubscribe()
-    this.availableUsersSubscription.unsubscribe();
-    this.chatSubscription.unsubscribe();
-  }
+
 
   closeProfileMenu() {
     this.profileMenu = false;
@@ -134,7 +102,6 @@ export class HeaderComponent implements OnDestroy{
   }
 
   openChannel(channelId: string) {
-    this.channelService.setSelectedChannel(channelId);
     console.log('channel was opend with id: ', channelId);
     this.sharedService.directChatActive = false;
     this.sharedService.threadActive = false;
@@ -151,7 +118,7 @@ export class HeaderComponent implements OnDestroy{
     console.log('User: ', user);
     if (this.editedUserName !== '' && user.name) {
       console.log('Name changes were made');  
-      await this.userService.editUserName(this.editedUserName);
+      await this.data.editUserName(this.editedUserName);
     } else {
       console.log('No changes were made');
     }
@@ -162,24 +129,25 @@ export class HeaderComponent implements OnDestroy{
     console.log('User: ', user);
     if (this.editedUserMail !== '' && user.email) {
       console.log('Mail changes were made');
-      await this.userService.editUserMail(this.editedUserMail);
+      await this.data.editUserMail(this.editedUserMail);
     } else {
       console.log('No changes were made');
     }
   }
 
-  onSearch() {
-    if (this.searchTerm !== '') {
-      this.searchActive = true;
-      this.searchedChannel = this.searchService.filterChannels(this.channelService.channelsSubscription.value, this.searchTerm);
-      this.searchedUser = this.searchService.filterUsers(this.availableUsers, this.searchTerm);
-      this.searchedDirectMessages = this.searchService.filterDirectMessages(this.chats, this.searchTerm);
-      this.searchedChannelMessages = this.searchService.filterChannelMessages(this.channelService.channelsSubscription.value, this.searchTerm);
-    } else {
-      this.searchActive = false;
-    }
+  onSearch() {}
+  // onSearch() {
+  //   if (this.searchTerm !== '') {
+  //     this.searchActive = true;
+  //     this.searchedChannel = this.searchService.filterChannels(this.channelService.channelsSubscription.value, this.searchTerm);
+  //     this.searchedUser = this.searchService.filterUsers(this.availableUsers, this.searchTerm);
+  //     this.searchedDirectMessages = this.searchService.filterDirectMessages(this.chats, this.searchTerm);
+  //     this.searchedChannelMessages = this.searchService.filterChannelMessages(this.channelService.channelsSubscription.value, this.searchTerm);
+  //   } else {
+  //     this.searchActive = false;
+  //   }
 
-  }
+  // }
 
  
 }

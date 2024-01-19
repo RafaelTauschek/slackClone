@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { UserService } from '../../../services/user.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Chat } from '../../../models/chat.class';
-import { MessageService } from '../../../services/message.service';
 import { SharedService } from '../../../services/shared.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { UserDataService } from '../../../services/data.service';
 @Component({
   selector: 'app-direct-chat-chatarea',
   standalone: true,
@@ -14,21 +13,6 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrl: './direct-chat-chatarea.component.scss'
 })
 export class DirectChatChatareaComponent {
-  user: any;
-  userSubscription: Subscription;
-  chatSubscription: Subscription;
-  messagesAvailable: boolean = false;
-  chat: Chat[] = [];
 
-  constructor(public userService: UserService, private messageService: MessageService, public sharedService: SharedService, public sanitizer: DomSanitizer) {
-    this.userSubscription = this.userService.activeUserObservable$.subscribe((user) => {
-      this.user = user;
-    });
-    this.chatSubscription = this.messageService.chatSubscription$.subscribe((chat) => {
-      this.chat = chat;
-      if (this.chat && this.chat.length > 0 && this.chat[0].messages) {
-        this.messagesAvailable = true;  
-      }
-    });
-  }
+  constructor (public sharedService: SharedService, public sanitizer: DomSanitizer, public data: UserDataService) {}
 }
