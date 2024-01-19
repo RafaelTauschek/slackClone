@@ -3,14 +3,11 @@ import {
   Auth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, onAuthStateChanged, getAuth, createUserWithEmailAndPassword,
   signOut, sendPasswordResetEmail, signInWithRedirect, getRedirectResult
 } from "firebase/auth";
-import { UserService } from './user.service';
 import { Router } from '@angular/router';
 import { initializeApp } from 'firebase/app';
 import { environment } from '../../environments/environment.development';
 import { FirebaseService } from './firebase.service';
 import { User } from '../models/user.class';
-import { ChannelService } from './channel.service';
-import { MessageService } from './message.service';
 import { UserDataService } from './data.service';
 
 
@@ -25,8 +22,9 @@ export class AuthService {
 
 
   constructor(
-    private userService: UserService, private router: Router, private firebaseService: FirebaseService, 
-    private channelService: ChannelService, private messageService: MessageService, private usersData: UserDataService) {
+    private router: Router, 
+    private firebaseService: FirebaseService, 
+    private data: UserDataService) {
     this.setupAuthStateListener();
   }
 
@@ -44,10 +42,7 @@ export class AuthService {
 
 
   async handeUserLoggedIn(user: any) {
-    this.usersData.fetchUserData(user.uid);
-    await this.userService.loadUser(user.uid);
-    await this.channelService.loadChannels(user.uid);
-    await this.messageService.loadChats(user.uid);
+    this.data.fetchUserData(user.uid);
   }
 
 

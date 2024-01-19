@@ -1,15 +1,12 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
 import { Channel } from '../../../models/channel.class';
-import { ChannelService } from '../../../services/channel.service';
-import { MessageService } from '../../../services/message.service';
-import { UserService } from '../../../services/user.service';
 import { Message } from '../../../models/message.class';
 import { CommonModule } from '@angular/common';
 import { SharedService } from '../../../services/shared.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { FormsModule } from '@angular/forms';
+import { UserDataService } from '../../../services/data.service';
 
 
 @Component({
@@ -19,27 +16,17 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './chat-area.component.html',
   styleUrl: './chat-area.component.scss'
 })
-export class ChatAreaComponent implements OnDestroy {
+export class ChatAreaComponent {
   channel: Channel[] = [];
   messages: Message[] = [];
-  channelSubscription: Subscription;
-  messageSubscription: Subscription;
   formatedMessages: { [key: string]: Message[] } = {};
   showEmojiPicker = false;
   isEditing: boolean = false;
   messageContent: string = '';
 
-  constructor(private channelService: ChannelService, private messageService: MessageService, 
-    public userService: UserService, public sharedService: SharedService, public sanitizer: DomSanitizer) {
-    this.channelSubscription = this.channelService.channelSubscription$.subscribe((channel) => {
-      this.channel = channel;
-    });
-    this.messageSubscription = this.messageService.messageSubscription$.subscribe((messages) => {
-      this.messages = messages;
-      if (messages && messages.length > 0) {
-        this.formatedMessages = this.sharedService.groupMessagesByDate(this.messages);
-      }
-    });
+  constructor( 
+     public sharedService: SharedService, 
+    public sanitizer: DomSanitizer, public data: UserDataService) {
   }
 
   toggleEmojiPicker(message: any) {
@@ -54,7 +41,7 @@ export class ChatAreaComponent implements OnDestroy {
   }
 
   openThread(message: any) {
-    this.messageService.setCurrentMessage([message]);
+    this.data.setCurrentMessage(message);
     if (this.sharedService.isMobile) {
       this.sharedService.activeComponent = 'thread';
     }
@@ -64,13 +51,6 @@ export class ChatAreaComponent implements OnDestroy {
     }
     this.sharedService.threadActive = true;
     this.sharedService.changeWidth = 'calc(100% - 108px)';
-  }
-
-
-
-  ngOnDestroy(): void {
-    this.channelSubscription.unsubscribe();
-    this.messageSubscription.unsubscribe();
   }
 
 

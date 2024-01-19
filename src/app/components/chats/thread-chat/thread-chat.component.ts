@@ -1,10 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Message } from '../../../models/message.class';
-import { MessageService } from '../../../services/message.service';
-import { Subscription } from 'rxjs';
-import { UserService } from '../../../services/user.service';
+import { Component } from '@angular/core';
 import { SharedService } from '../../../services/shared.service';
 import { CommonModule } from '@angular/common';
+import { UserDataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-thread-chat',
@@ -13,20 +10,12 @@ import { CommonModule } from '@angular/common';
   templateUrl: './thread-chat.component.html',
   styleUrl: './thread-chat.component.scss'
 })
-export class ThreadChatComponent implements OnDestroy {
-  message: Message[] = [];
-  messageSubscription: Subscription;
+export class ThreadChatComponent {
 
-  constructor(private messageService: MessageService, public userService: UserService, public sharedService: SharedService) {
-    this.messageSubscription = this.messageService.singleMessageSubscription$.subscribe((message) => {
-      this.message = message;
-    }) 
-  }
+
+  constructor(public sharedService: SharedService, public data: UserDataService) {}
 
 
 
-  ngOnDestroy(): void {
-    this.messageSubscription.unsubscribe();
-  }
 
 }

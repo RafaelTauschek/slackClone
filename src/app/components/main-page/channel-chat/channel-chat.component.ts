@@ -1,19 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { ChatAreaComponent } from '../../chats/chat-area/chat-area.component';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
-import { Subscription } from 'rxjs';
 import { Channel } from '../../../models/channel.class';
-import { ChannelService } from '../../../services/channel.service';
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../../services/user.service';
-import { MessageService } from '../../../services/message.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditChannelDialogComponent } from '../../dialogs/edit-channel-dialog/edit-channel-dialog.component';
 import { User } from '../../../models/user.class';
-import { SearchService } from '../../../services/search.service';
 import { SharedService } from '../../../services/shared.service';
+import { UserDataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-channel-chat',
@@ -22,8 +18,7 @@ import { SharedService } from '../../../services/shared.service';
   templateUrl: './channel-chat.component.html',
   styleUrl: './channel-chat.component.scss'
 })
-export class ChannelChatComponent implements OnDestroy {
-  channelSubscription: Subscription;
+export class ChannelChatComponent {
   channel: Channel[] = [];
   message: string = '';
   memberInviteActive: boolean = false;
@@ -34,18 +29,14 @@ export class ChannelChatComponent implements OnDestroy {
   searchedUsers: User[] = [];
   searchTerm: string = '';
 
-  constructor(public channelService: ChannelService, public userService: UserService, 
-    private messageService: MessageService, private dialog: MatDialog, private searchService: SearchService, public sharedService: SharedService ) {
-    this.channelSubscription = this.channelService.channelSubscription$.subscribe((channel) => {
-      this.channel = channel;
-    });
+  constructor(private dialog: MatDialog, public sharedService: SharedService, public data: UserDataService ) {
   }
 
 
   onSearch() {
     if (this.searchTerm !== '') {
       this.searchActive = true;
-      this.searchedUsers = this.searchService.filterUsers(this.userService.availableUsers ,this.searchTerm);
+      this.searchedUsers = this.sharedService.filterUsers(this.data.users ,this.searchTerm);
     } else {
       this.searchActive = false;
     }
@@ -66,8 +57,7 @@ export class ChannelChatComponent implements OnDestroy {
   async updateUsersOnChannel() {
     const users: string[] = this.userToAdd;
     this.userToAdd = [];
-    await this.channelService.addUsersToChannel(users);
-    await this.userService.addChannelToUsers(users, this.channel[0].id);
+    await this.data.addChannelToUsers(users, this.channel[0].id);
   }
 
   openMemberList() {
@@ -95,10 +85,6 @@ export class ChannelChatComponent implements OnDestroy {
     console.log('Event activated: ', event);
   }
 
-  ngOnDestroy(): void {
-    this.channelSubscription.unsubscribe();
-  }
-
 
 
   onFileSelected(event: any) {
@@ -110,7 +96,7 @@ export class ChannelChatComponent implements OnDestroy {
 
   async sendMessage() {
     if (this.message !== '' || this.selectedFile) {
-      this.messageService.sendChannelMessage(this.message, this.selectedFile);
+      this.data.sendChannelMessage(this.message, this.selectedFile);
     } 
     this.message = '';
     this.selectedFile = null;

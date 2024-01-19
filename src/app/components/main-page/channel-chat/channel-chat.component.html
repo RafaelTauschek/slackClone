@@ -1,7 +1,7 @@
 <div class="channel-chat-container">
     <div class="channel-chat-header">
         <div class="header-left" (click)="openDialog()">
-            <span *ngIf="channel && channel.length > 0; else noChannel"># {{ channel[0].name }}</span>
+            <span *ngIf="data.currentChannel; else noChannel"># {{ data.currentChannel.name}}</span>
             <ng-template #noChannel>
                 <span># Allgemein</span>
             </ng-template>
@@ -9,11 +9,11 @@
         </div>
 
         <div class="header-right">
-            <div *ngIf="channel[0] && !sharedService.isMobile" class="channel-member" (click)="openMemberList()">
-                @for (user of (channel[0].users | slice:0:3); track $index) {
-                    <img class="avatar" [src]="userService.getProfilePictureURL(user)" alt="avatar">
+            <div *ngIf="data.currentChannel && !sharedService.isMobile" class="channel-member" (click)="openMemberList()">
+                @for (user of (data.currentChannel.users| slice:0:3); track $index) {
+                    <img class="avatar" [src]="data.getProfilePictureURL(user)" alt="avatar">
                 }
-                <span *ngIf="channel[0].users; else noUsers" class="member-count">{{ channel[0].users.length }}</span>
+                <span *ngIf="data.currentChannel.users; else noUsers" class="member-count">{{ data.currentChannel.users.length }}</span>
                 <ng-template #noUsers>
                     <span class="member-count">0</span>
                 </ng-template>
@@ -22,14 +22,14 @@
             <img *ngIf="sharedService.isMobile" src="./assets/img/icons/add-person-icon.png" alt="add-member-icon" (click)="openMemberList()">
         </div>
     </div>
-
+ 
     <div class="chat-area">
         <app-chat-area></app-chat-area>
     </div>
 
     <div class="channel-textarea">
-        <textarea [(ngModel)]="message" *ngIf="channel && channel.length > 0; else noChannelTextarea"
-            placeholder="Nachricht an # {{ channel[0].name }}" cols="30" rows="3"></textarea>
+        <textarea [(ngModel)]="message" *ngIf="data.currentChannel; else noChannelTextarea"
+            placeholder="Nachricht an # {{ data.currentChannel.name }}" cols="30" rows="3"></textarea>
         <ng-template #noChannelTextarea>
             <textarea [(ngModel)]="message" placeholder="Nachricht an # Allgemein" cols="30" rows="4"></textarea>
         </ng-template>
@@ -54,12 +54,12 @@
             <span>Mitglieder</span>
             <img src="./assets/img/icons/close-icon.png" alt="close-icon" (click)="memberListActive = false">
         </div>
-        <div *ngFor="let member of channel[0].users">
+        <div *ngFor="let member of data.currentChannel.users">
             <div class="single-member">
                 <img class="single-user-avatar" 
-                    [src]="userService.getProfilePictureURL(member)" 
+                    [src]="data.getProfilePictureURL(member)" 
                     alt="avatar">
-                <span>{{ userService.getUserName(member)}}</span>
+                <span>{{ data.getUserName(member)}}</span>
             </div>
         </div>
         <div class="member-list-add-member" (click)="openInviteList()">
@@ -89,7 +89,7 @@
         <div class="search-menu" *ngIf="searchActive">
                 <div class="single-user" *ngFor="let user of searchedUsers" (click)="addUserToChannel(user.id)">
                     <img class="single-user-avatar" 
-                    [src]="userService.getProfilePictureURL(user.id)" 
+                    [src]="data.getProfilePictureURL(user.id)" 
                     alt="avatar">
                 <span>{{ user.name }}</span>
             </div>
@@ -98,9 +98,9 @@
         <div class="invite-user-list" *ngIf="userToAdd.length > 0">
             <div class="single-user" *ngFor="let user of userToAdd">
                 <img class="single-user-avatar" 
-                [src]="userService.getProfilePictureURL(user)" 
+                [src]="data.getProfilePictureURL(user)" 
                 alt="avatar">
-            <span>{{ userService.getUserName(user) }}</span>
+            <span>{{ data.getUserName(user) }}</span>
             <img (click)="removeUser(user)" src="./assets/img/icons/close-icon.png" alt="close-icon">
             </div>
         </div>

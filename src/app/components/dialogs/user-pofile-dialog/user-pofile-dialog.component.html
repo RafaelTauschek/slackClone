@@ -7,11 +7,11 @@
     </div>
 
     <div class="user-avatar">
-        <img src="./assets/img/avatars/{{ this.userService.getUserProfilePicture(this.sharedService.currentPartner) }}.png" alt="user-avatar">
+        <img src="./assets/img/avatars/{{ data.getUserProfilePicture(this.sharedService.currentPartner) }}.png" alt="user-avatar">
     </div>
 
     <div class="username">
-        <span>{{ this.userService.getUserName(this.sharedService.currentPartner) }}</span>
+        <span>{{ data.getUserName(this.sharedService.currentPartner) }}</span>
         <div class="online-status">
             <img src="./assets/img/online-dot.png" alt="online-dot">
             <span>Aktiv</span>
@@ -23,7 +23,7 @@
             <img src="./assets/img/icons/mail-icon.png" alt="email-icon">
             <span>E-Mail-Adresse</span>
         </div>
-        <span>{{ this.userService.getUserMail(this.sharedService.currentPartner) }}</span>
+        <span>{{ data.getUserMail(this.sharedService.currentPartner) }}</span>
     </div>
 
     <div class="message-btn">

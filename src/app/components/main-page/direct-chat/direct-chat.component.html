@@ -1,9 +1,9 @@
 <div class="direct-chat-container">
     <div class="direct-chat-header">
         <img class="avatar"
-            [src]="userService.getUserProfilePicture(sharedService.currentPartner) && userService.getUserProfilePicture(sharedService.currentPartner).startsWith('http') ? userService.getUserProfilePicture(sharedService.currentPartner) : './assets/img/avatars/' + userService.getUserProfilePicture(sharedService.currentPartner) + '.png'"
+            [src]="data.getProfilePictureURL(sharedService.currentPartner)"
             alt="avatar">
-        <span>{{ userService.getUserName(sharedService.currentPartner) }}</span>
+        <span>{{ data.getUserName(sharedService.currentPartner) }}</span>
     </div>
 
     <div class="chat-area">
@@ -11,7 +11,7 @@
     </div>
 
     <div class="direct-chat-textarea">
-        <textarea [(ngModel)]="message" placeholder="Nachricht an {{ userService.getUserName(sharedService.currentPartner) }}" cols="30" rows="3"></textarea>
+        <textarea [(ngModel)]="message" placeholder="Nachricht an {{ data.getUserName(sharedService.currentPartner) }}" cols="30" rows="3"></textarea>
         <div class="thread-icons">
             <div class="icons-left">
                 <label for="file-input"><img src="./assets/img/icons/add-icon-gray.png" alt="add-icon"></label>

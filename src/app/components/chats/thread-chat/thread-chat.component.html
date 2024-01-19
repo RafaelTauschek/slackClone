@@ -1,30 +1,30 @@
 <div class="thread-chat-section">
-    <div class="message-container" *ngIf="message !== undefined && message !== null">
+    <div class="message-container" *ngIf="data.message.length > 0">
         <img class="single-user-avatar" 
-                [src]="userService.getUserProfilePicture(message[0].senderId) && userService.getUserProfilePicture(message[0].senderId).startsWith('http') ? userService.getUserProfilePicture(message[0].senderId) : './assets/img/avatars/' + userService.getUserProfilePicture(message[0].senderId) + '.png'" 
+                [src]="data.getProfilePictureURL(data.message[0].senderId)" 
                 alt="avatar">
         <div class="message-content">
-            <div class="message-header" *ngIf="message.length > 0">
-                <span class="user-name">{{ this.userService.getUserName(message[0].senderId) }}</span>
-                <span class="time">{{ this.sharedService.formatTimestampToTime(message[0].timestamp) }} Uhr</span>
+            <div class="message-header">
+                <span class="user-name">{{ this.data.getUserName(data.message[0].senderId) }}</span>
+                <span class="time">{{ this.sharedService.formatTimestampToTime(data.message[0].timestamp) }} Uhr</span>
             </div>
-            <div class="message-main" *ngIf="message.length > 0">
-                <span>{{ message[0].content }}</span>
+            <div class="message-main">
+                <span>{{ data.message[0].content }}</span>
             </div>
         </div>
     </div>
 
-    <div class="answer-divider" *ngIf="message !== undefined && message !== null" >
-        <span *ngIf="message.length > 0">{{ message[0].answers.length }} Antworten</span>
+    <div class="answer-divider" *ngIf="data.message[0].answers.length > 0" >
+        <span>{{ data.message[0].answers.length }} Antworten</span>
         <img src="./assets/img/line.png" alt="line">
     </div>
 
-    <div class="answer-container" *ngIf="message !== undefined && message !== null">
-        <div class="answer" *ngFor="let answer of message[0].answers">
+    <div class="answer-container" *ngIf="data.message.length > 0">
+        <div class="answer" *ngFor="let answer of data.message[0].answers">
             <img src="./assets/img/avatars/avatar6.png" alt="avatar">
             <div class="answer-content">
                 <div class="answer-header">
-                    <span class="user-name">{{ this.userService.getUserName(answer.senderId) }}</span>
+                    <span class="user-name">{{ this.data.getUserName(answer.senderId) }}</span>
                     <span class="time">{{ this.sharedService.formatTimestampToTime(answer.timestamp) }} Uhr</span>
                 </div>
                 <div class="answer-main">

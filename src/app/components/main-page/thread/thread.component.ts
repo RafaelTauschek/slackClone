@@ -1,15 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { ThreadChatComponent } from '../../chats/thread-chat/thread-chat.component';
 import { SharedService } from '../../../services/shared.service';
-import { ChannelService } from '../../../services/channel.service';
 import { Channel } from '../../../models/channel.class';
-import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { Message } from '../../../models/message.class';
-import { UserService } from '../../../services/user.service';
-import { MessageService } from '../../../services/message.service';
 import { User } from '../../../models/user.class';
 import { FirebaseService } from '../../../services/firebase.service';
 
@@ -20,32 +16,14 @@ import { FirebaseService } from '../../../services/firebase.service';
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss'
 })
-export class ThreadComponent implements OnDestroy {
+export class ThreadComponent {
   channel: Channel[] = [];
-  channelSubscription: Subscription
-  userSubscription: Subscription;
-  messageSubscription: Subscription;
   answer: string = '';
   user: User[] = [];
   message: Message[] = [];  
 
-  constructor(private sharedService: SharedService, private channelService: ChannelService, 
-    private userService: UserService, private messageService: MessageService, private firebaseService: FirebaseService) {
-      this.channelSubscription = this.channelService.channelSubscription$.subscribe((channel) => { 
-        this.channel = channel;
-      });
-      this.userSubscription = this.userService.activeUserObservable$.subscribe((user) => {
-        this.user = user;
-      });
-      this.messageSubscription = this.messageService.singleMessageSubscription$.subscribe((message) => {
-        this.message = message;
-      });
+  constructor(private sharedService: SharedService, private firebaseService: FirebaseService) {}
 
-  }
-
-  ngOnDestroy(): void {
-    this.channelSubscription.unsubscribe();
-  }
 
   closeThread() {
     if (this.sharedService.isMobile) {
@@ -76,7 +54,6 @@ export class ThreadComponent implements OnDestroy {
       const channelInstance = new Channel(this.channel[0])
       const channelData = channelInstance.toJSON();
       await this.firebaseService.updateDocument('channels', this.channel[0].id, channelData);
-      await this.channelService.updateChannel(this.channel[0].id);
       this.answer = '';
     }
   }
