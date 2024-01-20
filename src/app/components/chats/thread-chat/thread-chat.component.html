@@ -1,36 +1,36 @@
 <div class="thread-chat-section">
-    <div class="message-container" *ngIf="data.message.length > 0">
+    <div class="message-container">
         <img class="single-user-avatar" 
-                [src]="data.getProfilePictureURL(data.message[0].senderId)" 
+                [src]="data.getProfilePictureURL(data.message.senderId)" 
                 alt="avatar">
         <div class="message-content">
             <div class="message-header">
-                <span class="user-name">{{ this.data.getUserName(data.message[0].senderId) }}</span>
-                <span class="time">{{ this.sharedService.formatTimestampToTime(data.message[0].timestamp) }} Uhr</span>
+                <span class="user-name">{{ data.message.senderId }}</span>
+                <span class="time">{{ sharedService.formatTimestampToTime(data.message.timestamp) }} Uhr</span>
             </div>
             <div class="message-main">
-                <span>{{ data.message[0].content }}</span>
+                <span>{{ data.message.content }}</span>
             </div>
         </div>
     </div>
 
-    <div class="answer-divider" *ngIf="data.message[0].answers.length > 0" >
-        <span>{{ data.message[0].answers.length }} Antworten</span>
+    <div class="answer-divider" >
+        <span>{{ data.message.answers.length }} Antworten</span>
         <img src="./assets/img/line.png" alt="line">
     </div>
 
-    <div class="answer-container" *ngIf="data.message.length > 0">
-        <div class="answer" *ngFor="let answer of data.message[0].answers">
-            <img src="./assets/img/avatars/avatar6.png" alt="avatar">
+    <div class="answer-container">
+        <div class="answer" *ngFor="let answer of data.message.answers">
+            <img [src]="data.getProfilePictureURL(answer.senderId)" alt="avatar">
             <div class="answer-content">
-                <div class="answer-header">
-                    <span class="user-name">{{ this.data.getUserName(answer.senderId) }}</span>
-                    <span class="time">{{ this.sharedService.formatTimestampToTime(answer.timestamp) }} Uhr</span>
+                <div class="answer-header" >
+                    <span class="user-name">{{ data.getUserProperty(answer.senderId , 'name') }}</span>
+                    <span class="time">{{ sharedService.formatTimestampToTime(answer.timestamp) }} Uhr</span>
                 </div>
                 <div class="answer-main">
                     <span>{{ answer.content }}</span>
                 </div>
             </div>
         </div>
-
+    </div>
 </div>

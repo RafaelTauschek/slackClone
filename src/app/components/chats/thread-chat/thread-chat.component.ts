@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SharedService } from '../../../services/shared.service';
 import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../../services/data.service';
+import { Message } from '../../../models/message.class';
 
 @Component({
   selector: 'app-thread-chat',
@@ -12,8 +13,9 @@ import { UserDataService } from '../../../services/data.service';
 })
 export class ThreadChatComponent {
 
-
-  constructor(public sharedService: SharedService, public data: UserDataService) {}
+  constructor(public sharedService: SharedService, public data: UserDataService) {
+    
+  }
 
 
 

@@ -2,7 +2,7 @@
     <div class="header">
         <div class="header-left">
             <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
-            <span>{{ channel[0].name }}</span>
+            <span>{{ data.currentChannel.name }}</span>
         </div>
         <div class="header-right" (click)="closeDialog()">
             <img src="./assets/img/icons/close-icon.png" alt="close-icon">
@@ -17,11 +17,11 @@
         <div class="channel-name-footer">
             <div *ngIf="!channelNameEditActive" class="edit-channel-name-container">
                 <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
-                <span>{{ channel[0].name }}</span>
+                <span>{{ data.currentChannel.name }}</span>
             </div>
             <div *ngIf="channelNameEditActive" class="edit-channel-name-input">
                 <img src="./assets/img/icons/tag-icon.png" alt="tag-icon">
-                <input [(ngModel)]="name" type="text" placeholder="{{ channel[0].name }}">
+                <input [(ngModel)]="name" type="text" placeholder="{{ data.currentChannel.name }}">
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
             </div>
 
             <div class="channel-description-content">
-                <span *ngIf="!channelDescriptionEditActive">{{ channel[0].description }}</span>
+                <span *ngIf="!channelDescriptionEditActive">{{ data.currentChannel.description }}</span>
                 <div *ngIf="channelDescriptionEditActive" class="edit-channel-description-input">
                     <input [(ngModel)]="description" type="text" placeholder="Dein Text hier">
                 </div>
@@ -45,8 +45,8 @@
 
         <div class="creator">
             <span class="created-from">Erstellt von</span>
-            <span class="creator-name">{{ userService.getUserName(channel[0].creator) }}</span>
+            <span class="creator-name">{{ data.getUserProperty(data.currentChannel.creator, 'name') }}</span>
         </div>
     </div>
-    <div class="leave-channel" (click)="leaveChannel()">Channel verlassen</div>
+    <div class="leave-channel" (click)="leaveChannel(data.activeUser[0].id, data.currentChannel)">Channel verlassen</div>
 </div>

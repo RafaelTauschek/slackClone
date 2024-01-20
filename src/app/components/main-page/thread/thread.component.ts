@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { Message } from '../../../models/message.class';
 import { User } from '../../../models/user.class';
 import { FirebaseService } from '../../../services/firebase.service';
+import { UserDataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-thread',
@@ -22,7 +23,7 @@ export class ThreadComponent {
   user: User[] = [];
   message: Message[] = [];  
 
-  constructor(private sharedService: SharedService, private firebaseService: FirebaseService) {}
+  constructor(private sharedService: SharedService, private firebaseService: FirebaseService, public data: UserDataService) {}
 
 
   closeThread() {

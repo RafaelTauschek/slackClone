@@ -85,7 +85,7 @@ export class NewMessageComponent {
     }
     switch (this.searchType) {
       case 'channel':
-        await this.data.sendChannelMessage(this.newMessage, this.selectedFile);
+        await this.sharedService.sendChannelMessage(this.newMessage, this.selectedFile);
         this.newMessage = '';
         break;
       case 'user':

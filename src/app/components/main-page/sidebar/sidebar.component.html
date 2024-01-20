@@ -61,7 +61,7 @@
             <div class="single-direct-chat" (click)="openDirectChat(data.getChatPartnerId(chat, data.activeUser[0].id) || '', chat)">
                 <img class="avatar" [src]="data.getProfilePictureURL(data.getChatPartnerId(chat, data.activeUser[0].id) || '')">
                 <img class="online-dot" src="./assets/img/online-dot.png">
-                <span>{{ data.getUserName(data.getChatPartnerId(chat, data.activeUser[0].id) || '')}}</span>
+                <span>{{ data.getUserProperty(data.getChatPartnerId(chat, data.activeUser[0].id) || '', 'name' || '')}}</span>
             </div>
             }
         </div>

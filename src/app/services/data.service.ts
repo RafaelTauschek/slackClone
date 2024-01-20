@@ -4,13 +4,12 @@ import { User } from '../models/user.class';
 import { Channel } from '../models/channel.class';
 import { Chat } from '../models/chat.class';
 import { FirebaseService } from './firebase.service';
-import { SharedService } from './shared.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserDataService {
-  message: Message[] = [];
+  message: any = [];
   chatpartnerId: string = '';
   activeUser: User[] = [];
   users: User[] = [];
@@ -21,7 +20,7 @@ export class UserDataService {
   currentChannel: Channel = {} as Channel;
   messages: any[] = [];
 
-  constructor(private firebase: FirebaseService, private shared: SharedService) { }
+  constructor(private firebase: FirebaseService) { }
 
 
   async fetchUserData(userId: string) {
@@ -51,6 +50,7 @@ export class UserDataService {
     })
   }
 
+
   async loadChatsData(user: User) {
     const chats = [];
     for (const chat of user.chats) {
@@ -59,6 +59,7 @@ export class UserDataService {
     }
     this.chats = chats;
   }
+
 
   async loadChannelData(user: User[]) {
     this.channelList = [];
@@ -70,6 +71,7 @@ export class UserDataService {
     }
     this.filterChannelList(user[0]);
   }
+
 
   filterChannelList(user: User) {
     this.userChannels = [];
@@ -84,14 +86,15 @@ export class UserDataService {
     }
   }
 
+
   sortChannelList(channel: Channel[]) {
     let sortedChannelList = channel.sort((a, b) => a.name.localeCompare(b.name));
     this.userChannels = sortedChannelList;
   }
 
+
   setChannel(channelId: string) {
     this.currentChannel = this.userChannels.find((channel) => channel.id === channelId) as Channel;
-    console.log(this.currentChannel);
     this.formatChannel(channelId);
   }
 
@@ -123,6 +126,7 @@ export class UserDataService {
     }
   }
 
+
   async updateChannelProperties(updatedProperties: Partial<Channel>) {
     const channel = this.currentChannel;
     const newChannel = new Channel({
@@ -130,32 +134,10 @@ export class UserDataService {
       ...updatedProperties
     });
     await this.firebase.updateDocument('channels', channel.id, newChannel.toJSON());
-    await this.updateChannel(channel.id);
-  }
-
-  async updateChannel(channelId: string) {
-    this.userChannels = [];
-    const docSnap = await this.firebase.getDocument('channels', channelId);
-    const channel = docSnap.data() as Channel;
-    this.userChannels.push(channel);
+    await this.loadChannelData(this.activeUser);
   }
 
 
-  async loadChats(userId: string) {
-    const chats = [];
-    const docSnap = await this.firebase.getDocument('users', userId);
-    if (docSnap.exists()) {
-      const user = docSnap.data() as User;
-      for (const chat of user.chats) {
-        const docSnap = await this.firebase.getDocument('chats', chat);
-        chats.push(docSnap.data() as Chat);
-      }
-      this.setChats(chats);
-      this.chats = chats;
-    } else {
-      console.log('No Chats available for the user');
-    }
-  }
 
 
   checkIfChatExists(activeUserId: string, chatpartnerId: string) {
@@ -191,6 +173,7 @@ export class UserDataService {
       answers: [],
       fileName: '',
       fileUrl: '',
+      fileType: '',
       editMessage: false,
     });
     await this.firebase.updateMessages('chats', chatId, message.toJSON());
@@ -207,20 +190,15 @@ export class UserDataService {
   }
 
 
-  setChats(chats: Chat[]) {
-    this.chats = chats;
-  }
-
   setCurrentChat(chat: Chat[]) {
     this.currentChat = chat;
   }
 
+
   setCurrentMessage(message: Message[]) {
     this.message = message;
+    console.log(this.message); 
   }
-
-
-
 
 
   async addMessageToChat(chatId: string, newMessage: any, recieverId: string) {
@@ -234,6 +212,7 @@ export class UserDataService {
       answers: [],
       fileName: '',
       fileUrl: '',
+      fileType: '',
       editMessage: false,
     });
     await this.firebase.updateMessages('chats', chatId, message.toJSON());
@@ -241,81 +220,25 @@ export class UserDataService {
   }
 
 
-
-
-  async sendChannelMessage(newMessage: string, file: File | null) {
-    let fileName = '';
-    let fileUrl = '';
-    try {
-      if (file) {
-        fileName = file.name;
-        fileUrl = await this.firebase.uploadFile(file);
-      }
-      const message = this.generateNewMessage(newMessage, fileName, fileUrl);
-    }
-    catch (err) {
-      console.log(err);
-    }
-  }
-
-  generateNewMessage(newMessage: string, fileName: string, fileUrl: string) {
-    const date = new Date().getTime();
-    const message = new Message({
-      senderId: this.activeUser[0].id,
-      recieverId: '',
-      timestamp: date,
-      content: newMessage,
-      emojis: [],
-      answers: [],
-      fileName: fileName,
-      fileUrl: fileUrl,
-      fileType: this.shared.determineFileType(fileName),
-      editMessage: false,
-    });
-    return message;
-  }
-
-
-
-
-
-
-  getUserName(userId: string) {
+  getUserProperty(userId: string, property: string) {
     const user = this.users.find(user => user.id === userId);
-    if (user) {
-      return user.name;  
+    if (user && user[property as keyof User]) {
+      return user[property as keyof User];
     } else {
       return 'deleted User';
     }
   }
 
-
-  getUserMail(userId: string) {
-    const user = this.users.find(user => user.id === userId);
-    if (user) {
-      return user.email;  
-    } else {
-      return 'deleted User';
-    } 
-  }
-
-  getUserProfilePicture(userId: string) {
-    const user = this.users.find(user => user.id === userId);
-    if (user) {
-      return user.profilepicture;  
-    } else {
-      return 'deleted User';
-    }   
-  }
 
   getProfilePictureURL(userId: string): string {
-    const userProfilePicture = this.getUserProfilePicture(userId);
-    if (userProfilePicture && userProfilePicture.startsWith('http')) {
+    const userProfilePicture = this.getUserProperty(userId, 'profilepicture');
+    if (typeof userProfilePicture === 'string' && userProfilePicture.startsWith('http')) {
       return userProfilePicture;
     } else {
       return './assets/img/avatars/' + userProfilePicture + '.png';
     }
   }
+
 
   getInitials() {
     const user = this.activeUser[0];
@@ -324,42 +247,12 @@ export class UserDataService {
     return initials;
   }
 
+
   getChatPartnerId(chat: Chat, userId: string) {
     const chatPartnerId = chat.users.find(user => user !== userId);
     return chatPartnerId;
   }
 
-
-
-
-  async editUserName(newName: string) {
-    const name = newName;
-    const user = this.activeUser[0];
-    const newUser = new User({
-      name: name,
-      email: user.email,
-      profilepicture: user.profilepicture,
-      channels: user.channels,
-      chats: user.chats,
-      id: user.id,
-    });
-    console.log('new User: ', newUser);
-    await this.firebase.updateDocument('users', user.id, newUser.toJSON());
-  } 
-
-  async editUserMail(newMail: string) {
-    console.log('new Mail: ', newMail);
-    const user = this.activeUser[0];
-    const newUser = new User({
-      name: user.name,
-      email: newMail,
-      profilepicture: user.profilepicture,
-      channels: user.channels,
-      chats: user.chats,
-      id: user.id,
-    });
-    await this.firebase.updateDocument('users', user.id, newUser.toJSON());
-  }
 
   async updateUserProperties(updatedProperties: Partial<User>) {
     const user = this.activeUser[0];
@@ -387,5 +280,28 @@ export class UserDataService {
       await this.firebase.updateDocument('users', userData.id, newUser.toJSON());
     })
   }
+
+  async leaveChannel(userId: string, channel: Channel) {
+    const newChannel = channel.users.filter((user) => user !== userId);
+    const newChannelData = new Channel({
+      ...channel,
+      users: newChannel,
+    });
+    await this.updateChannelProperties(newChannelData);
+    await this.removeChannelFromUser(channel.id);
+  }
+
+  async removeChannelFromUser(channelId: string) {
+    const user = this.activeUser[0];
+    const newUser = new User({
+      ...user,
+      channels: user.channels.filter((channel) => channel !== channelId),
+    });
+    await this.updateUserProperties(newUser);
+    await this.loadUserData(user.id);
+    await this.loadChannelData(this.activeUser);
+  }
+
+
 
 }

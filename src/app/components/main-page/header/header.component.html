@@ -32,7 +32,7 @@
                         <img src="./assets/img/icons/channel-icon.png" alt="channel-icon">
                         <span>{{ message.channel.name }}</span>
                     </div>
-                    <span>{{ data.getUserName(message.message.senderId) }}</span>
+                    <span>{{ data.getUserProperty(message.message.senderId, 'name') }}</span>
                     <div class="single-channel-content">
                         <span>{{ message.message.content }}</span>
                     </div>
@@ -45,7 +45,7 @@
                         <img class="avatar"
                             [src]="data.getProfilePictureURL(message.senderId)"
                             alt="avatar">
-                        <span>{{ data.getUserName(message.senderId) }}</span>
+                        <span>{{ data.getUserProperty(message.senderId, 'name') }}</span>
                     </div>
                     <div class="single-direct-content">
                         <span>{{ message.content }}</span>
@@ -55,10 +55,10 @@
 
         </div>
     </div>
-    <div class="user-container" *ngIf="currentUser[0]">
-        <span *ngIf="currentUser !== undefined && !sharedService.isTablet">{{ data.activeUser[0].name }}</span>
-        <span *ngIf="currentUser !== undefined && sharedService.isTablet">{{ data.getInitials() }}</span>
-        <img *ngIf="currentUser !== undefined && !sharedService.isMobile" class="avatar" [src]="data.getProfilePictureURL(currentUser[0].id)" alt="avatar">
+    <div class="user-container" *ngIf="data.activeUser[0]">
+        <span *ngIf="data.activeUser[0] !== undefined && !sharedService.isTablet">{{ data.activeUser[0].name }}</span>
+        <span *ngIf="data.activeUser[0]  !== undefined && sharedService.isTablet">{{ data.getInitials() }}</span>
+        <img *ngIf="data.activeUser[0]  !== undefined && !sharedService.isMobile" class="avatar" [src]="data.getProfilePictureURL(data.activeUser[0].id)" alt="avatar">
         <img (click)="userMenu = !userMenu" *ngIf="currentUser !== undefined && sharedService.isMobile" class="avatar" [src]="data.getProfilePictureURL(data.activeUser[0].id)" alt="avatar">
         <img class="online-dot" src="./assets/img/online-dot.png" alt="online-dot">
         <img (click)="userMenu = !userMenu" class="dropdown" src="./assets/img/icons/arrow-drop-down.png"
@@ -81,14 +81,14 @@
             <span>Profil</span>
             <img (click)="closeProfileMenu()" src="./assets/img/icons/close-icon.png" alt="close-icon">
         </div>
-        <div class="profile-menu-img" *ngIf="currentUser[0]">
-            <img *ngIf="currentUser !== undefined" class="avatar"
-                [src]="data.getProfilePictureURL(currentUser[0].id)"
+        <div class="profile-menu-img" *ngIf="data.activeUser[0]">
+            <img *ngIf="data.activeUser[0] !== undefined" class="avatar"
+                [src]="data.getProfilePictureURL(data.activeUser[0].id)"
                 alt="avatar">
         </div>
         <div class="profile-menu-name">
             <div class="profile-menu-name-header">
-                <span class="profile-menu-name-username">{{ currentUser[0].name }}</span>
+                <span class="profile-menu-name-username">{{ data.activeUser[0].name }}</span>
                 <span (click)="openEditMenu()" class="profile-menu-name-edit">Bearbeiten</span>
             </div>
             <div class="profile-menu-name-footer">
@@ -101,7 +101,7 @@
                 <img src="./assets/img/icons/mail-icon.png" alt="email-icon">
                 <span>E-Mail-Adresse</span>
             </div>
-            <span class="profile-menu-mail-footer">{{ currentUser[0].email }}</span>
+            <span class="profile-menu-mail-footer">{{ data.activeUser[0].email }}</span>
         </div>
     </div>
 
@@ -111,9 +111,9 @@
             <span>Dein Profil bearbeiten</span>
             <img (click)="closeEditMenu() " src="./assets/img/icons/close-icon.png" alt="close-icon">
         </div>
-        <div class="edit-menu-userimage" *ngIf="currentUser[0]">
-            <img *ngIf="currentUser !== undefined" class="avatar"
-                [src]="data.getProfilePictureURL(currentUser[0].id)"
+        <div class="edit-menu-userimage" *ngIf="data.activeUser[0]">
+            <img *ngIf="data.activeUser[0] !== undefined" class="avatar"
+                [src]="data.getProfilePictureURL(data.activeUser[0].id)"
                 alt="avatar">
         </div>
         <div class="edit-menu-inputs">
@@ -122,14 +122,14 @@
                     <img src="./assets/img/icons/person-icon.png" alt="person-icon">
                     <span>Vollständiger Name</span>
                 </div>
-                <input [(ngModel)]="editedUserName" type="text" placeholder="{{ currentUser[0].name }}">
+                <input [(ngModel)]="editedUserName" type="text" placeholder="{{ data.activeUser[0].name }}">
             </div>
             <div class="edit-input-container">
                 <div class="edit-input-header">
                     <img src="./assets/img/icons/mail-icon.png" alt="person-icon">
                     <span>E-Mail-Adresse</span>
                 </div>
-                <input [(ngModel)]="editedUserMail" type="email" placeholder="{{ currentUser[0].email }}">
+                <input [(ngModel)]="editedUserMail" type="email" placeholder="{{ data.activeUser[0].email }}">
             </div>
         </div>
         <div class="edit-menu-button">

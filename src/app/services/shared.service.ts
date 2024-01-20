@@ -5,6 +5,7 @@ import { UserDataService } from './data.service';
 import { User } from '../models/user.class';
 import { Chat } from '../models/chat.class';
 import { Channel } from '../models/channel.class';
+import { FirebaseService } from './firebase.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class SharedService {
   currentChatPartnerId$ = this.currentChatPartnerId.asObservable();
   activeComponent = 'sidebar';
   changeWidth = 'calc(100% - 48px)';
-  constructor(private data: UserDataService) {}
+  constructor(private data: UserDataService, private firebaseService: FirebaseService) {}
   
 
   setCurrentChatPartnerId(id: string) {
@@ -135,6 +136,24 @@ export class SharedService {
    return searchedUser;
  }
 
+ 
+
+ generateNewMessage(newMessage: string, fileName: string, fileUrl: string) {
+  const date = new Date().getTime();
+  const message = new Message({
+    senderId: this.data.activeUser[0].id,
+    recieverId: '',
+    timestamp: date,
+    content: newMessage,
+    emojis: [],
+    answers: [],
+    fileName: fileName,
+    fileUrl: fileUrl,
+    fileType: this.determineFileType(fileName),
+    editMessage: false,
+  });
+  return message;
+}
 
  filterDirectMessages(chats: Chat[], searchTerm: string) {
    const searchedDirectMessages: Message[] = [];
@@ -162,7 +181,7 @@ export class SharedService {
      });
      return searchedChannelMessages;
    }
-
+   
 
    findMessageIndex(timestamp: number, channel: Channel[]) {
      const channelIndex = channel.findIndex((channel) => {
@@ -179,6 +198,21 @@ export class SharedService {
        return -1;
      }
    }
+
+   async sendChannelMessage(newMessage: string, file: File | null) {
+    let fileName = '';
+    let fileUrl = '';
+    try {
+      if (file) {
+        fileName = file.name;
+        fileUrl = await this.firebaseService.uploadFile(file);
+      }
+      const message = this.generateNewMessage(newMessage, fileName, fileUrl);
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
 
   determineFileType(fileName: string) {
     if (this.isImage(fileName)) {

@@ -23,22 +23,26 @@ export class ChatAreaComponent {
   showEmojiPicker = false;
   isEditing: boolean = false;
   messageContent: string = '';
+  editMenuOpend: boolean = false;
 
   constructor( 
      public sharedService: SharedService, 
     public sanitizer: DomSanitizer, public data: UserDataService) {
   }
 
+  
   toggleEmojiPicker(message: any) {
     console.log('toggleEmojiPicker');
     console.log(message);
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
+
   addEmoji(event: any) {
     console.log(event);
     this.showEmojiPicker = !this.showEmojiPicker;
   }
+
 
   openThread(message: any) {
     this.data.setCurrentMessage(message);
@@ -56,11 +60,26 @@ export class ChatAreaComponent {
 
   openEditMenu(message: any) {
     message.editMessage = true;
+    this.editMenuOpend = true;
   }
 
+
   editMessage(message: any) {
-    message.editMessage = false;
+    this.editMenuOpend = false;
     this.isEditing = true;
+  }
+
+
+  cancelEditing(message: any) {
+    this.isEditing = false;
+    message.editMessage = false;
+  }
+
+
+  saveChanges(message: any) {
+    this.isEditing = false;
+    message.editMessage = false;
+    console.log(message);
   }
 
 }

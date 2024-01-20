@@ -118,7 +118,7 @@ export class HeaderComponent{
     console.log('User: ', user);
     if (this.editedUserName !== '' && user.name) {
       console.log('Name changes were made');  
-      await this.data.editUserName(this.editedUserName);
+      await this.data.updateUserProperties({name: this.editedUserName});
     } else {
       console.log('No changes were made');
     }
@@ -129,7 +129,7 @@ export class HeaderComponent{
     console.log('User: ', user);
     if (this.editedUserMail !== '' && user.email) {
       console.log('Mail changes were made');
-      await this.data.editUserMail(this.editedUserMail);
+      await this.data.updateUserProperties({email: this.editedUserMail});
     } else {
       console.log('No changes were made');
     }
