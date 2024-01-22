@@ -24,7 +24,7 @@ interface MessageWithChannel extends Message {
 
 
 
-export class HeaderComponent{
+export class HeaderComponent {
   currentUser: User[] = []
   userMenu: boolean = false;
   profileMenu: boolean = false;
@@ -41,11 +41,11 @@ export class HeaderComponent{
   searchedChannelMessages!: any;
   searchedDirectMessages!: Message[];
   chats: Chat[] = [];
-  isEditing: boolean = false; 
+  isEditing: boolean = false;
 
 
 
-  constructor(private authService: AuthService,private dialog: MatDialog, public sharedService: SharedService, public data: UserDataService) {}
+  constructor(private authService: AuthService, private dialog: MatDialog, public sharedService: SharedService, public data: UserDataService) { }
 
 
 
@@ -117,8 +117,8 @@ export class HeaderComponent{
     const user = this.currentUser[0];
     console.log('User: ', user);
     if (this.editedUserName !== '' && user.name) {
-      console.log('Name changes were made');  
-      await this.data.updateUserProperties({name: this.editedUserName});
+      console.log('Name changes were made');
+      await this.data.updateUserProperties({ name: this.editedUserName });
     } else {
       console.log('No changes were made');
     }
@@ -129,27 +129,25 @@ export class HeaderComponent{
     console.log('User: ', user);
     if (this.editedUserMail !== '' && user.email) {
       console.log('Mail changes were made');
-      await this.data.updateUserProperties({email: this.editedUserMail});
+      await this.data.updateUserProperties({ email: this.editedUserMail });
     } else {
       console.log('No changes were made');
     }
   }
 
-  onSearch() {}
-  // onSearch() {
-  //   if (this.searchTerm !== '') {
-  //     this.searchActive = true;
-  //     this.searchedChannel = this.searchService.filterChannels(this.channelService.channelsSubscription.value, this.searchTerm);
-  //     this.searchedUser = this.searchService.filterUsers(this.availableUsers, this.searchTerm);
-  //     this.searchedDirectMessages = this.searchService.filterDirectMessages(this.chats, this.searchTerm);
-  //     this.searchedChannelMessages = this.searchService.filterChannelMessages(this.channelService.channelsSubscription.value, this.searchTerm);
-  //   } else {
-  //     this.searchActive = false;
-  //   }
+  onSearch() {
+    if (this.searchTerm !== '') {
+      this.searchActive = true;
+      this.searchedChannel = this.sharedService.filterChannels(this.data.userChannels, this.searchTerm);
+      this.searchedUser = this.sharedService.filterUsers(this.data.users, this.searchTerm);
+      this.searchedDirectMessages = this.sharedService.filterDirectMessages(this.data.chats, this.searchTerm);
+      this.searchedChannelMessages = this.sharedService.filterChannelMessages(this.data.channelList, this.searchTerm);
+    } else {
+      this.searchActive = false;
+    }
+  }
 
-  // }
 
- 
 }
 
 

@@ -96,7 +96,7 @@ export class ChannelChatComponent {
 
   async sendMessage() {
     if (this.message !== '' || this.selectedFile) {
-      this.sharedService.sendChannelMessage(this.message, this.selectedFile);
+      this.data.writeChannelMessage(this.message, this.selectedFile);
     } 
     this.message = '';
     this.selectedFile = null;

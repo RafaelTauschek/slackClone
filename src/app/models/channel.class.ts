@@ -8,6 +8,7 @@ export class Channel {
     messages: Message[];
     creationDate: number;
     users: string[];
+    channel: any;
 
 
     constructor(obj: any) {

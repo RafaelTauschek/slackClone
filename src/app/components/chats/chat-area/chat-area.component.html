@@ -14,7 +14,7 @@
                 <div class="message-container" *ngFor="let message of day.messages">
                     <ng-container *ngIf="this.sharedService.getMessageAlignment(message.senderId); else leftContainer">
                         <div class="message-container-right">
-                            <div class="message-overlay">
+                            <div class="message-overlay" *ngIf="!message.editMessage">
                                 <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
                                 <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji">
                                 </div>
@@ -88,7 +88,7 @@
                     </ng-container>
                     <ng-template #leftContainer>
                         <div class="message-container-left">
-                            <div class="message-overlay">
+                            <div *ngIf="!message.editMessage" class="message-overlay">
                                 <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
                                 <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji">
                                 </div>

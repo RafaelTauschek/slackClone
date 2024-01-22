@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { SharedService } from '../../../services/shared.service';
 import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../../services/data.service';
-import { Message } from '../../../models/message.class';
 
 @Component({
   selector: 'app-thread-chat',

@@ -1,18 +1,48 @@
+
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-select-password',
   standalone: true,
-  imports: [RouterModule, RouterLink, FormsModule, CommonModule],
+  imports: [RouterModule, RouterLink, ReactiveFormsModule, CommonModule],
   templateUrl: './select-password.component.html',
   styleUrl: './select-password.component.scss'
 })
 export class SelectPasswordComponent {
-  password: string = '';
-  repeatPassword: string = '';
+  changePasswordForm: FormGroup;
+  isSubmitted: boolean = false;
+  code: string | null = null;
 
-  changePassword() {}
+  constructor(private formbuilder: FormBuilder, private route: ActivatedRoute, private authService: AuthService) {
+    this.changePasswordForm = this.formbuilder.group({
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      repeatPassword: ['', [Validators.required, Validators.minLength(8)]]
+    })
+    this.code = this.route.snapshot.queryParams['oobCode'];
+    console.log(this.code);
+  }
+
+  changePassword() {
+    this.isSubmitted = true;
+    if (this.changePasswordForm.valid && this.changePasswordForm.get('password')?.value === this.changePasswordForm.get('repeatPassword')?.value) {
+      const password = this.changePasswordForm.get('password')?.value;
+      if (password) {
+        console.log('password is valid');
+        this.authService.changePassword(password, this.code);
+      } else {
+        console.log('password is invalid');
+      }
+    } else {
+      console.log('passwords do not match');
+    }
+    this.isSubmitted = false;
+  }
+
+
+
 }

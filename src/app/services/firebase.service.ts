@@ -60,6 +60,8 @@ export class FirebaseService {
   }
 
 
+
+
   async updateChats(colId: string, docId: string, item: {}) {
     updateDoc(this.getDocumentRef(colId, docId), {
       chats: arrayUnion(item)

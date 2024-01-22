@@ -9,7 +9,6 @@ export class Message {
     answers: any[];
     fileName: string;
     fileUrl: string;
-    fileType: string;
     editMessage: boolean = false;
 
 
@@ -24,7 +23,6 @@ export class Message {
         this.fileName = obj ? obj.fileName : '';
         this.fileUrl = obj ? obj.fileUrl : '';
         this.editMessage = obj ? obj.editMessage : false;
-        this.fileType = obj ? obj.fileType : '';
     }
 
     public toJSON() {
@@ -38,7 +36,6 @@ export class Message {
             fileName: this.fileName,
             fileUrl: this.fileUrl,
             editMessage: this.editMessage,
-            fileType: this.fileType
         }
     }
 }

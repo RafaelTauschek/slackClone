@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Channel } from '../../../models/channel.class';
 import { Message } from '../../../models/message.class';
 import { CommonModule } from '@angular/common';
@@ -16,7 +16,7 @@ import { UserDataService } from '../../../services/data.service';
   templateUrl: './chat-area.component.html',
   styleUrl: './chat-area.component.scss'
 })
-export class ChatAreaComponent {
+export class ChatAreaComponent implements AfterViewChecked {
   channel: Channel[] = [];
   messages: Message[] = [];
   formatedMessages: { [key: string]: Message[] } = {};
@@ -24,6 +24,7 @@ export class ChatAreaComponent {
   isEditing: boolean = false;
   messageContent: string = '';
   editMenuOpend: boolean = false;
+  @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
 
   constructor( 
      public sharedService: SharedService, 
@@ -65,6 +66,7 @@ export class ChatAreaComponent {
 
 
   editMessage(message: any) {
+    this.messageContent = message.content;
     this.editMenuOpend = false;
     this.isEditing = true;
   }
@@ -79,7 +81,20 @@ export class ChatAreaComponent {
   saveChanges(message: any) {
     this.isEditing = false;
     message.editMessage = false;
-    console.log(message);
+    this.data.editChannelMessage(message, this.messageContent);
+    this.scrollToBottom();
+  }
+
+
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    } catch(err) { }
   }
 
 }

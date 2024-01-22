@@ -122,7 +122,6 @@ export class UserDataService {
         messagesByDate.push({ date: currentDate, messages: currentMessages });
       }
       this.messages = messagesByDate;
-      console.log(this.messages);
     }
   }
 
@@ -138,19 +137,59 @@ export class UserDataService {
   }
 
 
+  async writeChannelMessage(newMessage: string, file: File | null) {
+    let fileName = '';
+    let fileUrl = '';
+    try {
+      if (file) {
+        fileName = file.name;
+        fileUrl = await this.firebase.uploadFile(file);
+      }
+      const message = this.generateNewMessage(newMessage, fileName, fileUrl);
+      await this.firebase.updateMessages('channels', this.currentChannel.id, message.toJSON());
+      await this.loadChannelData(this.activeUser);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
+  generateNewMessage(newMessage: string, fileName: string, fileUrl: string) {
+    const date = new Date().getTime();
+    const message = new Message({
+      senderId: this.activeUser[0].id,
+      recieverId: '',
+      timestamp: date,
+      content: newMessage,
+      emojis: [],
+      answers: [],
+      fileName: fileName,
+      fileUrl: fileUrl,
+      editMessage: false,
+    });
+    return message;
+  }
+  
 
   checkIfChatExists(activeUserId: string, chatpartnerId: string) {
-    console.log('Checking if chat exists')
-    console.log('Active User Id: ' + activeUserId);
-    console.log('Chatpartner Id: ' + chatpartnerId);
     const chat = this.currentChat;
-    console.log('Chat: ' + chat);
     if (chat) {
       return chat;
     } else {
       return false;
     }
+  }
+
+
+  async generateFirstChat(userId: string) {
+    const chat = new Chat({
+      chatId: '',
+      messages: [],
+      users: [userId],
+    });
+    const chatId = await this.firebase.addCollection('chats', chat.toJSON());
+    chat.chatId = chatId;
+    await this.firebase.updateDocument('chats', chatId, chat.toJSON())
+    await this.firebase.updateChats('users', userId, chatId);
   }
 
 
@@ -197,7 +236,6 @@ export class UserDataService {
 
   setCurrentMessage(message: Message[]) {
     this.message = message;
-    console.log(this.message); 
   }
 
 
@@ -260,7 +298,6 @@ export class UserDataService {
       ...user,
       ...updatedProperties
     });
-    console.log('new User: ', newUser);
     await this.firebase.updateDocument('users', user.id, newUser.toJSON());
   }
 
@@ -302,6 +339,50 @@ export class UserDataService {
     await this.loadChannelData(this.activeUser);
   }
 
+  async editChannelMessage(message: Message, newMessage: string) {
+    const messageIndex = this.findMessageIndex(message.timestamp, [this.currentChannel] as Channel[]);
+    const newMessageData = new Message({
+      senderId: message.senderId,
+      recieverId: message.recieverId,
+      timestamp: message.timestamp,
+      emojis: message.emojis,
+      answers: message.answers,
+      fileName: message.fileName,
+      fileUrl: message.fileUrl,
+      content: newMessage,
+      editMessage: false,
+    });
+    const doc = await this.firebase.getDocument('channels', this.currentChannel.id);
+    const docData = doc.data();
+    if (docData) {
+      docData['messages'][messageIndex] = newMessageData.toJSON();
+      await this.firebase.updateDocument('channels', this.currentChannel.id, docData);
+      await this.loadChannelData(this.activeUser);
+      this.setChannel(this.currentChannel.id);
+    }
+  }
 
+  findChannelIndex(channelId: string) {
+    const channelIndex = this.channelList.findIndex((channel) => {
+      return channel.id === channelId;
+    });
+    return channelIndex;
+  }
+
+  findMessageIndex(timestamp: number, channel: Channel[]) {
+    const channelIndex = channel.findIndex((channel) => {
+      return channel.messages.some((message) => {
+        return message.timestamp === timestamp;
+      });
+    });
+    if (channelIndex !== -1) {
+      const messageIndex = channel[channelIndex].messages.findIndex((message) => {
+        return message.timestamp === timestamp;
+      });
+      return messageIndex;
+    } else {
+      return -1;
+    }
+  }
 
 }

@@ -18,15 +18,12 @@ export class SharedService {
   currentPartner: string = '';
   isMobile: boolean = false;
   isTablet: boolean = false;
-  currentChatPartnerId = new Subject<string>();
-  currentChatPartnerId$ = this.currentChatPartnerId.asObservable();
   activeComponent = 'sidebar';
   changeWidth = 'calc(100% - 48px)';
   constructor(private data: UserDataService, private firebaseService: FirebaseService) {}
   
 
   setCurrentChatPartnerId(id: string) {
-    this.currentChatPartnerId.next(id);
     this.currentPartner = id;
   }
 
@@ -183,31 +180,20 @@ export class SharedService {
    }
    
 
-   findMessageIndex(timestamp: number, channel: Channel[]) {
-     const channelIndex = channel.findIndex((channel) => {
-       return channel.messages.some((message) => {
-         return message.timestamp === timestamp;
-       });
-     });
-     if (channelIndex !== -1) {
-       const messageIndex = channel[channelIndex].messages.findIndex((message) => {
-         return message.timestamp === timestamp;
-       });
-       return messageIndex;
-     } else {
-       return -1;
-     }
-   }
+
 
    async sendChannelMessage(newMessage: string, file: File | null) {
+    console.log('sendChannelMessage');
     let fileName = '';
     let fileUrl = '';
     try {
       if (file) {
         fileName = file.name;
         fileUrl = await this.firebaseService.uploadFile(file);
+        console.log('fileUrl: ', fileUrl);     
       }
       const message = this.generateNewMessage(newMessage, fileName, fileUrl);
+      await this.firebaseService.updateMessages('channels', this.data.currentChannel.id, message.toJSON());
     }
     catch (err) {
       console.log(err);

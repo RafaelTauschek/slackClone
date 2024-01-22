@@ -35,9 +35,6 @@ export class SidebarComponent {
   }
 
 
-
-
-
   openDialog() {
     this.dialog.open(AddChannelDialogComponent, {});
   }
