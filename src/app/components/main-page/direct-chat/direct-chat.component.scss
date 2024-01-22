@@ -3,7 +3,8 @@
     width: auto;
     padding: 32px 0px;
     display: flex;
-    max-height: calc(100% - 90px);
+    max-height: calc(100% - 70px);
+    height: 100%;
     flex-direction: column;
     align-items: flex-start;
     border-radius: 30px;
@@ -13,6 +14,12 @@
         width: 100dvw;
         max-height: none;
     }
+}
+
+.first-message {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .direct-chat-header {

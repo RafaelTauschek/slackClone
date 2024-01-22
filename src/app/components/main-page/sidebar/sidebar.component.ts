@@ -53,6 +53,8 @@ export class SidebarComponent {
 
   async openDirectChat(chatpartnerId: string, chat: Chat) {
     this.sharedService.setCurrentChatPartnerId(chatpartnerId);
+    console.log('ChatPartnerId: ' + chatpartnerId);
+    console.log('Chat: ' + chat);
     if (this.sharedService.isMobile) {
       this.sharedService.activeComponent = 'direct-chat';
     } else {

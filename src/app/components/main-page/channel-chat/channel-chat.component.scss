@@ -4,6 +4,7 @@
     padding: 32px 0px;
     display: flex;
     max-height: calc(100% - 70px);
+    height: 100%;
     flex-direction: column;
     align-items: flex-start;
     border-radius: 30px;
@@ -41,6 +42,12 @@
         height: 20px;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     }
+}
+
+.first-channel-message {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 
@@ -112,6 +119,7 @@
     width: 100%;
     flex: 1 1 auto;
     overflow-y: auto;
+    height: 100%;
 }
 
 app-chat-area {

@@ -5,13 +5,21 @@
 .chat-area-container {
     padding: 60px 35px;
     max-height: 100%;
-    height: 100vh;
+    height: 100%;
+
+
 
     @media only screen and (max-width: 1024px) {
         padding: 0;
         margin-top: 30px;
         width: 100dvw;
     }
+}
+
+.first-channel-message {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .date-container {
@@ -412,4 +420,28 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.no-channel-message {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    .channel-name {
+        font-size: 24px;
+        font-weight: 700;
+        padding: 6px 0px;
+    }
+
+    .first-message {
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 120%;
+
+        a {
+            text-decoration: none;
+            color: #535AF1;
+            font-size: 20px;
+        }
+    }
 }

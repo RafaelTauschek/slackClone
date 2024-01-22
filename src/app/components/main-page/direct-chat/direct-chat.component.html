@@ -6,7 +6,7 @@
         <span>{{ data.getUserProperty(sharedService.currentPartner, 'name') }}</span>
     </div>
 
-    <div class="chat-area">
+    <div class="chat-area" [class.first-message]="!data.currentChat[0]">
         <app-direct-chat-chatarea></app-direct-chat-chatarea>
     </div>
 

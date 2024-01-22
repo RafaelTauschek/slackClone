@@ -1,5 +1,5 @@
-<div class="chat-area-container">
-    <div *ngIf="data.messages; else noMessages">
+<div class="chat-area-container" [class.first-channel-message]="!data.messages || data.messages.length < 1">
+    <div *ngIf="data.messages && data.messages.length > 0; else noMessages">
         <div class="chat-area-wrapper" *ngFor="let day of data.messages">
             <div class="date-container">
                 <div class="line"></div>
@@ -145,12 +145,12 @@
         <emoji-mart class="emoji-mart" (emojiClick)="addEmoji($event)"></emoji-mart>
     </div>
     <ng-template #noMessages>
-        <div *ngIf="data.currentChannel">
-            <span># {{ data.currentChannel.name }}</span>
-            <span *ngIf="data.currentChannel">Dieser Channel wurde am {{ sharedService.formatDate(data.currentChannel.creationDate) }} von
+        <div *ngIf="data.currentChannel" class="no-channel-message">
+            <span class="channel-name"># {{ data.currentChannel.name }}</span>
+            <span class="first-message" *ngIf="data.currentChannel">Dieser Channel wurde am {{ sharedService.formatDate(data.currentChannel.creationDate) }} von
                 {{
-                data.getUserProperty(data.currentChannel.creator, 'name') }} erstellt. Das ist der Anfang des Channels # {{
-                data.currentChannel.name }}.</span>
+                data.getUserProperty(data.currentChannel.creator, 'name') }} erstellt. Das ist der Anfang des Channels <a># {{
+                data.currentChannel.name }}</a>.</span>
         </div>
     </ng-template>
 </div>
