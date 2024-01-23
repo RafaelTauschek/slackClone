@@ -1,17 +1,19 @@
 export class Emoji {
-    sender: string;
+    senders: string[];
     emoji: string;
-
+    count: number;
+  
     constructor(obj: any) {
-        this.sender = obj ? obj.sender : '';
-        this.emoji = obj ? obj.emoji : '';
+      this.senders = obj && obj.senders ? obj.senders : [];
+      this.emoji = obj ? obj.emoji : '';
+      this.count = obj && obj.count ? obj.count : 0;
     }
-
-
+  
     public toJSON() {
-        return {
-            sender: this.sender,
-            emoji: this.emoji,
-        }
+      return {
+        senders: this.senders,
+        emoji: this.emoji,
+        count: this.count,
+      }
     }
-}
+  }

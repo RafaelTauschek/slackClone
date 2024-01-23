@@ -7,6 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { FormsModule } from '@angular/forms';
 import { UserDataService } from '../../../services/data.service';
+import { Emoji } from '../../../models/emoji.class';
 
 
 @Component({
@@ -33,15 +34,37 @@ export class ChatAreaComponent implements AfterViewChecked {
 
   
   toggleEmojiPicker(message: any) {
-    console.log('toggleEmojiPicker');
-    console.log(message);
+    this.data.setCurrentMessage([message]);
+    console.log('message', this.data.message);
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
 
   addEmoji(event: any) {
-    console.log(event);
+    const existingEmoji = this.data.message[0].emojis.find(
+      (e: Emoji) => e.senders.includes(this.data.activeUser[0].id) && e.emoji === event.emoji.native
+    );
+    if (existingEmoji) {
+      const senderIndex = existingEmoji.senders.indexOf(this.data.activeUser[0].id);
+      if (senderIndex !== -1) {
+        existingEmoji.senders.splice(senderIndex, 1);
+        existingEmoji.count--;
+        if (existingEmoji.count === 0) {
+          const emojiIndex = this.data.message[0].emojis.indexOf(existingEmoji);
+          this.data.message[0].emojis.splice(emojiIndex, 1);
+        }
+      }
+    } else {
+      const emoji = new Emoji({
+        senders: [this.data.activeUser[0].id],
+        emoji: event.emoji.native,
+        count: 1,
+      });
+      this.data.message[0].emojis.push(emoji.toJSON());
+    } 
     this.showEmojiPicker = !this.showEmojiPicker;
+    console.log('message', this.data.message[0]);
+    this.data.editMessage(this.data.message[0], 'channel');
   }
 
 

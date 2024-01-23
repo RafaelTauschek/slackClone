@@ -171,7 +171,6 @@ export class UserDataService {
   }
 
   
-  
 
   checkIfChatExists(activeUserId: string, chatpartnerId: string) {
     if (activeUserId === chatpartnerId) {
@@ -450,11 +449,13 @@ async editMessage(message: Message, type: 'chat' | 'channel') {
     content: message.content,
     editMessage: false,
   });
-  const doc = await this.firebase.getDocument(type + 's', current.id || current.id);
+  const doc = await this.firebase.getDocument(type + 's', current.id);
   const docData = doc.data();
   if (docData) {
     docData['messages'][messageIndex] = newMessageData.toJSON();
-    await this.firebase.updateDocument(type + 's', current.id || current.id, docData);
+    await this.firebase.updateDocument(type + 's', current.id, docData);
+    await this.loadChannelData(this.activeUser);
+    this.setChannel(current.id);
     if (type === 'chat') {
       await this.loadChatsData(this.activeUser[0]);
     } else {
@@ -463,6 +464,8 @@ async editMessage(message: Message, type: 'chat' | 'channel') {
     }
   }
 }
+
+
 
 
 

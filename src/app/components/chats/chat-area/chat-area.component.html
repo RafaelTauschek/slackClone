@@ -70,10 +70,10 @@
                                             sharedService.formatTimestampToTime(message.answers[message.answers.length -
                                             1].timestamp) }}</span>
                                     </div>
-                                    <div class="emoji-container">
-                                        <div class="single-emoji">
-                                            <img src="./assets/img/emojis/rocket.png" alt="emoji">
-                                            <span class="emoji-count">1</span>
+                                    <div class="emoji-container" *ngIf="message.emojis[0]">
+                                        <div class="single-emoji" *ngFor="let emoji of message.emojis">
+                                            <div>{{ emoji.emoji }}</div>
+                                            <span class="emoji-count">{{ emoji.count }}</span>
                                         </div>
                                         <img class="add-emoji" src="./assets/img/icons/add-emoji-icon.png"
                                             alt="add-emoji-icon">
@@ -126,10 +126,10 @@
                                         <span class="answers">{{ message.answers.length }} Antworten</span>
                                         <span class="last-answer">Letzte Antwort 14:56</span>
                                     </div>
-                                    <div class="emoji-container">
-                                        <div class="single-emoji">
-                                            <img src="./assets/img/emojis/rocket.png" alt="emoji">
-                                            <span class="emoji-count">1</span>
+                                    <div class="emoji-container" *ngIf="message.emojis[0]">
+                                        <div class="single-emoji" *ngFor="let emoji of message.emojis">
+                                            <span>{{ emoji.emoji }}</span>
+                                            <span class="emoji-count">{{ emoji.count }}</span>
                                         </div>
                                         <img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji-icon">
                                     </div>
