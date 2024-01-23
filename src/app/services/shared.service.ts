@@ -22,11 +22,9 @@ export class SharedService {
   changeWidth = 'calc(100% - 48px)';
   constructor(private data: UserDataService, private firebaseService: FirebaseService) {}
   
-
   setCurrentChatPartnerId(id: string) {
     this.currentPartner = id;
   }
-
 
   isPdf(url: string | undefined): boolean {
     if (!url) return false;
@@ -46,27 +44,19 @@ export class SharedService {
     return extension ? ['jpeg', 'jpg', 'gif', 'png'].includes(extension) : false;
   }
 
-
-  public groupMessagesByDate(messages: Message[]) {
-    messages.sort((a, b) => a.timestamp - b.timestamp);
-    const groupedMessages = new Map<string, Message[]>();
-    messages.forEach((message) => {
-      const dateKey = this.formatDate(message.timestamp);
-      if (!groupedMessages.has(dateKey)) {
-        groupedMessages.set(dateKey, []);
-      }
-      const messagesArray = groupedMessages.get(dateKey);
-      if (messagesArray) {
-        messagesArray.push(message);
-      }
-    });
-    const reversedFormatedMessages = new Map([...groupedMessages.entries()].sort().reverse());
-    const reversedObject: { [key: string]: Message[] } = {};
-    reversedFormatedMessages.forEach((value, key) => {
-      reversedObject[key] = value;
-    });
-    return reversedObject;
+  determineFileType(fileName: string) {
+    if (this.isImage(fileName)) {
+      return 'image';
+    } else if (this.isPdf(fileName)) {
+      return 'pdf';
+    } else if (this.isVideo(fileName)) {
+      return 'video';
+    } else {
+      return 'unknown';
+    }
   }
+
+
 
   public formatDate(timestamp: number) {
     const date = new Date(timestamp);
@@ -86,10 +76,6 @@ export class SharedService {
   }
 
 
-
-  public getKeys(obj: any) {
-    return Object.keys(obj);
-  }
 
    getUserProperty(userId: string, property: string) {
      const user = this.data.users.find((user: User) => user.id === userId);
@@ -200,15 +186,5 @@ export class SharedService {
     }
   }
 
-  determineFileType(fileName: string) {
-    if (this.isImage(fileName)) {
-      return 'image';
-    } else if (this.isPdf(fileName)) {
-      return 'pdf';
-    } else if (this.isVideo(fileName)) {
-      return 'video';
-    } else {
-      return 'unknown';
-    }
-  }
+
 }

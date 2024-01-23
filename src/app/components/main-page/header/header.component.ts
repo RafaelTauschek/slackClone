@@ -95,7 +95,7 @@ export class HeaderComponent {
 
 
   openUser(userId: string) {
-    this.sharedService.currentPartner = userId;
+    this.sharedService.setCurrentChatPartnerId(userId);
     this.openDialog();
     this.searchTerm = '';
     this.searchActive = false;

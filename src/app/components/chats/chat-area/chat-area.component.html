@@ -13,7 +13,7 @@
             <div class="message-wrapper">
                 <div class="message-container" *ngFor="let message of day.messages">
                     <ng-container *ngIf="this.sharedService.getMessageAlignment(message.senderId); else leftContainer">
-                        <div class="message-container-right">
+                        <div class="message-container-right" [class.background-gray]="isEditing && message.editMessage">
                             <div class="message-overlay" *ngIf="!message.editMessage">
                                 <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
                                 <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji">
@@ -32,23 +32,23 @@
                             <div class="edit-message-overlay" *ngIf="editMenuOpend && message.editMessage">
                                 <span (click)="editMessage(message)">Nachricht bearbeiten</span>
                             </div>
-                            <div class="message-content-container">
+                            <div class="message-content-container" [class.width-100]="isEditing && message.editMessage">
                                 <div class="message-header">
                                     <span class="time">{{ message?.timestamp | date: 'HH:mm'}} Uhr</span>
                                     <span class="username">{{ data.getUserProperty(message.senderId, 'name') }}</span>
                                 </div>
-                                <div class="message-content" [ngSwitch]="message.fileType">
+                                <div class="message-content" [ngSwitch]="message.fileType" [class.background-gray]="isEditing && message.editMessage">
                                     <div class="editing-container" *ngIf="isEditing && message.editMessage">
                                         <textarea name="message" [(ngModel)]="messageContent"></textarea>
                                         <div class="editing-footer">
                                             <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
                                             <div class="editing-btn-container">
-                                                <button (click)="cancelEditing(message)">Abbrechen</button>
-                                                <button (click)="saveChanges(message)">Speichern</button>
+                                                <button class="cancel-btn" (click)="cancelEditing(message)">Abbrechen</button>
+                                                <button class="save-btn" (click)="saveChanges(message)">Speichern</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <span class="text">{{ message.content }}</span>
+                                    <span *ngIf="!(isEditing && message.editMessage)" class="text">{{ message.content }}</span>
                                     <img class="message-image" *ngSwitchCase="'image'" [src]="message.fileUrl" />
                                     <object class="message-pdf" *ngSwitchCase="'pdf'"
                                         [data]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"

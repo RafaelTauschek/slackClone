@@ -50,6 +50,25 @@
     background-color: #ccc;
 }
 
+.message-img {
+    max-height: 200px;
+    max-width: 200px;
+    object-fit: contain;
+}
+
+.message-video {
+    max-height: 200px;
+    max-width: 200px;
+    object-fit: contain;
+}
+
+.message-pdf {
+    max-height: 200px;
+    max-width: 200px;
+    object-fit: contain;
+}
+
+
 .message-container-left {
     display: flex;
     padding: 10px 16px;

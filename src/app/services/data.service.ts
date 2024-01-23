@@ -163,68 +163,96 @@ export class UserDataService {
       emojis: [],
       answers: [],
       fileName: fileName,
+      fileType: this.determineFileType(fileName) || '',
       fileUrl: fileUrl,
       editMessage: false,
     });
     return message;
   }
+
+  
   
 
   checkIfChatExists(activeUserId: string, chatpartnerId: string) {
-    const chat = this.currentChat;
-    if (chat) {
-      return chat;
+    if (activeUserId === chatpartnerId) {
+      const chat = this.chats.find(chat => 
+        chat.users.includes(activeUserId) && chat.users.length === 1
+      );
+      return chat ? true : false;
     } else {
-      return false;
+      const chat = this.chats.find(chat => 
+        chat.users.includes(activeUserId) && chat.users.includes(chatpartnerId) && chat.users.length > 1
+      );
+      return chat ? true : false;
     }
   }
 
+  getChat(userId: string, chatpartnerId: string) {
+    if (userId === chatpartnerId) {
+      const chat = this.chats.find(chat => 
+        chat.users.includes(userId) && chat.users.length === 1
+      );
+      return chat ? [chat] : [];
+    } else {
+      const chat = this.chats.find(chat => 
+        chat.users.includes(userId) && chat.users.includes(chatpartnerId) && chat.users.length > 1
+      );
+      return chat ? [chat] : [];
+    }  
+  }
 
   async generateFirstChat(userId: string) {
     const chat = new Chat({
-      chatId: '',
+      id: '',
       messages: [],
       users: [userId],
     });
     const chatId = await this.firebase.addCollection('chats', chat.toJSON());
-    chat.chatId = chatId;
+    chat.id = chatId;
     await this.firebase.updateDocument('chats', chatId, chat.toJSON())
     await this.firebase.updateChats('users', userId, chatId);
   }
 
 
-  async generateNewChat(activeUserId: string, chatPartnerId: string, newMessage: any) {
-    const date = new Date().getTime();
-    const chat = new Chat({
-      chatId: '',
-      messages: [],
-      users: [activeUserId, chatPartnerId],
-    });
-    const chatId = await this.firebase.addCollection('chats', chat.toJSON());
-    chat.chatId = chatId;
-    await this.firebase.updateDocument('chats', chatId, chat.toJSON())
-    const message = new Message({
-      senderId: activeUserId,
-      recieverId: chatPartnerId,
-      timestamp: date,
-      content: newMessage,
-      emojis: [],
-      answers: [],
-      fileName: '',
-      fileUrl: '',
-      fileType: '',
-      editMessage: false,
-    });
-    await this.firebase.updateMessages('chats', chatId, message.toJSON());
-    await this.firebase.updateChats('users', activeUserId, chatId);
-    await this.firebase.updateChats('users', chatPartnerId, chatId);
+  async generateNewChat(activeUserId: string, chatPartnerId: string, message: Message) {
+    console.log('Message:', message);
+    if (activeUserId === chatPartnerId) {
+      const chat = new Chat({
+        id: '',
+        messages: [message.toJSON()],
+        users: [activeUserId],
+      });
+      const chatId = await this.firebase.addCollection('chats', chat.toJSON());
+      chat.id = chatId;
+      await this.firebase.updateDocument('chats', chatId, chat.toJSON())
+      await this.firebase.updateMessages('chats', chatId, message.toJSON());
+      await this.firebase.updateChats('users', activeUserId, chatId);
+      await this.loadChatsData(this.activeUser[0]);
+      this.setCurrentChat([chat]);
+    }
+
+    if (activeUserId !== chatPartnerId) {
+      const chat = new Chat({
+        id: '',
+        messages: [message.toJSON()],
+        users: [activeUserId, chatPartnerId],
+      });
+      const chatId = await this.firebase.addCollection('chats', chat.toJSON());
+      chat.id = chatId;
+      await this.firebase.updateDocument('chats', chatId, chat.toJSON())
+      await this.firebase.updateMessages('chats', chatId, message.toJSON());
+      await this.firebase.updateChats('users', activeUserId, chatId);
+      await this.firebase.updateChats('users', chatPartnerId, chatId);
+      await this.loadChatsData(this.activeUser[0]);
+      this.setCurrentChat([chat]);
+    }
   }
+
 
 
   async updateChatMessages(chatId: string) {
     const docSnap = await this.firebase.getDocument('chats', chatId);
     const chat = docSnap.data() as Chat;
-    this.currentChat = [chat];
     this.setCurrentChat([chat]);
   }
 
@@ -239,7 +267,14 @@ export class UserDataService {
   }
 
 
-  async addMessageToChat(chatId: string, newMessage: any, recieverId: string) {
+
+  async writeChatMessage(message: Message, chatId: string) {
+    console.log('Message: ', message);
+    await this.firebase.updateMessages('chats', chatId, message.toJSON());
+    await this.updateChatMessages(chatId);
+  }
+
+  async addMessageToChat(chatId: string, newMessage: string, recieverId: string) {
     const date = new Date().getTime();
     const message = new Message({
       senderId: this.activeUser[0].id,
@@ -287,8 +322,12 @@ export class UserDataService {
 
 
   getChatPartnerId(chat: Chat, userId: string) {
-    const chatPartnerId = chat.users.find(user => user !== userId);
-    return chatPartnerId;
+    if (chat.users.length === 1) {
+      return userId;
+    } else {
+      const chatPartnerId = chat.users.find(user => user !== userId);
+      return chatPartnerId;
+    }
   }
 
 
@@ -339,28 +378,6 @@ export class UserDataService {
     await this.loadChannelData(this.activeUser);
   }
 
-  async editChannelMessage(message: Message, newMessage: string) {
-    const messageIndex = this.findMessageIndex(message.timestamp, [this.currentChannel] as Channel[]);
-    const newMessageData = new Message({
-      senderId: message.senderId,
-      recieverId: message.recieverId,
-      timestamp: message.timestamp,
-      emojis: message.emojis,
-      answers: message.answers,
-      fileName: message.fileName,
-      fileUrl: message.fileUrl,
-      content: newMessage,
-      editMessage: false,
-    });
-    const doc = await this.firebase.getDocument('channels', this.currentChannel.id);
-    const docData = doc.data();
-    if (docData) {
-      docData['messages'][messageIndex] = newMessageData.toJSON();
-      await this.firebase.updateDocument('channels', this.currentChannel.id, docData);
-      await this.loadChannelData(this.activeUser);
-      this.setChannel(this.currentChannel.id);
-    }
-  }
 
   findChannelIndex(channelId: string) {
     const channelIndex = this.channelList.findIndex((channel) => {
@@ -384,5 +401,138 @@ export class UserDataService {
       return -1;
     }
   }
+
+
+  isPdf(url: string | undefined): boolean {
+    if (!url) return false;
+    const extension = url.split('?')[0].split('.').pop();
+    return extension ? extension === 'pdf' : false;
+  }
+  
+  isVideo(url: string | undefined): boolean {
+    if (!url) return false;
+    const extension = url.split('?')[0].split('.').pop();
+    return extension ? ['mp4', 'webm', 'ogg'].includes(extension) : false;
+  }
+  
+  isImage(url: string | undefined): boolean {
+    if (!url) return false;
+    const extension = url.split('?')[0].split('.').pop();
+    return extension ? ['jpeg', 'jpg', 'gif', 'png'].includes(extension) : false;
+  }
+
+  determineFileType(fileName: string) {
+    if (this.isImage(fileName)) {
+      return 'image';
+    } else if (this.isPdf(fileName)) {
+      return 'pdf';
+    } else if (this.isVideo(fileName)) {
+      return 'video';
+    } else {
+      return 'unknown';
+    }
+  }
+
+
+
+async editMessage(message: Message, type: 'chat' | 'channel') {
+  const current = type === 'chat' ? this.currentChat[0] : this.currentChannel;
+  const messageIndex = this.findMessageIndex(message.timestamp, [current] as unknown as Channel[]);
+  const newMessageData = new Message({
+    senderId: message.senderId,
+    recieverId: message.recieverId,
+    timestamp: message.timestamp,
+    emojis: message.emojis,
+    answers: message.answers,
+    fileName: message.fileName,
+    fileUrl: message.fileUrl,
+    fileType: message.fileType,
+    content: message.content,
+    editMessage: false,
+  });
+  const doc = await this.firebase.getDocument(type + 's', current.id || current.id);
+  const docData = doc.data();
+  if (docData) {
+    docData['messages'][messageIndex] = newMessageData.toJSON();
+    await this.firebase.updateDocument(type + 's', current.id || current.id, docData);
+    if (type === 'chat') {
+      await this.loadChatsData(this.activeUser[0]);
+    } else {
+      await this.loadChannelData(this.activeUser);
+      this.setChannel(current.id);
+    }
+  }
+}
+
+
+
+generateMessage(message: Message) {
+  const newMessage = new Message({
+    senderId: message.senderId,
+    recieverId: message.recieverId,
+    timestamp: message.timestamp,
+    emojis: message.emojis,
+    answers: message.answers,
+    fileName: message.fileName,
+    fileUrl: message.fileUrl,
+    fileType: message.fileType,
+    content: message.content,
+    editMessage: false,
+  });
+  return newMessage;
+}
+
+
+async editChatMessage(message: Message, newMessage: string) {
+  const messageIndex = this.findMessageIndex(message.timestamp, [this.currentChat] as unknown as Channel[]);
+  const newMessageData = new Message({
+    senderId: message.senderId,
+    recieverId: message.recieverId,
+    timestamp: message.timestamp,
+    emojis: message.emojis,
+    answers: message.answers,
+    fileName: message.fileName,
+    fileUrl: message.fileUrl,
+    fileType: message.fileType,
+    content: newMessage,
+    editMessage: false,
+  });
+  const doc = await this.firebase.getDocument('chats', this.currentChat[0].id);
+  const docData = doc.data();
+  if (docData) {
+    docData['messages'][messageIndex] = newMessageData.toJSON();
+    await this.firebase.updateDocument('chats', this.currentChat[0].id, docData);
+    await this.loadChatsData(this.activeUser[0]);
+  }
+}
+
+
+async editChannelMessage(message: Message, newMessage: string) {
+  const messageIndex = this.findMessageIndex(message.timestamp, [this.currentChannel] as Channel[]);
+  const newMessageData = new Message({
+    senderId: message.senderId,
+    recieverId: message.recieverId,
+    timestamp: message.timestamp,
+    emojis: message.emojis,
+    answers: message.answers,
+    fileName: message.fileName,
+    fileUrl: message.fileUrl,
+    fileType: message.fileType,
+    content: newMessage,
+    editMessage: false,
+  });
+  const doc = await this.firebase.getDocument('channels', this.currentChannel.id);
+  const docData = doc.data();
+  if (docData) {
+    docData['messages'][messageIndex] = newMessageData.toJSON();
+    await this.firebase.updateDocument('channels', this.currentChannel.id, docData);
+    await this.loadChannelData(this.activeUser);
+    this.setChannel(this.currentChannel.id);
+  }
+}
+
+
+
+
 
 }

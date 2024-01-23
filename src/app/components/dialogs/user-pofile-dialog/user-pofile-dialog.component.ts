@@ -14,7 +14,7 @@ import { Chat } from '../../../models/chat.class';
 })
 export class UserPofileDialogComponent {
 
-  constructor(public dialogRef: MatDialogRef<UserPofileDialogComponent>, public sharedService: SharedService, public data: UserDataService) { 
+  constructor(public dialogRef: MatDialogRef<UserPofileDialogComponent>, public sharedService: SharedService, public data: UserDataService) {
   }
 
 
@@ -27,25 +27,27 @@ export class UserPofileDialogComponent {
 
   openDirectChat() {
     const chatPartnerId = this.sharedService.currentPartner;
+    console.log('chatPartnerId', chatPartnerId);
+    console.log('activeUser', this.data.activeUser[0].id);
     const chatExits = this.data.checkIfChatExists(this.data.activeUser[0].id, chatPartnerId);
+    console.log('chatExits', chatExits);
     if (chatExits) {
-      this.data.setCurrentChat(chatExits);
+      const chat = this.data.getChat(this.data.activeUser[0].id, chatPartnerId);
+      console.log('chat', chat);
+      this.data.setCurrentChat(chat);
     } else {
       const chat = new Chat({
-        chatId: '',
+        id: '',
         messages: [],
-        users: [this.data.activeUser[0].id, chatPartnerId],
+        users: [this.data.activeUser[0].id, chatPartnerId]
       });
-     this.data.setCurrentChat([chat])
+      this.data.setCurrentChat([chat]);
     }
     this.sharedService.channelChatActive = false;
-    this.sharedService.messageActive = false; 
+    this.sharedService.messageActive = false;
     this.sharedService.threadActive = false;
     this.sharedService.directChatActive = true;
-
-    
     this.closeDialog();
-
   }
 
 }

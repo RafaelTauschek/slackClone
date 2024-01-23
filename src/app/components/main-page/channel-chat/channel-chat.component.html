@@ -23,7 +23,7 @@
         </div>
     </div>
  
-    <div class="chat-area" [class.first-channel-message]="!data.currentChannel.messages || data.currentChannel.messages.length < 1" >
+    <div class="chat-area" [class.first-channel-message]="!data.currentChannel">
         <app-chat-area></app-chat-area>
     </div>
 

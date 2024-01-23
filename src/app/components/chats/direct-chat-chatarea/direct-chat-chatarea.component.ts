@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Chat } from '../../../models/chat.class';
 import { SharedService } from '../../../services/shared.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserDataService } from '../../../services/data.service';

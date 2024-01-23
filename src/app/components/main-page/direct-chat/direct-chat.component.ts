@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { SharedService } from '../../../services/shared.service';
 import { Chat } from '../../../models/chat.class';
 import { UserDataService } from '../../../services/data.service';
-
+import { FirebaseService } from '../../../services/firebase.service';
 
 @Component({
   selector: 'app-direct-chat',
@@ -21,7 +21,7 @@ export class DirectChatComponent {
   selectedFileName: string = '';
   selectedFile: File | null = null;
 
-  constructor(public sharedService: SharedService, public data: UserDataService) {}
+  constructor(public sharedService: SharedService, public data: UserDataService, private firebaseService: FirebaseService) {}
 
   
   onFileSelected(event: any) {
@@ -31,19 +31,37 @@ export class DirectChatComponent {
     }
   }
 
-  async addMessageToChat() {
-    if (this.message !== '') {
-      const currentUserId = this.data.activeUser[0].id;
-      const chatPartnerId = this.sharedService.currentPartner;
-      const chatExits = this.data.checkIfChatExists(currentUserId, chatPartnerId);
-      console.log(chatExits);
-      if (!chatExits) {
-        console.log('Chat does not exist, generating new chat');
-        await this.data.generateNewChat(currentUserId, chatPartnerId, this.message);
-        this.message = '';
+  async sendMessage() {
+    if (this.message !== '' || this.selectedFile) {
+      const newMessage = await this.generateNewMessage(this.selectedFile);
+      const chatExists = this.data.checkIfChatExists(this.data.activeUser[0].id, this.sharedService.currentPartner);
+      if (chatExists) {
+        await this.data.writeChatMessage(newMessage, this.data.currentChat[0].id);
       } else {
-        this.message = '';
+        await this.data.generateNewChat(this.data.activeUser[0].id, this.sharedService.currentPartner, newMessage);
       }
-    }
+    } 
+    this.message = '';
+    this.selectedFile = null;
+    this.selectedFileName = '';
   }
+
+
+
+  async generateNewMessage(file: File | null) {
+    let fileName = '';
+    let fileUrl = '';
+    if (file) {
+      fileName = file.name;
+      fileUrl = await this.firebaseService.uploadFile(file);
+    }
+    const message = this.data.generateNewMessage(this.message, fileName, fileUrl);
+    return message;
+  }
+
+
+  
+
+ 
+
 }

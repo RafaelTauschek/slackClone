@@ -32,7 +32,10 @@
                         <img src="./assets/img/icons/channel-icon.png" alt="channel-icon">
                         <span>{{ message.channel.name }}</span>
                     </div>
-                    <span>{{ data.getUserProperty(message.message.senderId, 'name') }}</span>
+                    <div class="single-channel-user-section">
+                        <img [src]="data.getProfilePictureURL(message.message.senderId)" alt="avatar">
+                        <span>{{ data.getUserProperty(message.message.senderId, 'name') }}</span>
+                    </div>
                     <div class="single-channel-content">
                         <span>{{ message.message.content }}</span>
                     </div>

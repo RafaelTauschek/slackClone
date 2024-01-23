@@ -1,5 +1,5 @@
-<div class="direct-chat-area-container" [class.no-message-container]="!data.currentChat" [class.first-message]="!data.currentChat[0]">
-    <div class="chat-area-wrapper" *ngIf="data.currentChat[0]; else noMessages">
+<div class="direct-chat-area-container" [class.no-message-container]="!data.currentChat" [class.first-message]="!data.currentChat[0] || (data.currentChat[0] && data.currentChat[0].messages.length < 1)">
+    <div class="chat-area-wrapper" *ngIf="data.currentChat[0] && data.currentChat[0].messages.length > 0; else noMessages">
         <div class="date-container">
             <div class="line"></div>
             <div class="date">

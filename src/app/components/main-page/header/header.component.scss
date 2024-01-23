@@ -37,7 +37,7 @@
         border: 2px solid #ECEEFE;
         border-radius: 100px;
         background: #ECEEFE;
-        
+
         @media only screen and (max-width: 1024px) {
             display: none;
         }
@@ -461,6 +461,85 @@
     span {
         font-size: 18px;
         font-weight: 700;
+    }
+}
+
+.searched-channel-message {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .single-channel-message {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .single-channel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            span {
+                font-size: 20px;
+                font-weight: 700;
+            }
+        }
+
+        .single-channel-user-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            img {
+                height: 25px;
+                width: 25px;
+                border-radius: 100px;
+            }
+
+            span {
+                font-size: 18px;
+                font-weight: 500;
+            }
+        }
+
+        .single-channel-content {
+            display: flex;
+            font-size: 16px;
+            margin-left: 35px;
+        }
+    }
+}
+
+
+.searched-direct-message {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .single-direct-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        img {
+            height: 25px;
+            width: 25px;
+            border-radius: 100px;
+        }
+
+        span {
+            font-size: 20px;
+            font-weight: 700;
+        }
+    }
+
+    .single-direct-content {
+        display: flex;
+
+        span {
+            font-size: 16px;
+            margin-left: 35px;
+        }
     }
 }
 

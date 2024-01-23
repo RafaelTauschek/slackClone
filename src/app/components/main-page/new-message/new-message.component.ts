@@ -102,7 +102,7 @@ export class NewMessageComponent {
   async addMessageToChat() {
     const chatExits = this.data.checkIfChatExists(this.data.activeUser[0].id, this.sharedService.currentPartner);
     if (!chatExits) {
-      await this.data.generateNewChat(this.data.activeUser[0].id, this.sharedService.currentPartner, this.newMessage);
+      //await this.data.generateNewChat(this.data.activeUser[0].id, this.sharedService.currentPartner,);
     } else {
      // await this.data.addMessageToChat(chatExits, this.newMessage, this.sharedService.currentPartner);
     }

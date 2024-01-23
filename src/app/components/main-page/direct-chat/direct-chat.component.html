@@ -6,7 +6,7 @@
         <span>{{ data.getUserProperty(sharedService.currentPartner, 'name') }}</span>
     </div>
 
-    <div class="chat-area" [class.first-message]="!data.currentChat[0]">
+    <div class="chat-area" [class.first-message]="!data.currentChat[0] || data.currentChat[0].messages.length < 1">
         <app-direct-chat-chatarea></app-direct-chat-chatarea>
     </div>
 
@@ -23,7 +23,7 @@
             <div class="icons-middle">
                 <span>{{ selectedFileName }}</span>
             </div>
-            <div class="icons-right" (click)="addMessageToChat()">
+            <div class="icons-right" (click)="sendMessage()">
                 <img src="./assets/img/icons/send-icon.png" alt="send-icon">
             </div>
         </div>
