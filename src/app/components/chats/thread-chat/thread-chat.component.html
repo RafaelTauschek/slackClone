@@ -1,36 +1,80 @@
 <div class="thread-chat-section">
     <div class="message-container">
-        <img class="single-user-avatar" 
-                [src]="data.getProfilePictureURL(data.message.senderId)" 
-                alt="avatar">
-        <div class="message-content">
-            <div class="message-header">
-                <span class="user-name">{{ data.getUserProperty(data.message.senderId, 'name')  }}</span>
-                <span class="time">{{ sharedService.formatTimestampToTime(data.message.timestamp) }} Uhr</span>
+
+        <ng-container *ngIf="sharedService.getMessageAlignment(data.message.senderId); else leftMessage">
+            <div class="message-container-right">
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="time">{{ sharedService.formatTimestampToTime(data.message.timestamp) }} Uhr</span>
+                        <span class="user-name">{{ data.getUserProperty(data.message.senderId, 'name') }}</span>
+                    </div>
+                    <div class="message-main">
+                        <span>{{ data.message.content }}</span>
+                    </div>
+                </div>
+                <img class="single-user-avatar" [src]="data.getProfilePictureURL(data.message.senderId)" alt="avatar">
             </div>
-            <div class="message-main">
-                <span>{{ data.message.content }}</span>
+        </ng-container>
+
+        <ng-template #leftMessage>
+            <div class="message-container-left">
+                <img class="single-user-avatar" [src]="data.getProfilePictureURL(data.message.senderId)" alt="avatar">
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="user-name">{{ data.getUserProperty(data.message.senderId, 'name') }}</span>
+                        <span class="time">{{ sharedService.formatTimestampToTime(data.message.timestamp) }} Uhr</span>
+                    </div>
+                    <div class="message-main">
+                        <span>{{ data.message.content }}</span>
+                    </div>
+                </div>
             </div>
-        </div>
+        </ng-template>
+
     </div>
 
-    <div class="answer-divider" >
+    <div class="answer-divider">
         <span>{{ data.message.answers.length }} Antworten</span>
         <img src="./assets/img/line.png" alt="line">
     </div>
 
     <div class="answer-container">
         <div class="answer" *ngFor="let answer of data.message.answers">
-            <img [src]="data.getProfilePictureURL(answer.senderId)" alt="avatar">
-            <div class="answer-content">
-                <div class="answer-header" >
-                    <span class="user-name">{{ data.getUserProperty(answer.senderId , 'name') }}</span>
-                    <span class="time">{{ sharedService.formatTimestampToTime(answer.timestamp) }} Uhr</span>
+            <ng-container *ngIf="sharedService.getMessageAlignment(answer.senderId); else leftContainer">
+                <div class="answer-container-right">
+                    <div class="answer-content">
+                        <div class="answer-header">
+                            <span class="time">{{ sharedService.formatTimestampToTime(answer.timestamp) }} Uhr</span>
+                            <span class="user-name">{{ data.getUserProperty(answer.senderId , 'name') }}</span>
+                        </div>
+                        <div class="answer-main">
+                            <span>{{ answer.content }}</span>
+                        </div>
+                    </div>
+                    <img [src]="data.getProfilePictureURL(answer.senderId)" alt="avatar">
+                    <div class="message-overlay">
+                        <img src="./assets/img/icons/add-emoji-icon.png" alt="smiley-icon">
+                        <img src="./assets/img/icons/three-point-icon.png" alt="vert-icon">
+                    </div>
                 </div>
-                <div class="answer-main">
-                    <span>{{ answer.content }}</span>
+            </ng-container>
+
+            <ng-template #leftContainer>
+                <div class="answer-container-left">
+                    <img [src]="data.getProfilePictureURL(answer.senderId)" alt="avatar">
+                    <div class="answer-content">
+                        <div class="answer-header">
+                            <span class="user-name">{{ data.getUserProperty(answer.senderId , 'name') }}</span>
+                            <span class="time">{{ sharedService.formatTimestampToTime(answer.timestamp) }} Uhr</span>
+                        </div>
+                        <div class="answer-main">
+                            <span>{{ answer.content }}</span>
+                        </div>
+                    </div>
+                    <div class="message-overlay">
+                        <img src="./assets/img/icons/add-emoji-icon.png" alt="smiley-icon">
+                    </div>
                 </div>
-            </div>
+            </ng-template>
         </div>
     </div>
-</div>

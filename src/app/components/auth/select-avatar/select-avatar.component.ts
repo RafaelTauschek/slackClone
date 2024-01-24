@@ -5,6 +5,7 @@ import { FirebaseService } from '../../../services/firebase.service';
 import { User } from '../../../models/user.class';
 import { SharedService } from '../../../services/shared.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { UserDataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-select-avatar',
@@ -23,7 +24,7 @@ export class SelectAvatarComponent {
   userId: string = '';
   popupActive: boolean = false;
 
-  constructor(private route: ActivatedRoute, private firebaseService: FirebaseService, private router: Router) {
+  constructor(private route: ActivatedRoute, private firebaseService: FirebaseService, private router: Router, private data: UserDataService) {
     this.route.paramMap.subscribe((paramMap) => {
       const name = paramMap.get('name') || '';
       this.username = name.toString();
@@ -55,18 +56,19 @@ export class SelectAvatarComponent {
         id: this.userId,
         profilepicture: profilePictureUrl,
         chats: [],
-        channels: []
+        channels: ['EowDB4sgj49a8UmrbmBj']
       });
-      console.log(this.userId, user.toJSON());
       this.popupActive = true;
       await this.firebaseService.updateDocument('users', this.userId, user.toJSON());
+      await this.data.generateFirstChat(this.userId);
+      await this.firebaseService.updateCollection('channels', 'EowDB4sgj49a8UmrbmBj' , 'users', this.userId);
       setTimeout(() => {
         this.router.navigate(['/login']).then(() => {
           this.popupActive = false;
         });
       }, 1500);
     } else {
-      console.log('You did not select an avatar');
+      console.warn('No avatar selected');
     }
   }
 
@@ -82,11 +84,8 @@ export class SelectAvatarComponent {
     const reader = new FileReader();
     reader.onload = () => {
       this.selectedAvatar = reader.result as string;
-      console.log(this.selectedAvatar);
       this.disabled = false;
     };
     reader.readAsDataURL(this.uploadedAvatar);
-    console.log('Selected Avatar is: ' + this.selectedAvatar);
-    console.log('Uploaded Avatar is: ' + this.uploadedAvatar);
   }
 }

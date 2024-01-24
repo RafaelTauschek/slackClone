@@ -1,26 +1,28 @@
-<div class="direct-chat-area-container" [class.no-message-container]="!data.currentChat" [class.first-message]="!data.currentChat[0] || (data.currentChat[0] && data.currentChat[0].messages.length < 1)">
+<div class="direct-chat-area-container" [class.no-message-container]="!data.currentChat"
+    [class.first-message]="!data.currentChat[0] || (data.currentChat[0] && data.currentChat[0].messages.length < 1)">
     <div class="chat-area-wrapper" *ngIf="data.currentChat[0] && data.currentChat[0].messages.length > 0; else noMessages">
-        <div class="date-container">
-            <div class="line"></div>
-            <div class="date">
-                <div class="date-border"></div>
-                <span>Date</span>
+        <div class="message-wrapper" *ngFor="let day of data.messages">
+            <div class="date-container">
+                <div class="line"></div>
+                <div class="date">
+                    <div class="date-border"></div>
+                    <span>{{ day.date }}</span>
+                </div>
+                <div class="line"></div>
             </div>
-            <div class="line"></div>
-        </div>
-
-        <div class="message-wrapper" *ngFor="let message of data.currentChat[0].messages">
-            <div class="message-container">
-                <ng-container>
-                    <div class="message-container-right">
-                        <div class="message-content-container">
-                            <div class="message-header">
-                                <span class="time">{{ sharedService.formatTimestampToTime(message.timestamp) }}</span>
-                                <span class="username">{{ data.getUserProperty(message.senderId, 'name') }}</span>
-                            </div>
-                            <div class="message-content">
-                                <span class="text">{{ message.content }}</span>
-                                <img class="message-img" *ngIf="sharedService.isImage(message.fileUrl)"
+            <div class="message-wrapper" *ngFor="let message of day.messages">
+                <div class="message-container">
+                    <ng-container>
+                        <div class="message-container-right">
+                            <div class="message-content-container">
+                                <div class="message-header">
+                                    <span class="time">{{ sharedService.formatTimestampToTime(message.timestamp)
+                                        }}</span>
+                                    <span class="username">{{ data.getUserProperty(message.senderId, 'name') }}</span>
+                                </div>
+                                <div class="message-content">
+                                    <span class="text">{{ message.content }}</span>
+                                    <img class="message-img" *ngIf="sharedService.isImage(message.fileUrl)"
                                         [src]="message.fileUrl" alt="{{ message.fileName }}" />
                                     <object class="message-pdf"
                                         *ngIf="sharedService.isPdf(message.fileUrl) && !sharedService.isImage(message.fileUrl)"
@@ -36,46 +38,47 @@
                                     <a *ngIf="message.fileUrl"
                                         [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
                                         target="_blank">Datei öffnen</a>
+                                </div>
+                            </div>
+                            <div class="profile-img-container">
+                                <img class="avatar" [src]="data.getProfilePictureURL(message.senderId)" alt="avatar">
                             </div>
                         </div>
-                        <div class="profile-img-container">
-                            <img class="avatar" 
-                            [src]="data.getProfilePictureURL(message.senderId)" alt= "avatar">
-                        </div>
-                    </div>
-                </ng-container>
-                <ng-template #leftContainer>
-                    <div class="message-container-left">
-                        <div class="profile-img-container">
-                            <img class="avatar" [src]="data.getProfilePictureURL(message.senderId)" alt= "avatar">
-                        </div>
-                        <div class="message-content-container">
-                            <div class="message-header">
-                                <span class="username">{{ data.getUserProperty(message.senderId, 'name') }}</span>
-                                <span class="time">{{ sharedService.formatTimestampToTime(message.timestamp) }}</span>
+                    </ng-container>
+                    <ng-template #leftContainer>
+                        <div class="message-container-left">
+                            <div class="profile-img-container">
+                                <img class="avatar" [src]="data.getProfilePictureURL(message.senderId)" alt="avatar">
                             </div>
-                            <div class="message-content">
-                                <span class="text">{{ message.content }}</span>
-                                <img class="message-img" *ngIf="sharedService.isImage(message.fileUrl)"
-                                [src]="message.fileUrl" alt="{{ message.fileName }}" />
-                            <object class="message-pdf"
-                                *ngIf="sharedService.isPdf(message.fileUrl) && !sharedService.isImage(message.fileUrl)"
-                                [data]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
-                                type="application/pdf" width="300" height="200">
-                                <a [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)">{{
-                                    message.fileName }}</a>
-                            </object>
-                            <video class="message-video"
-                                *ngIf="sharedService.isVideo(message.fileUrl) && !sharedService.isImage(message.fileUrl) && !sharedService.isPdf(message.fileUrl)"
-                                [src]="message.fileUrl" controls width="300" height="200">
-                            </video>
-                            <a *ngIf="message.fileUrl"
-                                [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
-                                target="_blank">Datei öffnen</a>
+                            <div class="message-content-container">
+                                <div class="message-header">
+                                    <span class="username">{{ data.getUserProperty(message.senderId, 'name') }}</span>
+                                    <span class="time">{{ sharedService.formatTimestampToTime(message.timestamp)
+                                        }}</span>
+                                </div>
+                                <div class="message-content">
+                                    <span class="text">{{ message.content }}</span>
+                                    <img class="message-img" *ngIf="sharedService.isImage(message.fileUrl)"
+                                        [src]="message.fileUrl" alt="{{ message.fileName }}" />
+                                    <object class="message-pdf"
+                                        *ngIf="sharedService.isPdf(message.fileUrl) && !sharedService.isImage(message.fileUrl)"
+                                        [data]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
+                                        type="application/pdf" width="300" height="200">
+                                        <a [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)">{{
+                                            message.fileName }}</a>
+                                    </object>
+                                    <video class="message-video"
+                                        *ngIf="sharedService.isVideo(message.fileUrl) && !sharedService.isImage(message.fileUrl) && !sharedService.isPdf(message.fileUrl)"
+                                        [src]="message.fileUrl" controls width="300" height="200">
+                                    </video>
+                                    <a *ngIf="message.fileUrl"
+                                        [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
+                                        target="_blank">Datei öffnen</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </ng-template>
+                    </ng-template>
+                </div>
             </div>
         </div>
     </div>
@@ -84,17 +87,18 @@
     <ng-template #noMessages>
         <div class="no-messages">
             <div class="no-message-header" *ngIf="sharedService.currentPartner !== data.activeUser[0].id">
-                <img class="avatar" 
-                [src]="data.getProfilePictureURL(sharedService.currentPartner)" alt= "avatar">
+                <img class="avatar" [src]="data.getProfilePictureURL(sharedService.currentPartner)" alt="avatar">
                 <span>{{ data.getUserProperty(sharedService.currentPartner, 'name') }}</span>
             </div>
             <div class="no-message-header" *ngIf="sharedService.currentPartner === data.activeUser[0].id">
-                <img class="avatar" 
-                [src]="data.getProfilePictureURL(sharedService.currentPartner)" alt= "avatar">
+                <img class="avatar" [src]="data.getProfilePictureURL(sharedService.currentPartner)" alt="avatar">
                 <span>{{ data.getUserProperty(sharedService.currentPartner, 'name') }} (Du)</span>
             </div>
-            <span *ngIf="sharedService.currentPartner !== data.activeUser[0].id">Diese Unterhaltung findet nur zwischen <a>&#64;{{ data.getUserProperty(sharedService.currentPartner, 'name') }}</a> und dir statt</span>
-            <span *ngIf="sharedService.currentPartner === data.activeUser[0].id"><b>Dieser Raum is nur für dich da.</b> Mache dir Notizen, liste deine To-dos auf oder bewahre Links und Dateien griffbereit auf. Du kannst hier auch gerne Dinge mit dir selbst besprechen.</span>
+            <span *ngIf="sharedService.currentPartner !== data.activeUser[0].id">Diese Unterhaltung findet nur zwischen
+                <a>&#64;{{ data.getUserProperty(sharedService.currentPartner, 'name') }}</a> und dir statt</span>
+            <span *ngIf="sharedService.currentPartner === data.activeUser[0].id"><b>Dieser Raum is nur für dich da.</b>
+                Mache dir Notizen, liste deine To-dos auf oder bewahre Links und Dateien griffbereit auf. Du kannst hier
+                auch gerne Dinge mit dir selbst besprechen.</span>
         </div>
     </ng-template>
 </div>

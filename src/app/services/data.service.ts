@@ -4,6 +4,7 @@ import { User } from '../models/user.class';
 import { Channel } from '../models/channel.class';
 import { Chat } from '../models/chat.class';
 import { FirebaseService } from './firebase.service';
+import { user } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -25,10 +26,11 @@ export class UserDataService {
 
   async fetchUserData(userId: string) {
     await this.loadUserData(userId);
+
     await Promise.all([
       this.loadUsersData(),
       this.loadChatsData(this.activeUser[0]),
-      this.loadChannelData(this.activeUser)
+      this.loadChannelsData(this.activeUser)
     ]);
     this.setChannel(this.activeUser[0].channels[0]);
   }
@@ -61,7 +63,8 @@ export class UserDataService {
   }
 
 
-  async loadChannelData(user: User[]) {
+
+  async loadChannelsData(user: User[]) {
     this.channelList = [];
     if (user[0].channels) {
       for (const channel of user[0].channels) {
@@ -70,6 +73,68 @@ export class UserDataService {
       }
     }
     this.filterChannelList(user[0]);
+  }
+
+
+  async loadChannelData(channelId: string) {
+    const docSnap = await this.firebase.getDocument('channels', channelId);
+    const channel = docSnap.data() as Channel;
+    this.currentChannel = channel;
+    this.formatChannel(channelId);
+
+  }
+
+  formatChannel(channelId: string) {
+    this.currentChannel = this.userChannels.find((channel) => channel.id === channelId) as Channel;
+    if (this.currentChannel && this.currentChannel.messages) {
+      this.currentChannel.messages.sort((a, b) => a.timestamp - b.timestamp);
+      const messagesByDate = [];
+      let currentDate = null;
+      let currentMessages: any[] = [];
+      for (const message of this.currentChannel.messages) {
+        const messageDate = new Date(message.timestamp).toDateString();
+        if (messageDate !== currentDate) {
+          if (currentDate !== null) {
+            messagesByDate.push({ date: currentDate, messages: currentMessages });
+          }
+          currentDate = messageDate;
+          currentMessages = [message];
+        } else {
+          currentMessages.push(message);
+        }
+      }
+      if (currentMessages.length > 0) {
+        messagesByDate.push({ date: currentDate, messages: currentMessages });
+      }
+      this.messages = messagesByDate;
+    }
+  }
+
+
+  formatChat(chatId: string) {
+    this.currentChat = this.chats.filter((chat) => chat.id === chatId);
+    if (this.currentChat && this.currentChat[0].messages) {
+      this.currentChat[0].messages.sort((a, b) => a.timestamp - b.timestamp);
+      const messagesByDate = [];
+      let currentDate = null;
+      let currentMessages: any[] = [];
+      for (const message of this.currentChat[0].messages) {
+        const messageDate = new Date(message.timestamp).toDateString();
+        if (messageDate !== currentDate) {
+          if (currentDate !== null) {
+            messagesByDate.push({ date: currentDate, messages: currentMessages });
+          }
+          currentDate = messageDate;
+          currentMessages = [message];
+        } else {
+          currentMessages.push(message);
+        }
+      }
+      if (currentMessages.length > 0) {
+        messagesByDate.push({ date: currentDate, messages: currentMessages });
+      }
+      this.messages = messagesByDate;
+    }
   }
 
 
@@ -99,33 +164,6 @@ export class UserDataService {
   }
 
 
-  formatChannel(channelId: string) {
-    this.currentChannel = this.userChannels.find((channel) => channel.id === channelId) as Channel;
-    if (this.currentChannel && this.currentChannel.messages) {
-      this.currentChannel.messages.sort((a, b) => a.timestamp - b.timestamp);
-      const messagesByDate = [];
-      let currentDate = null;
-      let currentMessages: any[] = [];
-      for (const message of this.currentChannel.messages) {
-        const messageDate = new Date(message.timestamp).toDateString();
-        if (messageDate !== currentDate) {
-          if (currentDate !== null) {
-            messagesByDate.push({ date: currentDate, messages: currentMessages });
-          }
-          currentDate = messageDate;
-          currentMessages = [message];
-        } else {
-          currentMessages.push(message);
-        }
-      }
-      if (currentMessages.length > 0) {
-        messagesByDate.push({ date: currentDate, messages: currentMessages });
-      }
-      this.messages = messagesByDate;
-    }
-  }
-
-
   async updateChannelProperties(updatedProperties: Partial<Channel>) {
     const channel = this.currentChannel;
     const newChannel = new Channel({
@@ -133,7 +171,7 @@ export class UserDataService {
       ...updatedProperties
     });
     await this.firebase.updateDocument('channels', channel.id, newChannel.toJSON());
-    await this.loadChannelData(this.activeUser);
+    await this.loadChannelsData(this.activeUser);
   }
 
 
@@ -147,11 +185,15 @@ export class UserDataService {
       }
       const message = this.generateNewMessage(newMessage, fileName, fileUrl);
       await this.firebase.updateMessages('channels', this.currentChannel.id, message.toJSON());
-      await this.loadChannelData(this.activeUser);
+      await this.loadChannelData(this.currentChannel.id);
+      await this.loadChannelsData(this.activeUser);
+      this.formatChannel(this.currentChannel.id);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
+
+
 
   async writeAnswerMessage(answer: string, file: File | null) {
     let fileName = '';
@@ -161,19 +203,13 @@ export class UserDataService {
         fileName = file.name;
         fileUrl = await this.firebase.uploadFile(file);
       }
-      console.log('Message: ', this.message);
-      console.log('Channel: ', this.currentChannel);
       const messageIndex = this.findMessageIndex(this.message.timestamp, [this.currentChannel] as Channel[]);
-      console.log('Message Index: ', messageIndex);
       const message = this.generateNewMessage(answer, fileName, fileUrl);
-      console.log('Message: ', message); 
       this.currentChannel.messages[messageIndex].answers.push(message.toJSON());
-      console.log('Channel: ', this.currentChannel);
       const channelInstance = new Channel(this.currentChannel);
-      console.log('Channel Instance: ', channelInstance);
       await this.firebase.updateDocument('channels', this.currentChannel.id, channelInstance.toJSON());
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -196,16 +232,16 @@ export class UserDataService {
     return message;
   }
 
-  
+
 
   checkIfChatExists(activeUserId: string, chatpartnerId: string) {
     if (activeUserId === chatpartnerId) {
-      const chat = this.chats.find(chat => 
+      const chat = this.chats.find(chat =>
         chat.users.includes(activeUserId) && chat.users.length === 1
       );
       return chat ? true : false;
     } else {
-      const chat = this.chats.find(chat => 
+      const chat = this.chats.find(chat =>
         chat.users.includes(activeUserId) && chat.users.includes(chatpartnerId) && chat.users.length > 1
       );
       return chat ? true : false;
@@ -214,16 +250,16 @@ export class UserDataService {
 
   getChat(userId: string, chatpartnerId: string) {
     if (userId === chatpartnerId) {
-      const chat = this.chats.find(chat => 
+      const chat = this.chats.find(chat =>
         chat.users.includes(userId) && chat.users.length === 1
       );
       return chat ? [chat] : [];
     } else {
-      const chat = this.chats.find(chat => 
+      const chat = this.chats.find(chat =>
         chat.users.includes(userId) && chat.users.includes(chatpartnerId) && chat.users.length > 1
       );
       return chat ? [chat] : [];
-    }  
+    }
   }
 
   async generateFirstChat(userId: string) {
@@ -240,7 +276,6 @@ export class UserDataService {
 
 
   async generateNewChat(activeUserId: string, chatPartnerId: string, message: Message) {
-    console.log('Message:', message);
     if (activeUserId === chatPartnerId) {
       const chat = new Chat({
         id: '',
@@ -283,18 +318,19 @@ export class UserDataService {
 
 
   setCurrentChat(chat: Chat[]) {
-    this.currentChat = chat;
+    this.formatChat(chat[0].id);
+    this.currentChat = chat; 
+
   }
 
 
-  setCurrentMessage(message: Message[]) {
+  setCurrentMessage(message: any) {
     this.message = message;
   }
 
 
 
   async writeChatMessage(message: Message, chatId: string) {
-    console.log('Message: ', message);
     await this.firebase.updateMessages('chats', chatId, message.toJSON());
     await this.updateChatMessages(chatId);
   }
@@ -323,7 +359,11 @@ export class UserDataService {
     if (user && user[property as keyof User]) {
       return user[property as keyof User];
     } else {
-      return 'deleted User';
+      if (property === 'name') {
+        return 'deleted User';
+      } else {
+        return './assets/img/avatars/avatar.png';
+      }
     }
   }
 
@@ -400,7 +440,7 @@ export class UserDataService {
     });
     await this.updateUserProperties(newUser);
     await this.loadUserData(user.id);
-    await this.loadChannelData(this.activeUser);
+    await this.loadChannelsData(this.activeUser);
   }
 
 
@@ -428,18 +468,20 @@ export class UserDataService {
   }
 
 
+
+
   isPdf(url: string | undefined): boolean {
     if (!url) return false;
     const extension = url.split('?')[0].split('.').pop();
     return extension ? extension === 'pdf' : false;
   }
-  
+
   isVideo(url: string | undefined): boolean {
     if (!url) return false;
     const extension = url.split('?')[0].split('.').pop();
     return extension ? ['mp4', 'webm', 'ogg'].includes(extension) : false;
   }
-  
+
   isImage(url: string | undefined): boolean {
     if (!url) return false;
     const extension = url.split('?')[0].split('.').pop();
@@ -460,106 +502,105 @@ export class UserDataService {
 
 
 
-async editMessage(message: Message, type: 'chat' | 'channel') {
-  const current = type === 'chat' ? this.currentChat[0] : this.currentChannel;
-  const messageIndex = this.findMessageIndex(message.timestamp, [current] as unknown as Channel[]);
-  const newMessageData = new Message({
-    senderId: message.senderId,
-    recieverId: message.recieverId,
-    timestamp: message.timestamp,
-    emojis: message.emojis,
-    answers: message.answers,
-    fileName: message.fileName,
-    fileUrl: message.fileUrl,
-    fileType: message.fileType,
-    content: message.content,
-    editMessage: false,
-  });
-  const doc = await this.firebase.getDocument(type + 's', current.id);
-  const docData = doc.data();
-  if (docData) {
-    docData['messages'][messageIndex] = newMessageData.toJSON();
-    await this.firebase.updateDocument(type + 's', current.id, docData);
-    await this.loadChannelData(this.activeUser);
-    this.setChannel(current.id);
-    if (type === 'chat') {
-      await this.loadChatsData(this.activeUser[0]);
-    } else {
-      await this.loadChannelData(this.activeUser);
+  async editMessage(message: Message, type: 'chat' | 'channel') {
+    const current = type === 'chat' ? this.currentChat[0] : this.currentChannel;
+    const messageIndex = this.findMessageIndex(message.timestamp, [current] as unknown as Channel[]);
+    const newMessageData = new Message({
+      senderId: message.senderId,
+      recieverId: message.recieverId,
+      timestamp: message.timestamp,
+      emojis: message.emojis,
+      answers: message.answers,
+      fileName: message.fileName,
+      fileUrl: message.fileUrl,
+      fileType: message.fileType,
+      content: message.content,
+      editMessage: false,
+    });
+    const doc = await this.firebase.getDocument(type + 's', current.id);
+    const docData = doc.data();
+    if (docData) {
+      docData['messages'][messageIndex] = newMessageData.toJSON();
+      await this.firebase.updateDocument(type + 's', current.id, docData);
+      await this.loadChannelsData(this.activeUser);
       this.setChannel(current.id);
+      if (type === 'chat') {
+        await this.loadChatsData(this.activeUser[0]);
+      } else {
+        await this.loadChannelsData(this.activeUser);
+        this.setChannel(current.id);
+      }
     }
   }
-}
 
 
 
 
 
-generateMessage(message: Message) {
-  const newMessage = new Message({
-    senderId: message.senderId,
-    recieverId: message.recieverId,
-    timestamp: message.timestamp,
-    emojis: message.emojis,
-    answers: message.answers,
-    fileName: message.fileName,
-    fileUrl: message.fileUrl,
-    fileType: message.fileType,
-    content: message.content,
-    editMessage: false,
-  });
-  return newMessage;
-}
-
-
-async editChatMessage(message: Message, newMessage: string) {
-  const messageIndex = this.findMessageIndex(message.timestamp, [this.currentChat] as unknown as Channel[]);
-  const newMessageData = new Message({
-    senderId: message.senderId,
-    recieverId: message.recieverId,
-    timestamp: message.timestamp,
-    emojis: message.emojis,
-    answers: message.answers,
-    fileName: message.fileName,
-    fileUrl: message.fileUrl,
-    fileType: message.fileType,
-    content: newMessage,
-    editMessage: false,
-  });
-  const doc = await this.firebase.getDocument('chats', this.currentChat[0].id);
-  const docData = doc.data();
-  if (docData) {
-    docData['messages'][messageIndex] = newMessageData.toJSON();
-    await this.firebase.updateDocument('chats', this.currentChat[0].id, docData);
-    await this.loadChatsData(this.activeUser[0]);
+  generateMessage(message: Message) {
+    const newMessage = new Message({
+      senderId: message.senderId,
+      recieverId: message.recieverId,
+      timestamp: message.timestamp,
+      emojis: message.emojis,
+      answers: message.answers,
+      fileName: message.fileName,
+      fileUrl: message.fileUrl,
+      fileType: message.fileType,
+      content: message.content,
+      editMessage: false,
+    });
+    return newMessage;
   }
-}
 
 
-async editChannelMessage(message: Message, newMessage: string) {
-  const messageIndex = this.findMessageIndex(message.timestamp, [this.currentChannel] as Channel[]);
-  const newMessageData = new Message({
-    senderId: message.senderId,
-    recieverId: message.recieverId,
-    timestamp: message.timestamp,
-    emojis: message.emojis,
-    answers: message.answers,
-    fileName: message.fileName,
-    fileUrl: message.fileUrl,
-    fileType: message.fileType,
-    content: newMessage,
-    editMessage: false,
-  });
-  const doc = await this.firebase.getDocument('channels', this.currentChannel.id);
-  const docData = doc.data();
-  if (docData) {
-    docData['messages'][messageIndex] = newMessageData.toJSON();
-    await this.firebase.updateDocument('channels', this.currentChannel.id, docData);
-    await this.loadChannelData(this.activeUser);
-    this.setChannel(this.currentChannel.id);
+  async editChatMessage(message: Message, newMessage: string) {
+    const messageIndex = this.findMessageIndex(message.timestamp, [this.currentChat] as unknown as Channel[]);
+    const newMessageData = new Message({
+      senderId: message.senderId,
+      recieverId: message.recieverId,
+      timestamp: message.timestamp,
+      emojis: message.emojis,
+      answers: message.answers,
+      fileName: message.fileName,
+      fileUrl: message.fileUrl,
+      fileType: message.fileType,
+      content: newMessage,
+      editMessage: false,
+    });
+    const doc = await this.firebase.getDocument('chats', this.currentChat[0].id);
+    const docData = doc.data();
+    if (docData) {
+      docData['messages'][messageIndex] = newMessageData.toJSON();
+      await this.firebase.updateDocument('chats', this.currentChat[0].id, docData);
+      await this.loadChatsData(this.activeUser[0]);
+    }
   }
-}
 
+
+  async editChannelMessage(message: Message, newMessage: string) {
+    const messageIndex = this.findMessageIndex(message.timestamp, [this.currentChannel] as Channel[]);
+    const newMessageData = new Message({
+      senderId: message.senderId,
+      recieverId: message.recieverId,
+      timestamp: message.timestamp,
+      emojis: message.emojis,
+      answers: message.answers,
+      fileName: message.fileName,
+      fileUrl: message.fileUrl,
+      fileType: message.fileType,
+      content: newMessage,
+      editMessage: false,
+    });
+    const doc = await this.firebase.getDocument('channels', this.currentChannel.id);
+    const docData = doc.data();
+    if (docData) {
+      docData['messages'][messageIndex] = newMessageData.toJSON();
+      await this.firebase.updateDocument('channels', this.currentChannel.id, docData);
+      await this.loadChannelsData(this.activeUser);
+      this.setChannel(this.currentChannel.id);
+    }
+  }
 
 
 

@@ -28,7 +28,7 @@
     </div>
 
     <div class="channel-textarea">
-        <textarea [(ngModel)]="message" *ngIf="data.currentChannel.messages; else noChannelTextarea"
+        <textarea [(ngModel)]="message" *ngIf="data.currentChannel && data.currentChannel.messages; else noChannelTextarea"
             placeholder="Nachricht an # {{ data.currentChannel.name }}" cols="30" rows="3"></textarea>
         <ng-template #noChannelTextarea>
             <textarea [(ngModel)]="message" placeholder="Nachricht an # Allgemein" cols="30" rows="4"></textarea>

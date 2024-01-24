@@ -42,7 +42,7 @@ export class AuthService {
 
 
   async handeUserLoggedIn(user: any) {
-    this.data.fetchUserData(user.uid);
+    await this.data.fetchUserData(user.uid);
   }
 
 
@@ -58,7 +58,7 @@ export class AuthService {
       if (userSnap.exists()) {
         setTimeout(() => {
           this.router.navigate(['/main'])
-        }, 500);
+        }, 2000);
       } else {
         const userData = {
           name: user.user.displayName,
@@ -72,18 +72,19 @@ export class AuthService {
         this.router.navigate(['/select-avatar', { docId: this.userDocId, name: userData.name, email: userData.email }]);
       }
     }, err => {
-      console.log(err);
+      console.error(err);
     })
   }
 
 
   async login(email: string, password: string) {
     await signInWithEmailAndPassword(this.auth, email, password).then(() => {
+      this.data.fetchUserData(this.userDocId);
       setTimeout(() => {
         this.router.navigate(['/main'])
-      }, 500);
+      }, 2000);
     }, err => {
-      console.log(err);
+      console.error(err);
     })
   }
   async changeUserMail() {
@@ -105,7 +106,7 @@ export class AuthService {
       await this.firebaseService.setDocument(this.userDocId, 'users', userData);
       this.router.navigate(['/select-avatar', { docId: this.userDocId, name: name, email: email }]);
     }).catch((err) => {
-      console.log(err);
+      console.error(err);
     })
   }
 
@@ -121,7 +122,7 @@ export class AuthService {
     if (currentUser) {
       updatePassword(currentUser, password).then(() => {
       }).catch((err) => {
-        console.log(err);
+        console.error(err);
       });
     }
   }
@@ -131,16 +132,15 @@ export class AuthService {
     if (currentUser) {
       updateEmail(currentUser, email).then(() => {
       }).catch((err) => {
-        console.log(err);
+        console.error(err);
       });
     }
   }
 
   resetPassword(email: string) {
     sendPasswordResetEmail(this.auth, email).then(() => {
-      console.log('reset mail was sent');
     }).catch((err) => {
-      console.log(err);
+      console.error(err);
     });
   }
 
@@ -150,15 +150,14 @@ export class AuthService {
       const currentUser = auth.currentUser;
       if (currentUser) {
         updatePassword(currentUser, password).then(() => {
-          console.log('password was changed');
         }).catch((err) => {
-          console.log(err);
+          console.error(err);
         });
       } else {
-        console.log('no authenticated user');
+        console.error('no authenticated user');
       }
     } else {
-      console.log('no oobCode was provided');
+      console.error('no oobCode was provided');
     }
   }
 

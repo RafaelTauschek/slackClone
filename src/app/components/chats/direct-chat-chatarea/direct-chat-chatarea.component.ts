@@ -12,7 +12,5 @@ import { UserDataService } from '../../../services/data.service';
 })
 export class DirectChatChatareaComponent {
 
-  constructor (public sharedService: SharedService, public sanitizer: DomSanitizer, public data: UserDataService) {
-    console.log(data.currentChat);
-  }
+  constructor (public sharedService: SharedService, public sanitizer: DomSanitizer, public data: UserDataService) {}
 }

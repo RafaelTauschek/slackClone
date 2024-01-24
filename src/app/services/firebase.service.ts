@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { collection, addDoc, updateDoc, doc, setDoc, getDoc, getDocs, arrayUnion } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc, setDoc, getDoc, getDocs, arrayUnion, onSnapshot } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { Observable } from 'rxjs';
 
 
 
@@ -69,6 +70,7 @@ export class FirebaseService {
   }
 
 
+  
   async updateCollection(colId: string, docId: string, field: string, item: {}) {
     updateDoc(this.getDocumentRef(colId, docId), {
       [field]: arrayUnion(item)
@@ -82,4 +84,12 @@ export class FirebaseService {
     const result = await uploadBytes(storageRef, file);
     return await getDownloadURL(result.ref);
   }
+
+
+
+
+
+
+
+
 }
