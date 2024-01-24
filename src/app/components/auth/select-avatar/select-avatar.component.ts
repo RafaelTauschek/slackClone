@@ -3,6 +3,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FirebaseService } from '../../../services/firebase.service';
 import { User } from '../../../models/user.class';
+import { SharedService } from '../../../services/shared.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-select-avatar',
@@ -19,6 +21,7 @@ export class SelectAvatarComponent {
   username: string = '';
   useremail: string = '';
   userId: string = '';
+  popupActive: boolean = false;
 
   constructor(private route: ActivatedRoute, private firebaseService: FirebaseService, private router: Router) {
     this.route.paramMap.subscribe((paramMap) => {
@@ -28,7 +31,7 @@ export class SelectAvatarComponent {
       this.useremail = email;
       const id = paramMap.get('docId') || '';
       this.userId = id;
-    })
+    });
   }
 
   setSelectedAvatar(avatar: string) {
@@ -37,6 +40,8 @@ export class SelectAvatarComponent {
     this.disabled = false;
 
   }
+
+
 
   async submitSelectedAvatar() {
     let profilePictureUrl = this.selectedAvatar;
@@ -53,14 +58,19 @@ export class SelectAvatarComponent {
         channels: []
       });
       console.log(this.userId, user.toJSON());
+      this.popupActive = true;
       await this.firebaseService.updateDocument('users', this.userId, user.toJSON());
       setTimeout(() => {
-        this.router.navigate(['/main']);
-      }, 500)
+        this.router.navigate(['/login']).then(() => {
+          this.popupActive = false;
+        });
+      }, 1500);
     } else {
       console.log('You did not select an avatar');
     }
   }
+
+  
 
 
   onFileSelected(event: any): void {

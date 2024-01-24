@@ -9,8 +9,23 @@
         </div>
     </div>
     <div class="sidebar-header-mobile" *ngIf="sharedService.isMobile">
-        <input type="text" placeholder="Gehe zu...">
+        <input type="text" placeholder="Gehe zu..." [(ngModel)]="searchTerm" (input)="onSearch()">
         <img src="./assets/img/icons/search-icon.png" alt="search-icon">
+    </div>
+
+    <div class="hiddens-search-container" *ngIf="searchActive">
+        <div *ngIf="searchedChannel" class="searched-channel">
+            <div class="single-channel" *ngFor="let channel of searchedChannel" (click)="openChannel(channel.id)">
+                <span># {{ channel.name}}</span>
+            </div>
+        </div>
+
+        <div *ngIf="searchedUser" class="searched-user">
+            <div class="single-user" *ngFor="let user of searchedUser" (click)="openUser(user.id)">
+                <img class="user-image" [src]="data.getProfilePictureURL(user.id)" alt="avatar">
+                <span>&#64; {{ user.name }}</span>
+            </div>
+        </div>
     </div>
 
     <div class="channel-container">
@@ -55,13 +70,16 @@
                 <span>Direktnachrichten</span>
             </div>
         </div>
-        
-        <div class="available-chats" *ngIf="showDirectChats"> 
+
+        <div class="available-chats" *ngIf="showDirectChats">
             @for (chat of data.chats; track $index) {
-            <div class="single-direct-chat" (click)="openDirectChat(data.getChatPartnerId(chat, data.activeUser[0].id) || '', chat)">
-                <img class="avatar" [src]="data.getProfilePictureURL(data.getChatPartnerId(chat, data.activeUser[0].id) || '')">
+            <div class="single-direct-chat"
+                (click)="openDirectChat(data.getChatPartnerId(chat, data.activeUser[0].id) || '', chat)">
+                <img class="avatar"
+                    [src]="data.getProfilePictureURL(data.getChatPartnerId(chat, data.activeUser[0].id) || '')">
                 <img class="online-dot" src="./assets/img/online-dot.png">
-                <span>{{ data.getUserProperty(data.getChatPartnerId(chat, data.activeUser[0].id) || '', 'name' || '')}}</span>
+                <span>{{ data.getUserProperty(data.getChatPartnerId(chat, data.activeUser[0].id) || '', 'name' ||
+                    '')}}</span>
             </div>
             }
         </div>

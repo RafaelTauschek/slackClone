@@ -28,7 +28,8 @@ export class ChannelChatComponent {
   searchActive: boolean = false;
   searchedUsers: User[] = [];
   searchTerm: string = '';
-
+  userToAdd: string[] = [];
+  
   constructor(private dialog: MatDialog, public sharedService: SharedService, public data: UserDataService ) {
   }
 
@@ -42,7 +43,7 @@ export class ChannelChatComponent {
     }
   }
 
-  userToAdd: string[] = [];
+
 
   addUserToChannel(userId: string) {
     this.userToAdd.push(userId);

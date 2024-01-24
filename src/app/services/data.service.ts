@@ -153,6 +153,32 @@ export class UserDataService {
     }
   }
 
+  async writeAnswerMessage(answer: string, file: File | null) {
+    let fileName = '';
+    let fileUrl = '';
+    try {
+      if (file) {
+        fileName = file.name;
+        fileUrl = await this.firebase.uploadFile(file);
+      }
+      console.log('Message: ', this.message);
+      console.log('Channel: ', this.currentChannel);
+      const messageIndex = this.findMessageIndex(this.message.timestamp, [this.currentChannel] as Channel[]);
+      console.log('Message Index: ', messageIndex);
+      const message = this.generateNewMessage(answer, fileName, fileUrl);
+      console.log('Message: ', message); 
+      this.currentChannel.messages[messageIndex].answers.push(message.toJSON());
+      console.log('Channel: ', this.currentChannel);
+      const channelInstance = new Channel(this.currentChannel);
+      console.log('Channel Instance: ', channelInstance);
+      await this.firebase.updateDocument('channels', this.currentChannel.id, channelInstance.toJSON());
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+
+
   generateNewMessage(newMessage: string, fileName: string, fileUrl: string) {
     const date = new Date().getTime();
     const message = new Message({

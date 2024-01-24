@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { RouterLink, RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-select-password',
   standalone: true,
@@ -17,8 +17,9 @@ export class SelectPasswordComponent {
   changePasswordForm: FormGroup;
   isSubmitted: boolean = false;
   code: string | null = null;
+  popupActive: boolean = false;
 
-  constructor(private formbuilder: FormBuilder, private route: ActivatedRoute, private authService: AuthService) {
+  constructor(private formbuilder: FormBuilder, private route: ActivatedRoute, private authService: AuthService, private router: Router) {
     this.changePasswordForm = this.formbuilder.group({
       password: ['', [Validators.required, Validators.minLength(8)]],
       repeatPassword: ['', [Validators.required, Validators.minLength(8)]]
@@ -34,6 +35,11 @@ export class SelectPasswordComponent {
       if (password) {
         console.log('password is valid');
         this.authService.changePassword(password, this.code);
+        this.popupActive = true;
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+          this.popupActive = false;
+        }, 1500);
       } else {
         console.log('password is invalid');
       }

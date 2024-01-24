@@ -18,6 +18,10 @@ export class SharedService {
   currentPartner: string = '';
   isMobile: boolean = false;
   isTablet: boolean = false;
+  popupActive: boolean = false;
+  registeredPopup: boolean = false;
+  mailPopup: boolean = false;
+  loginPopup: boolean = false;
   activeComponent = 'sidebar';
   changeWidth = 'calc(100% - 48px)';
   constructor(private data: UserDataService, private firebaseService: FirebaseService) {}

@@ -18,12 +18,29 @@ import { UserDataService } from '../../../services/data.service';
   styleUrl: './thread.component.scss'
 })
 export class ThreadComponent {
-  channel: Channel[] = [];
   answer: string = '';
-  user: User[] = [];
-  message: Message[] = [];  
+  selectedFileName: string = '';
+  selectedFile: File | null = null;
+
 
   constructor(private sharedService: SharedService, private firebaseService: FirebaseService, public data: UserDataService) {}
+
+
+  onFileSelected(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      this.selectedFileName = this.selectedFile?.name ?? '';
+    }
+  }
+ 
+
+  async sendMessage() {
+    if (this.answer !== '' || this.selectedFile) {
+      await this.data.writeAnswerMessage(this.answer, this.selectedFile);
+    } 
+    this.answer = '';
+    this.selectedFile = null;
+  }
 
 
   closeThread() {
@@ -36,48 +53,6 @@ export class ThreadComponent {
     this.sharedService.threadActive = false;
     this.sharedService.changeWidth = 'calc(100% - 48px)';
   }
-
-  async sendMessage() {
-    if (this.answer !== '') {
-      const answer = new Message({
-        senderId: this.user[0].id,
-        recieverId: this.message[0].senderId,
-        timestamp: new Date().getTime(),
-        content: this.answer,
-        emojis: [],
-        answers: [],
-        fileName: '',
-        fileUrl: '',
-        editMessage: false,
-      });
-      let index: number = this.findMessageIndex();
-      this.channel[0].messages[index].answers.push(answer.toJSON());
-      const channelInstance = new Channel(this.channel[0])
-      const channelData = channelInstance.toJSON();
-      await this.firebaseService.updateDocument('channels', this.channel[0].id, channelData);
-      this.answer = '';
-    }
-  }
-
-
-  findMessageIndex() {
-    const timestampToFind = this.message[0].timestamp;
-    const channelIndex = this.channel.findIndex((channel) => {
-      return channel.messages.some((message) => {
-        return message.timestamp === timestampToFind;
-      });
-    });
-    if (channelIndex !== -1) {
-      const messageIndex = this.channel[channelIndex].messages.findIndex((message) => {
-        return message.timestamp === timestampToFind;
-      });
-      return messageIndex;
-    } else {
-      return -1;
-    }
-  }
-
-
 }
 
 

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-reset-password',
   standalone: true,
@@ -13,8 +13,9 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class ResetPasswordComponent {
   myForm: FormGroup;
+  popupActive: boolean = false;
 
-  constructor(private authService: AuthService, private formbuilder: FormBuilder) {
+  constructor(private authService: AuthService, private formbuilder: FormBuilder, private router: Router) {
     this.myForm = this.formbuilder.group({
       email: ['', [Validators.required, Validators.email]]
     })
@@ -26,6 +27,11 @@ export class ResetPasswordComponent {
       if (email) {
         console.log('email is valid');
         this.authService.resetPassword(email);
+        this.popupActive = true;
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+          this.popupActive = false;
+        }, 1500);
       } else {
         console.log('email is invalid');
       }

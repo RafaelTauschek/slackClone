@@ -11,7 +11,8 @@
             </div>
             <ng-template #avatarSelected>
                 <div class="selected-avatar">
-                    <img *ngIf="selectedAvatar" [src]="'./assets/img/avatars/' + selectedAvatar + '.png'" alt="Selected Avatar">
+                    <img *ngIf="selectedAvatar" [src]="'./assets/img/avatars/' + selectedAvatar + '.png'"
+                        alt="Selected Avatar">
                 </div>
             </ng-template>
             <div class="avatar-selection-content">
@@ -34,3 +35,7 @@
         <button [class.disabled]="disabled" class="next-btn" (click)="submitSelectedAvatar()"
             [disabled]="disabled">Weiter</button>
     </div>
+</div>
+<div class="popup-container" *ngIf="popupActive">
+    <span class="registered-popup">Konto erfolgreich erstellt!</span>
+</div>

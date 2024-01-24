@@ -5,6 +5,9 @@ import { User } from '../../../models/user.class';
 import { FormsModule } from '@angular/forms';
 import { SharedService } from '../../../services/shared.service';
 import { UserDataService } from '../../../services/data.service';
+import { Message } from '../../../models/message.class';
+import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
+import { FirebaseService } from '../../../services/firebase.service';
 
 
 @Component({
@@ -15,8 +18,6 @@ import { UserDataService } from '../../../services/data.service';
   styleUrl: './new-message.component.scss'
 })
 export class NewMessageComponent {
-  users: User[] = [];
-  channels: Channel[] = [];
   searchTerm: string = '';
   searchActive: boolean = false;
   searchType: string = '';
@@ -29,7 +30,7 @@ export class NewMessageComponent {
   selectedFile: File | null = null;
 
 
-  constructor(private sharedService: SharedService, public data: UserDataService) {
+  constructor(private sharedService: SharedService, public data: UserDataService, private firebaseService: FirebaseService) {
   }
 
 
@@ -38,7 +39,6 @@ export class NewMessageComponent {
     if (event.target.files && event.target.files.length > 0) {
       this.selectedFile = event.target.files[0];
       this.selectedFileName = this.selectedFile?.name ?? '';
-      this.newMessage += '\n' + this.selectedFileName;
     }
   }
 
@@ -51,15 +51,19 @@ export class NewMessageComponent {
     switch (this.searchTerm.charAt(0)) {
       case '#':
         this.searchType = 'channel';
-        this.searchedChannels = this.sharedService.filterChannels(this.channels, this.searchTerm.slice(1));
+        this.searchedChannels = this.sharedService.filterChannels(this.data.userChannels, this.searchTerm.slice(1));
+        console.log(this.searchedChannels);
         break;
       case '@':
         this.searchType = 'user';
-        this.searchedUsers = this.sharedService.filterUsers(this.users, this.searchTerm.slice(1));
+        this.searchedUsers = this.sharedService.filterUsers(this.data.users, this.searchTerm.slice(1));
+        console.log(this.searchedUsers);
         break;
       default:
         this.searchType = 'email';
-        this.searchedEmails = this.sharedService.filterUsersByMail(this.users, this.searchTerm);
+        this.searchedEmails = this.sharedService.filterUsersByMail(this.data.users, this.searchTerm);
+        console.log(this.searchedEmails);
+        
         break;
     }
   }
@@ -99,12 +103,32 @@ export class NewMessageComponent {
     }
   }
 
+
   async addMessageToChat() {
-    const chatExits = this.data.checkIfChatExists(this.data.activeUser[0].id, this.sharedService.currentPartner);
-    if (!chatExits) {
-      //await this.data.generateNewChat(this.data.activeUser[0].id, this.sharedService.currentPartner,);
-    } else {
-     // await this.data.addMessageToChat(chatExits, this.newMessage, this.sharedService.currentPartner);
+    if (this.newMessage !== '' || this.selectedFile) {
+      const newMessage = await this.generateNewMessage(this.selectedFile);
+      const chatExists = this.data.checkIfChatExists(this.data.activeUser[0].id, this.sharedService.currentPartner);
+      if (chatExists) {
+        const chat = this.data.getChat(this.data.activeUser[0].id, this.sharedService.currentPartner);
+        await this.data.writeChatMessage(newMessage, chat[0].id);
+      } else {
+        await this.data.generateNewChat(this.data.activeUser[0].id, this.sharedService.currentPartner, newMessage);
+      }
+    } 
+    this.newMessage = '';
+    this.selectedFile = null;
+    this.selectedFileName = '';
+  }
+
+
+  async generateNewMessage(file: File | null) {
+    let fileName = '';
+    let fileUrl = '';
+    if (file) {
+      fileName = file.name;
+      fileUrl = await this.firebaseService.uploadFile(file);
     }
+    const message = this.data.generateNewMessage(this.newMessage, fileName, fileUrl);
+    return message;
   }
 }

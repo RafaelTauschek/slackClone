@@ -1,3 +1,4 @@
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { Component, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Channel } from '../../../models/channel.class';
 import { Message } from '../../../models/message.class';
@@ -8,12 +9,13 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { FormsModule } from '@angular/forms';
 import { UserDataService } from '../../../services/data.service';
 import { Emoji } from '../../../models/emoji.class';
+import { initializeApp } from 'firebase/app';
 
 
 @Component({
   selector: 'app-chat-area',
   standalone: true,
-  imports: [CommonModule, PickerComponent, FormsModule],
+  imports: [CommonModule, PickerComponent, FormsModule, EmojiModule],
   templateUrl: './chat-area.component.html',
   styleUrl: './chat-area.component.scss'
 })
@@ -69,6 +71,7 @@ export class ChatAreaComponent implements AfterViewChecked {
 
 
   openThread(message: any) {
+    console.log('message recieved: ',message);
     this.data.setCurrentMessage(message);
     if (this.sharedService.isMobile) {
       this.sharedService.activeComponent = 'thread';

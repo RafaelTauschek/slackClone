@@ -19,7 +19,7 @@
             <div class="user-mail-output" *ngIf="searchType == 'email'">
                 <div class="single-mail-output" *ngFor="let mail of searchedEmails" (click)="setUser(mail)">
                     <img [src]="data.getProfilePictureURL(mail.id)" alt="user-avatar">
-                    <span>{{ mail.name }}</span>
+                    <span>{{ mail.email }}</span>
                 </div>
             </div>
         </div>

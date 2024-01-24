@@ -19,6 +19,7 @@ import { NewMessageComponent } from '../new-message/new-message.component';
 export class MainPageComponent implements OnInit {
   isSidebarOpen: boolean = true;
 
+
   constructor(public sharedService: SharedService) {
   }
 
@@ -41,6 +42,5 @@ export class MainPageComponent implements OnInit {
     this.sharedService.isTablet = window.matchMedia('(min-width: 1025px) and (max-width: 1280px)').matches;
   }
 
-  
 
 }

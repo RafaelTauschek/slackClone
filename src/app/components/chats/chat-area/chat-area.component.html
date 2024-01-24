@@ -15,8 +15,12 @@
                     <ng-container *ngIf="this.sharedService.getMessageAlignment(message.senderId); else leftContainer">
                         <div class="message-container-right" [class.background-gray]="isEditing && message.editMessage">
                             <div class="message-overlay" *ngIf="!message.editMessage">
-                                <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
-                                <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji">
+                                <div>
+                                    <ngx-emoji set="apple"  emoji="white_check_mark"
+                                    (click)="addEmoji({ native: '✅' })"></ngx-emoji></div>
+                                <div>
+                                    <ngx-emoji set="apple" emoji="raised_hands"
+                                    (click)="addEmoji({  native: '🙌' })"></ngx-emoji>
                                 </div>
                                 <div (click)="toggleEmojiPicker(message)">
                                     <img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji">
@@ -89,8 +93,12 @@
                     <ng-template #leftContainer>
                         <div class="message-container-left">
                             <div *ngIf="!message.editMessage" class="message-overlay">
-                                <div><img src="./assets/img/emojis/checkmark.png" alt="checkmark-emoji"></div>
-                                <div><img src="./assets/img/emojis/raising_hands.png" alt="raising-hands-emoji">
+                                <div>
+                                    <ngx-emoji set="apple" class="material-icons" emoji="white_check_mark"
+                                    (click)="addEmoji({ native: '✅' })"></ngx-emoji></div>
+                                <div>
+                                    <ngx-emoji set="apple" class="material-icons" emoji="raised_hands"
+                                    (click)="addEmoji({  native: '🙌' })"></ngx-emoji>
                                 </div>
                                 <div (click)="toggleEmojiPicker(message)"><img
                                         src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
@@ -142,7 +150,7 @@
         </div>
     </div>
     <div class="emoji-picker" *ngIf="showEmojiPicker">
-        <emoji-mart class="emoji-mart" (emojiClick)="addEmoji($event)"></emoji-mart>
+        <emoji-mart noCountryFlags="false" class="emoji-mart" (emojiClick)="addEmoji($event)"></emoji-mart>
     </div>
     <ng-template #noMessages>
         <div *ngIf="data.currentChannel" class="no-channel-message">

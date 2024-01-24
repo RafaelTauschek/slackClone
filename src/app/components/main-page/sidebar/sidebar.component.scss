@@ -291,3 +291,46 @@
         width: 24px;
     }
 }
+
+.hiddens-search-container {
+    position: absolute;
+    flex-direction: column;
+    display: flex;
+    margin-top: 55px;
+    padding: 30px;
+    left: 20px;
+    right: 20px;
+    z-index: 2;
+    background-color: white;
+    border: 1px solid #ADB0D9;
+    border-radius: 30px;
+    gap: 15px;
+
+
+    .searched-channel,
+    .searched-user {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .single-user,
+        .single-channel {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            .user-image {
+                height: 40px;
+                width: 40px;
+                border-radius: 100px;
+            }
+
+            span {
+                font-size: 18px;
+                font-weight: 700;
+            }
+        }
+    }
+
+
+}

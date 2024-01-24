@@ -7,10 +7,12 @@ import { SharedService } from '../../../services/shared.service';
 import { Chat } from '../../../models/chat.class';
 import { User } from '../../../models/user.class';
 import { UserDataService } from '../../../services/data.service';
+import { FormsModule } from '@angular/forms';
+import { Message } from '../../../models/message.class'
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
@@ -20,6 +22,8 @@ export class SidebarComponent {
   user: User[] = [];
   showChannels: boolean = true;
   showDirectChats: boolean = true;  
+  searchTerm: string = '';
+
 
   constructor(private dialog: MatDialog, public sharedService: SharedService, public data: UserDataService) {
   }
@@ -72,4 +76,24 @@ export class SidebarComponent {
   toggleDirectChat() {
     this.showDirectChats = !this.showDirectChats;
   }
+
+  searchActive: boolean = false;
+  searchedChannel: Channel[] = [];
+  searchedUser: User[] = [];
+
+
+  onSearch() {
+    if (this.searchTerm !== '') {
+      this.searchActive = true;
+      this.searchedChannel = this.sharedService.filterChannels(this.data.userChannels, this.searchTerm);
+      this.searchedUser = this.sharedService.filterUsers(this.data.users, this.searchTerm);
+    } else {
+      this.searchActive = false;
+    }
+  }
+
+  openChannel(channelId: string) {}
+
+  openUser(userId: string) {}
+
 }

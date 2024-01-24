@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   Auth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, onAuthStateChanged, getAuth, createUserWithEmailAndPassword,
-  signOut, sendPasswordResetEmail, signInWithRedirect, getRedirectResult, updatePassword, updateEmail, confirmPasswordReset
+  signOut, sendPasswordResetEmail, signInWithRedirect, getRedirectResult, updatePassword, updateEmail
 } from "firebase/auth";
 import { Router } from '@angular/router';
 import { initializeApp } from 'firebase/app';
@@ -147,12 +147,16 @@ export class AuthService {
   changePassword(password: string, oobCode: string|null) {
     const auth = getAuth();
     if (oobCode) {
-      confirmPasswordReset(auth, oobCode, password).then(() => {
-        console.log('password was changed');
-        this.router.navigate(['/']);
-      }).catch((err) => {
-        console.log(err);
-      });
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        updatePassword(currentUser, password).then(() => {
+          console.log('password was changed');
+        }).catch((err) => {
+          console.log(err);
+        });
+      } else {
+        console.log('no authenticated user');
+      }
     } else {
       console.log('no oobCode was provided');
     }

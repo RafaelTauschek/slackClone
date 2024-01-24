@@ -5,7 +5,7 @@
     height: 100vh;
     margin: 0;
     padding: 0;
-    overflow: hidden !important; 
+    overflow: hidden !important;
 
     @media only screen and (max-width: 1024px) {
         width: 100%;
@@ -24,9 +24,11 @@
         flex: 0 0 12%;
         margin-left: 35px;
     }
+
     .chats {
         flex: 1;
     }
+
     app-thread {
         flex: 0 0 12%;
 
@@ -104,3 +106,4 @@
         height: 16px;
     }
 }
+
