@@ -6,7 +6,9 @@ import { RegistrationComponent } from './components/auth/registration/registrati
 import { SelectAvatarComponent } from './components/auth/select-avatar/select-avatar.component';
 import { SelectPasswordComponent } from './components/auth/select-password/select-password.component';
 import { MainPageComponent } from './components/main-page/main-page/main-page.component';
-
+import { ImprintComponent } from './components/main-page/imprint/imprint.component';
+import { PrivacyComponent } from './components/main-page/privacy/privacy.component';
+ 
 export const routes: Routes = [
     {path: '', component: IntroScreenComponent, children: [
         {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -14,7 +16,9 @@ export const routes: Routes = [
         {path: 'registration', component: RegistrationComponent},
         {path: 'reset-password', component: ResetPasswordComponent},
         {path: 'select-password', component: SelectPasswordComponent},
-        {path: 'select-avatar', component: SelectAvatarComponent}
+        {path: 'select-avatar', component: SelectAvatarComponent},
+        {path: 'imprint', component: ImprintComponent},
+        {path: 'privacy', component: PrivacyComponent}
     ]},
     {path: 'main', component: MainPageComponent}
 ];

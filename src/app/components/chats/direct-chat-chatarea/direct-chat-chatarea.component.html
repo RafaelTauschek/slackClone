@@ -12,7 +12,7 @@
             </div>
             <div class="message-wrapper" *ngFor="let message of day.messages">
                 <div class="message-container">
-                    <ng-container>
+                    <ng-container *ngIf="sharedService.getMessageAlignment(message.senderId); else leftContainer">
                         <div class="message-container-right">
                             <div class="message-content-container">
                                 <div class="message-header">
@@ -21,7 +21,17 @@
                                     <span class="username">{{ data.getUserProperty(message.senderId, 'name') }}</span>
                                 </div>
                                 <div class="message-content">
-                                    <span class="text">{{ message.content }}</span>
+                                    <div class="editing-container" *ngIf="edit && message.editMessage">
+                                        <textarea name="message" [(ngModel)]="messageContent"></textarea>
+                                        <div class="editing-footer">
+                                            <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
+                                            <div class="editing-btn-container">
+                                                <button class="cancel-btn" (click)="cancelEditing(message)">Abbrechen</button>
+                                                <button class="save-btn" (click)="saveChanges(message)">Speichern</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span *ngIf="!(edit && message.editMessage)" class="text">{{ message.content }}</span>
                                     <img class="message-img" *ngIf="sharedService.isImage(message.fileUrl)"
                                         [src]="message.fileUrl" alt="{{ message.fileName }}" />
                                     <object class="message-pdf"
@@ -43,7 +53,23 @@
                             <div class="profile-img-container">
                                 <img class="avatar" [src]="data.getProfilePictureURL(message.senderId)" alt="avatar">
                             </div>
+                            <div class="message-overlay">
+                                <div class="overlay-div">
+                                    <ngx-emoji set="apple"  emoji="white_check_mark"
+                                    (click)="addEmoji({ native: '✅' })"></ngx-emoji></div>
+                                <div class="overlay-div">
+                                    <ngx-emoji set="apple" emoji="raised_hands"
+                                    (click)="addEmoji({  native: '🙌' })"></ngx-emoji>
+                                </div><div class="overlay-div"> 
+                                    <img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji">
+                                </div>
+                                <div class="overlay-div" (click)="toggleEditMenu(message)">
+                                    <img src="./assets/img/icons/three-point-icon.png" alt="edit-message">
+                                </div>
+                            </div>
+                            <span *ngIf="editMenu && message.editMessage" (click)="editMessage(message)" class="edit-menu">Nachricht bearbeiten</span>
                         </div>
+                    
                     </ng-container>
                     <ng-template #leftContainer>
                         <div class="message-container-left">
@@ -75,6 +101,20 @@
                                         [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
                                         target="_blank">Datei öffnen</a>
                                 </div>
+                            </div>
+
+                            <div class="message-overlay">
+                                <div class="overlay-div">
+                                    <ngx-emoji set="apple"  emoji="white_check_mark"
+                                    (click)="addEmoji({ native: '✅' })"></ngx-emoji></div>
+                                <div class="overlay-div">
+                                    <ngx-emoji set="apple" emoji="raised_hands"
+                                    (click)="addEmoji({  native: '🙌' })"></ngx-emoji>
+                                </div>
+                                <div class="overlay-div">
+                                    <img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji">
+                                </div>
+
                             </div>
                         </div>
                     </ng-template>

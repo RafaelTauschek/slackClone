@@ -7,9 +7,10 @@
     max-height: 100%;
     height: 100%;
     line-height: 120%;
+
     @media only screen and (max-width: 1024px) {
         padding: 10px 16px;
-        
+
     }
 }
 
@@ -73,7 +74,49 @@
     display: flex;
     padding: 10px 16px;
     align-items: start;
+    position: relative;
     gap: 20px;
+
+    &:hover {
+        background-color: #ECEEFE;
+
+
+        .message-overlay {
+            display: flex;
+        }
+    }
+
+
+    .message-overlay {
+        position: absolute;
+        right: 20px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 3px 15px 3px 20px;
+        background-color: white;
+        border: 1px solid #ADB0D9;
+        border-radius: 25px 25px 25px 0px;
+
+        .overlay-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            cursor: pointer;
+
+            img {
+                height: 24px;
+                width: 24px;
+            }
+
+            ngx-emoji {
+                height: 24px;
+                width: 24px;
+            }
+        }
+    }
 
 
     .profile-img-container {
@@ -130,9 +173,65 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    position: relative;
     padding: 10px 16px 10px 50px;
     gap: 16px;
     align-items: flex-start;
+
+    &:hover {
+        background-color: #ECEEFE;
+
+
+        .message-overlay {
+            display: flex;
+        }
+    }
+
+    .edit-menu {
+        border-radius: 0px 30px 30px 30px;
+        box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.20);
+        background-color: white;
+        font-size: 24px;
+        font-weight: 600;
+        position: absolute;
+        left: 150px;
+        top: 30px;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .message-overlay {
+        position: absolute;
+        left: 20px;
+        padding: 3px 15px 3px 20px;
+        gap: 5px;
+        border-radius: 25px 25px 0px 25px;
+        border: 1px solid #ADB0D9;
+        background-color: white;
+        display: none;
+        align-items: center;
+        justify-content: center;
+
+        .overlay-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4px;
+            cursor: pointer;
+
+            img {
+                height: 24px;
+                width: 24px;
+            }
+
+            ngx-emoji {
+                height: 24px;
+                width: 24px;
+            }
+        }
+    }
 
     .profile-img-container {
         img {
