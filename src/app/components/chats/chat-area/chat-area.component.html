@@ -17,10 +17,10 @@
                             <div class="message-overlay" *ngIf="!message.editMessage">
                                 <div>
                                     <ngx-emoji set="apple"  emoji="white_check_mark"
-                                    (click)="addEmoji({ native: '✅' })"></ngx-emoji></div>
+                                    (click)="addReaction({  native: '✅' }, message)"></ngx-emoji></div>
                                 <div>
                                     <ngx-emoji set="apple" emoji="raised_hands"
-                                    (click)="addEmoji({  native: '🙌' })"></ngx-emoji>
+                                    (click)="addReaction({  native: '🙌' }, message)"></ngx-emoji>
                                 </div>
                                 <div (click)="toggleEmojiPicker(message)">
                                     <img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji">
@@ -94,11 +94,11 @@
                         <div class="message-container-left">
                             <div *ngIf="!message.editMessage" class="message-overlay">
                                 <div>
-                                    <ngx-emoji set="apple" class="material-icons" emoji="white_check_mark"
-                                    (click)="addEmoji({ native: '✅' })"></ngx-emoji></div>
+                                    <ngx-emoji set="apple"  emoji="white_check_mark"
+                                    (click)="addReaction({ native: '✅' }, message)"></ngx-emoji></div>
                                 <div>
-                                    <ngx-emoji set="apple" class="material-icons" emoji="raised_hands"
-                                    (click)="addEmoji({  native: '🙌' })"></ngx-emoji>
+                                    <ngx-emoji set="apple" emoji="raised_hands"
+                                    (click)="addReaction({  native: '🙌' }, message)"></ngx-emoji>
                                 </div>
                                 <div (click)="toggleEmojiPicker(message)"><img
                                         src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>

@@ -11,7 +11,6 @@ import { UserDataService } from '../../../services/data.service';
 import { Emoji } from '../../../models/emoji.class';
 
 
-
 @Component({
   selector: 'app-chat-area',
   standalone: true,
@@ -34,7 +33,6 @@ export class ChatAreaComponent implements AfterViewChecked{
 
   toggleEmojiPicker(message: any) {
     this.data.setCurrentMessage([message]);
-    console.log('message', this.data.message);
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
@@ -62,13 +60,38 @@ export class ChatAreaComponent implements AfterViewChecked{
       this.data.message[0].emojis.push(emoji.toJSON());
     } 
     this.showEmojiPicker = !this.showEmojiPicker;
-    console.log('message', this.data.message[0]);
     this.data.editMessage(this.data.message[0], 'channel');
+  }
+
+  addReaction(emoji: any, message: any) {
+    this.data.message = [message];
+    const nativeEmoji = emoji.native;
+    const existingEmoji = this.data.message[0].emojis.find(
+      (e: Emoji) => e.senders.includes(this.data.activeUser[0].id) && e.emoji === nativeEmoji
+    );
+    if (existingEmoji) {
+      const senderIndex = existingEmoji.senders.indexOf(this.data.activeUser[0].id);
+      if (senderIndex !== -1) {
+        existingEmoji.senders.splice(senderIndex, 1);
+        existingEmoji.count--;
+        if (existingEmoji.count === 0) {
+          const emojiIndex = this.data.message[0].emojis.indexOf(existingEmoji);
+          this.data.message[0].emojis.splice(emojiIndex, 1);
+        }
+      }
+    } else {
+      const emoji = new Emoji({
+        senders: [this.data.activeUser[0].id],
+        emoji: nativeEmoji,
+        count: 1,
+      });
+      this.data.message[0].emojis.push(emoji.toJSON());
+    } 
+    this.data.editMessage(this.data.message[0], 'channel'); 
   }
 
 
   openThread(message: any) {
-    console.log('message recieved: ', message);
     this.data.setCurrentMessage(message);
     if (this.sharedService.isMobile) {
       this.sharedService.activeComponent = 'thread';
@@ -121,3 +144,4 @@ export class ChatAreaComponent implements AfterViewChecked{
   }
 
 }
+
