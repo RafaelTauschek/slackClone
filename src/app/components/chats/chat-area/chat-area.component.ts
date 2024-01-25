@@ -39,7 +39,7 @@ export class ChatAreaComponent implements AfterViewChecked{
 
   addEmoji(event: any) {
     const existingEmoji = this.data.message[0].emojis.find(
-      (e: Emoji) => e.senders.includes(this.data.activeUser[0].id) && e.emoji === event.emoji.native
+      (e: Emoji) => e.emoji === event.emoji.native
     );
     if (existingEmoji) {
       const senderIndex = existingEmoji.senders.indexOf(this.data.activeUser[0].id);
@@ -50,6 +50,9 @@ export class ChatAreaComponent implements AfterViewChecked{
           const emojiIndex = this.data.message[0].emojis.indexOf(existingEmoji);
           this.data.message[0].emojis.splice(emojiIndex, 1);
         }
+      } else {
+        existingEmoji.senders.push(this.data.activeUser[0].id);
+        existingEmoji.count++;
       }
     } else {
       const emoji = new Emoji({
@@ -57,18 +60,21 @@ export class ChatAreaComponent implements AfterViewChecked{
         emoji: event.emoji.native,
         count: 1,
       });
-      this.data.message[0].emojis.push(emoji.toJSON());
-    } 
+      this.data.message[0].emojis.push(emoji.toJSON());    
+    }
     this.showEmojiPicker = !this.showEmojiPicker;
     this.data.editMessage(this.data.message[0], 'channel');
   }
+
+
 
   addReaction(emoji: any, message: any) {
     this.data.message = [message];
     const nativeEmoji = emoji.native;
     const existingEmoji = this.data.message[0].emojis.find(
-      (e: Emoji) => e.senders.includes(this.data.activeUser[0].id) && e.emoji === nativeEmoji
+      (e: Emoji) => e.emoji === nativeEmoji
     );
+    console.log(existingEmoji);
     if (existingEmoji) {
       const senderIndex = existingEmoji.senders.indexOf(this.data.activeUser[0].id);
       if (senderIndex !== -1) {
@@ -78,6 +84,9 @@ export class ChatAreaComponent implements AfterViewChecked{
           const emojiIndex = this.data.message[0].emojis.indexOf(existingEmoji);
           this.data.message[0].emojis.splice(emojiIndex, 1);
         }
+      } else {
+        existingEmoji.senders.push(this.data.activeUser[0].id);
+        existingEmoji.count++;
       }
     } else {
       const emoji = new Emoji({
@@ -86,7 +95,7 @@ export class ChatAreaComponent implements AfterViewChecked{
         count: 1,
       });
       this.data.message[0].emojis.push(emoji.toJSON());
-    } 
+    }
     this.data.editMessage(this.data.message[0], 'channel'); 
   }
 

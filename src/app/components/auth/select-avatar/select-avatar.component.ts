@@ -3,8 +3,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FirebaseService } from '../../../services/firebase.service';
 import { User } from '../../../models/user.class';
-import { SharedService } from '../../../services/shared.service';
-import { ChangeDetectorRef } from '@angular/core';
 import { UserDataService } from '../../../services/data.service';
 
 @Component({
@@ -39,7 +37,6 @@ export class SelectAvatarComponent {
     this.selectedAvatar = avatar;
     this.uploadedAvatar = null as any;
     this.disabled = false;
-
   }
 
 

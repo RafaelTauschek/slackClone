@@ -79,7 +79,6 @@ export class AuthService {
 
   async login(email: string, password: string) {
     await signInWithEmailAndPassword(this.auth, email, password).then(() => {
-      this.data.fetchUserData(this.userDocId);
       setTimeout(() => {
         this.router.navigate(['/main'])
       }, 2000);
@@ -87,8 +86,7 @@ export class AuthService {
       console.error(err);
     })
   }
-  async changeUserMail() {
-  }
+
 
 
   async registerUser(email: string, password: string, name: string) {

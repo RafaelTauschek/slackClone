@@ -75,11 +75,11 @@
                                             1].timestamp) }}</span>
                                     </div>
                                     <div class="emoji-container" *ngIf="message.emojis[0]">
-                                        <div class="single-emoji" *ngFor="let emoji of message.emojis">
+                                        <div class="single-emoji" *ngFor="let emoji of message.emojis" (click)="addReaction({native: emoji.emoji}, message)">
                                             <div>{{ emoji.emoji }}</div>
                                             <span class="emoji-count">{{ emoji.count }}</span>
                                         </div>
-                                        <img class="add-emoji" src="./assets/img/icons/add-emoji-icon.png"
+                                        <img (click)="toggleEmojiPicker(message)" class="add-emoji" src="./assets/img/icons/add-emoji-icon.png"
                                             alt="add-emoji-icon">
                                     </div>
                                 </div>
@@ -135,11 +135,11 @@
                                         <span class="last-answer">Letzte Antwort 14:56</span>
                                     </div>
                                     <div class="emoji-container" *ngIf="message.emojis[0]">
-                                        <div class="single-emoji" *ngFor="let emoji of message.emojis">
+                                        <div class="single-emoji" *ngFor="let emoji of message.emojis" (click)="addReaction({native: emoji.emoji}, message)">
                                             <span>{{ emoji.emoji }}</span>
                                             <span class="emoji-count">{{ emoji.count }}</span>
                                         </div>
-                                        <img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji-icon">
+                                        <img (click)="toggleEmojiPicker(message)" src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji-icon">
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +150,7 @@
         </div>
     </div>
     <div class="emoji-picker" *ngIf="showEmojiPicker">
-        <emoji-mart noCountryFlags="false" class="emoji-mart" (emojiClick)="addEmoji($event)"></emoji-mart>
+        <emoji-mart noCountryFlags="true" class="emoji-mart" (emojiClick)="addEmoji($event)"></emoji-mart>
     </div>
     <ng-template #noMessages>
         <div *ngIf="data.currentChannel" class="no-channel-message">

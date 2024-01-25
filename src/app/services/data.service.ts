@@ -523,6 +523,8 @@ export class UserDataService {
   async editMessage(message: Message, type: 'chat' | 'channel') {
     const current = type === 'chat' ? this.currentChat[0] : this.currentChannel;
     const messageIndex = this.findMessageIndex(message.timestamp, [current] as unknown as Channel[]);
+    console.log(messageIndex);
+    console.log(current);
     const newMessageData = new Message({
       senderId: message.senderId,
       recieverId: message.recieverId,
@@ -535,10 +537,13 @@ export class UserDataService {
       content: message.content,
       editMessage: false,
     });
+    console.log(newMessageData);
     const doc = await this.firebase.getDocument(type + 's', current.id);
     const docData = doc.data();
     if (docData) {
       docData['messages'][messageIndex] = newMessageData.toJSON();
+      console.log(docData);
+      console.log(type + 's', current.id, docData);
       await this.firebase.updateDocument(type + 's', current.id, docData);
       await this.loadChannelsData(this.activeUser);
       this.setChannel(current.id);

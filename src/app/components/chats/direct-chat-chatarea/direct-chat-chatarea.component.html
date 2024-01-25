@@ -49,6 +49,13 @@
                                         [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
                                         target="_blank">Datei öffnen</a>
                                 </div>
+                                <div class="emoji-container" *ngIf="message.emojis[0]">
+                                    <div class="single-emoji" *ngFor="let emoji of message.emojis" (click)="addReaction({native: emoji.emoji}, message)">
+                                        <span>{{ emoji.emoji }}</span>
+                                        <span class="emoji-count">{{ emoji.count }}</span>
+                                    </div>
+                                    <img (click)="toggleEmojiPicker(message)" src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji-icon">
+                                </div>
                             </div>
                             <div class="profile-img-container">
                                 <img class="avatar" [src]="data.getProfilePictureURL(message.senderId)" alt="avatar">
@@ -56,13 +63,12 @@
                             <div class="message-overlay">
                                 <div class="overlay-div">
                                     <ngx-emoji set="apple"  emoji="white_check_mark"
-                                    (click)="addEmoji({ native: '✅' })"></ngx-emoji></div>
+                                    (click)="addReaction({ native: '✅' }, message)"></ngx-emoji></div>
                                 <div class="overlay-div">
                                     <ngx-emoji set="apple" emoji="raised_hands"
-                                    (click)="addEmoji({  native: '🙌' })"></ngx-emoji>
-                                </div><div class="overlay-div"> 
-                                    <img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji">
-                                </div>
+                                    (click)="addReaction({  native: '🙌' }, message)"></ngx-emoji>
+                                </div><div class="overlay-div" (click)="toggleEmojiPicker(message)"><img
+                                    src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
                                 <div class="overlay-div" (click)="toggleEditMenu(message)">
                                     <img src="./assets/img/icons/three-point-icon.png" alt="edit-message">
                                 </div>
@@ -101,15 +107,21 @@
                                         [href]="sanitizer.bypassSecurityTrustResourceUrl(message.fileUrl)"
                                         target="_blank">Datei öffnen</a>
                                 </div>
+                                <div class="emoji-container" *ngIf="message.emojis[0]">
+                                    <div class="single-emoji" *ngFor="let emoji of message.emojis" (click)="addReaction({native: emoji.emoji}, message)">
+                                        <span>{{ emoji.emoji }}</span>
+                                        <span class="emoji-count">{{ emoji.count }}</span>
+                                    </div>
+                                    <img (click)="toggleEmojiPicker(message)" src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji-icon">
+                                </div>
                             </div>
-
                             <div class="message-overlay">
                                 <div class="overlay-div">
                                     <ngx-emoji set="apple"  emoji="white_check_mark"
-                                    (click)="addEmoji({ native: '✅' })"></ngx-emoji></div>
+                                    (click)="addReaction({ native: '✅' }, message)"></ngx-emoji></div>
                                 <div class="overlay-div">
                                     <ngx-emoji set="apple" emoji="raised_hands"
-                                    (click)="addEmoji({  native: '🙌' })"></ngx-emoji>
+                                    (click)="addReaction({  native: '🙌' }, message)"></ngx-emoji>
                                 </div>
                                 <div class="overlay-div">
                                     <img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji">
@@ -141,4 +153,7 @@
                 auch gerne Dinge mit dir selbst besprechen.</span>
         </div>
     </ng-template>
+    <div class="emoji-picker" *ngIf="showEmojiPicker">
+        <emoji-mart noCountryFlags="true" class="emoji-mart" (emojiClick)="addEmoji($event)"></emoji-mart>
+    </div>
 </div>

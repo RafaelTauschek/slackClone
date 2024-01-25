@@ -77,6 +77,40 @@
     position: relative;
     gap: 20px;
 
+    .emoji-container {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        align-self: flex-start;
+        padding: 4px;
+
+        .add-emoji {
+            width: 24px;
+            height: 24px;
+        }
+
+        .single-emoji {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 20px;
+            border: 1px solid #ADB0D9;
+            background-color: white;
+            padding: 5px 10px;
+
+
+            img {
+                width: 24px;
+                height: 24px;
+            }
+
+            span {
+                font-size: 16px;
+            }
+        }
+    }
+
     &:hover {
         background-color: #ECEEFE;
 
@@ -184,6 +218,39 @@
 
         .message-overlay {
             display: flex;
+        }
+    }
+
+    .emoji-container {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+
+        .add-emoji {
+            width: 24px;
+            height: 24px;
+        }
+
+        .single-emoji {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 20px;
+            border: 1px solid #ADB0D9;
+            background-color: white;
+            padding: 5px 10px;
+
+
+            img {
+                width: 24px;
+                height: 24px;
+            }
+
+            span {
+                font-size: 16px;
+            }
         }
     }
 
@@ -321,4 +388,12 @@
         }
     }
 
+}
+
+
+.emoji-mart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

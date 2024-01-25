@@ -5,12 +5,12 @@
     <span class="headline">Wähle deinen Avatar</span>
     <div class="avatar-selection">
         <div class="avatar-selection">
-            <div *ngIf="!selectedAvatar; else avatarSelected" class="selected-avatar">
-                <img *ngIf="!uploadedAvatar" src="./assets/img/avatars/avatar.png" alt="Default Avatar">
+            <div *ngIf="!selectedAvatar; else avatarSelected" class="selected-avatar" [class.avatar-selected]="uploadedAvatar || selectedAvatar">
+                <img *ngIf="!uploadedAvatar && !selectedAvatar" src="./assets/img/avatars/avatar.png" alt="Default Avatar">
                 <img *ngIf="uploadedAvatar" [src]="selectedAvatar" alt="Uploaded Avatar">
             </div>
             <ng-template #avatarSelected>
-                <div class="selected-avatar">
+                <div class="selected-avatar" [class.avatar-selected]="uploadedAvatar || selectedAvatar">
                     <img *ngIf="selectedAvatar" [src]="'./assets/img/avatars/' + selectedAvatar + '.png'"
                         alt="Selected Avatar">
                 </div>

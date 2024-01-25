@@ -57,7 +57,7 @@
             <span>Mitglieder</span>
             <img src="./assets/img/icons/close-icon.png" alt="close-icon" (click)="memberListActive = false">
         </div>
-        <div *ngFor="let member of data.currentChannel.users">
+        <div *ngFor="let member of data.currentChannel.users" class="member-list">
             <div class="single-member">
                 <img class="single-user-avatar" 
                     [src]="data.getProfilePictureURL(member)" 
@@ -99,14 +99,14 @@
         </div>
 
         <div class="invite-user-list" *ngIf="userToAdd.length > 0">
-            <div class="single-user" *ngFor="let user of userToAdd">
-                <img class="single-user-avatar" 
-                [src]="data.getProfilePictureURL(user)" 
-                alt="avatar">
-            <span>{{ data.getUserProperty(user, 'name') }}</span>
-            <img (click)="removeUser(user)" src="./assets/img/icons/close-icon.png" alt="close-icon">
+                <div class="single-user" *ngFor="let user of userToAdd">
+                    <img class="single-user-avatar" 
+                    [src]="data.getProfilePictureURL(user)" 
+                    alt="avatar">
+                <span>{{ data.getUserProperty(user, 'name') }}</span>
+                <img (click)="removeUser(user)" src="./assets/img/icons/close-icon.png" alt="close-icon">
+                </div>
+            <button (click)="updateUsersOnChannel()" [class.enabled]="userToAdd.length > 0" [class.disabled]="userToAdd.length <= 0" [disabled]="userToAdd.length <= 0">Hinzufügen</button>
             </div>
-        </div>
-        <button (click)="updateUsersOnChannel()" [class.enabled]="userToAdd.length > 0" [class.disabled]="userToAdd.length <= 0" [disabled]="userToAdd.length <= 0">Hinzufügen</button>
     </div>
 </div>
