@@ -131,7 +131,7 @@
                                 </div>
                                 <div class="message-footer">
                                     <div class="answer-container" *ngIf="message.answers.length > 0">
-                                        <span class="answers">{{ message.answers.length }} Antworten</span>
+                                        <span (click)="openThread(message)" class="answers">{{ message.answers.length }} Antworten</span>
                                         <span class="last-answer">Letzte Antwort 14:56</span>
                                     </div>
                                     <div class="emoji-container" *ngIf="message.emojis[0]">

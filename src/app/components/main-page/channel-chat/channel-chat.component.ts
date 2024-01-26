@@ -10,11 +10,12 @@ import { EditChannelDialogComponent } from '../../dialogs/edit-channel-dialog/ed
 import { User } from '../../../models/user.class';
 import { SharedService } from '../../../services/shared.service';
 import { UserDataService } from '../../../services/data.service';
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 
 @Component({
   selector: 'app-channel-chat',
   standalone: true,
-  imports: [CommonModule, ChatAreaComponent, RouterOutlet, RouterModule, PickerComponent, FormsModule, MatDialogModule],
+  imports: [CommonModule, ChatAreaComponent, RouterOutlet, RouterModule, PickerComponent, FormsModule, MatDialogModule, EmojiModule],
   templateUrl: './channel-chat.component.html',
   styleUrl: './channel-chat.component.scss'
 })
@@ -28,11 +29,16 @@ export class ChannelChatComponent {
   searchActive: boolean = false;
   searchedUsers: User[] = [];
   searchTerm: string = '';
+  showEmojiPicker = false;  
   userToAdd: string[] = [];
   
-  constructor(private dialog: MatDialog, public sharedService: SharedService, public data: UserDataService ) {
-  }
+  constructor(private dialog: MatDialog, public sharedService: SharedService, public data: UserDataService ) {}
 
+
+
+  toggleEmojiPicker() {
+      this.showEmojiPicker = !this.showEmojiPicker;
+  }
 
   onSearch() {
     if (this.searchTerm !== '') {
@@ -81,9 +87,9 @@ export class ChannelChatComponent {
   }
 
 
-
-  addEmoji(event: Event) {
-    console.log('Event activated: ', event);
+  addEmoji(event: any) {
+    this.message += event.emoji.native;
+    this.toggleEmojiPicker();
   }
 
 

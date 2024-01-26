@@ -7,11 +7,13 @@ import { SharedService } from '../../../services/shared.service';
 import { Chat } from '../../../models/chat.class';
 import { UserDataService } from '../../../services/data.service';
 import { FirebaseService } from '../../../services/firebase.service';
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
 @Component({
   selector: 'app-direct-chat',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, DirectChatChatareaComponent, FormsModule],
+  imports: [CommonModule, RouterModule, RouterOutlet, DirectChatChatareaComponent, FormsModule, EmojiModule, PickerComponent],
   templateUrl: './direct-chat.component.html',
   styleUrl: './direct-chat.component.scss'
 })
@@ -20,6 +22,7 @@ export class DirectChatComponent {
   chat: Chat[] = [];
   selectedFileName: string = '';
   selectedFile: File | null = null;
+  showEmojiPicker = false;  
 
   constructor(public sharedService: SharedService, public data: UserDataService, private firebaseService: FirebaseService) {}
 
@@ -29,6 +32,15 @@ export class DirectChatComponent {
       this.selectedFile = event.target.files[0];
       this.selectedFileName = this.selectedFile?.name ?? '';
     }
+  }
+
+  toggleEmojiPicker() {
+      this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(event: any) {
+    this.message += event.emoji.native;
+    this.toggleEmojiPicker();
   }
 
   async sendMessage() {

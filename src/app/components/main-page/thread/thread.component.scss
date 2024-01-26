@@ -140,3 +140,11 @@ textarea {
         scrollbar-width: thin;
         scrollbar-color: transparent transparent;
 }
+
+
+.emoji-mart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

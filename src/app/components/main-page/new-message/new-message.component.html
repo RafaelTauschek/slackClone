@@ -34,7 +34,7 @@
             <div class="icons-left">
                 <img src="./assets/img/icons/add-icon-gray.png" alt="add-icon">
                 <div class="seperator"></div>
-                <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
+                <img (click)="toggleEmojiPicker()" src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
                 <img src="./assets/img/icons/at-icon.png" alt="at-icon">
             </div>
             <div class="icons-right" (click)="sendMessage()">
@@ -42,4 +42,8 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="emoji-picker" *ngIf="showEmojiPicker">
+    <emoji-mart noCountryFlags="true" class="emoji-mart" (emojiClick)="addEmoji($event)"></emoji-mart>
 </div>

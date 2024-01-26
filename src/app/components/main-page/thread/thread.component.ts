@@ -3,17 +3,16 @@ import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { ThreadChatComponent } from '../../chats/thread-chat/thread-chat.component';
 import { SharedService } from '../../../services/shared.service';
-import { Channel } from '../../../models/channel.class';
 import { FormsModule } from '@angular/forms';
-import { Message } from '../../../models/message.class';
-import { User } from '../../../models/user.class';
 import { FirebaseService } from '../../../services/firebase.service';
 import { UserDataService } from '../../../services/data.service';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 
 @Component({
   selector: 'app-thread',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, ThreadChatComponent, FormsModule],
+  imports: [CommonModule, RouterModule, RouterOutlet, ThreadChatComponent, FormsModule, PickerComponent, EmojiModule],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss'
 })
@@ -21,9 +20,21 @@ export class ThreadComponent {
   answer: string = '';
   selectedFileName: string = '';
   selectedFile: File | null = null;
+  showEmojiPicker: boolean = false;
 
 
   constructor(private sharedService: SharedService, private firebaseService: FirebaseService, public data: UserDataService) {}
+
+
+  toggleEmojiPicker() {
+      this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+
+  addEmoji(event: any ) {
+    this.answer += event.emoji.native;
+    this.toggleEmojiPicker(); 
+  } 
 
 
   onFileSelected(event: any) {

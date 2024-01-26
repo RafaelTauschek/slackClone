@@ -5,15 +5,15 @@ import { User } from '../../../models/user.class';
 import { FormsModule } from '@angular/forms';
 import { SharedService } from '../../../services/shared.service';
 import { UserDataService } from '../../../services/data.service';
-import { Message } from '../../../models/message.class';
-import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
 import { FirebaseService } from '../../../services/firebase.service';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 
 
 @Component({
   selector: 'app-new-message',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PickerComponent, EmojiModule],
   templateUrl: './new-message.component.html',
   styleUrl: './new-message.component.scss'
 })
@@ -28,6 +28,8 @@ export class NewMessageComponent {
   newMessage: string = '';
   selectedFileName: string = '';
   selectedFile: File | null = null;
+  showEmojiPicker = false;
+
 
 
   constructor(private sharedService: SharedService, public data: UserDataService, private firebaseService: FirebaseService) {
@@ -40,6 +42,15 @@ export class NewMessageComponent {
       this.selectedFile = event.target.files[0];
       this.selectedFileName = this.selectedFile?.name ?? '';
     }
+  }
+
+  toggleEmojiPicker() {
+      this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(event: any) {
+    this.newMessage += event.emoji.native;
+    this.toggleEmojiPicker();
   }
 
   onSearch() {

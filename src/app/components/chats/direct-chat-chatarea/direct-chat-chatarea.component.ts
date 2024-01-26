@@ -51,7 +51,7 @@ export class DirectChatChatareaComponent {
 
   addEmoji(event: any) {
     const existingEmoji = this.data.message[0].emojis.find(
-      (e: Emoji) => e.senders.includes(this.data.activeUser[0].id) && e.emoji === event.emoji.native
+      (e: Emoji) => e.emoji === event.emoji.native
     );
     if (existingEmoji) {
       const senderIndex = existingEmoji.senders.indexOf(this.data.activeUser[0].id);
@@ -62,6 +62,9 @@ export class DirectChatChatareaComponent {
           const emojiIndex = this.data.message[0].emojis.indexOf(existingEmoji);
           this.data.message[0].emojis.splice(emojiIndex, 1);
         }
+      } else {
+        existingEmoji.senders.push(this.data.activeUser[0].id);
+        existingEmoji.count++;
       }
     } else {
       const emoji = new Emoji({
@@ -69,8 +72,8 @@ export class DirectChatChatareaComponent {
         emoji: event.emoji.native,
         count: 1,
       });
-      this.data.message[0].emojis.push(emoji.toJSON());
-    } 
+      this.data.message[0].emojis.push(emoji.toJSON());    
+    }
     this.showEmojiPicker = !this.showEmojiPicker;
     this.data.editMessage(this.data.message[0], 'chat');
   }
@@ -79,7 +82,7 @@ export class DirectChatChatareaComponent {
     this.data.message = [message];
     const nativeEmoji = emoji.native;
     const existingEmoji = this.data.message[0].emojis.find(
-      (e: Emoji) => e.senders.includes(this.data.activeUser[0].id) && e.emoji === nativeEmoji
+      (e: Emoji) => e.emoji === nativeEmoji
     );
     if (existingEmoji) {
       const senderIndex = existingEmoji.senders.indexOf(this.data.activeUser[0].id);
@@ -90,6 +93,9 @@ export class DirectChatChatareaComponent {
           const emojiIndex = this.data.message[0].emojis.indexOf(existingEmoji);
           this.data.message[0].emojis.splice(emojiIndex, 1);
         }
+      } else {
+        existingEmoji.senders.push(this.data.activeUser[0].id);
+        existingEmoji.count++;
       }
     } else {
       const emoji = new Emoji({

@@ -523,8 +523,6 @@ export class UserDataService {
   async editMessage(message: Message, type: 'chat' | 'channel') {
     const current = type === 'chat' ? this.currentChat[0] : this.currentChannel;
     const messageIndex = this.findMessageIndex(message.timestamp, [current] as unknown as Channel[]);
-    console.log(messageIndex);
-    console.log(current);
     const newMessageData = new Message({
       senderId: message.senderId,
       recieverId: message.recieverId,
