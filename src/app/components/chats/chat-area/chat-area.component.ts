@@ -100,7 +100,8 @@ export class ChatAreaComponent implements AfterViewChecked{
 
 
   openThread(message: any) {
-    this.data.setCurrentMessage(message);
+    this.data.setCurrentMessage([message]);
+    console.log(this.data.message[0]);
     if (this.sharedService.isMobile) {
       this.sharedService.activeComponent = 'thread';
     }

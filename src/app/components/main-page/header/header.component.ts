@@ -99,6 +99,7 @@ export class HeaderComponent {
   }
 
   openChannel(channelId: string) {
+    this.data.setChannel(channelId);
     this.sharedService.directChatActive = false;
     this.sharedService.threadActive = false;
     this.sharedService.messageActive = false;

@@ -173,14 +173,12 @@ export class SharedService {
 
 
    async sendChannelMessage(newMessage: string, file: File | null) {
-    console.log('sendChannelMessage');
     let fileName = '';
     let fileUrl = '';
     try {
       if (file) {
         fileName = file.name;
-        fileUrl = await this.firebaseService.uploadFile(file);
-        console.log('fileUrl: ', fileUrl);     
+        fileUrl = await this.firebaseService.uploadFile(file);   
       }
       const message = this.generateNewMessage(newMessage, fileName, fileUrl);
       await this.firebaseService.updateMessages('channels', this.data.currentChannel.id, message.toJSON());

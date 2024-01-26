@@ -19,22 +19,25 @@ export class ThreadChatComponent {
   edit: boolean = false;
   messageContent: string = '';
   showEmojiPicker = false;
+  answer: any;
 
-  constructor(public sharedService: SharedService, public data: UserDataService) {
+  constructor(public sharedService: SharedService, public data: UserDataService) {}
 
-  }
-
-  toggleEmojiPicker() {
+  toggleEmojiPicker(message: any) {
     this.showEmojiPicker = !this.showEmojiPicker;
+    this.answer = message;
   }
+
+
 
   toggleEditMenu(message: any) {
     this.editMenu = !this.editMenu;
     message.editMessage = true;
+
   }
 
-  addEmoji(event: any, message: Message) {
-    const existingEmoji = message.emojis.find(
+  addEmoji(event: any) {
+    const existingEmoji = this.answer.emojis.find(
       (e: Emoji) => e.emoji === event.emoji.native
     );
     if (existingEmoji) {
@@ -43,8 +46,8 @@ export class ThreadChatComponent {
         existingEmoji.senders.splice(senderIndex, 1);
         existingEmoji.count--;
         if (existingEmoji.count === 0) {
-          const emojiIndex = message.emojis.indexOf(existingEmoji);
-          message.emojis.splice(emojiIndex, 1);
+          const emojiIndex = this.answer.emojis.indexOf(existingEmoji);
+          this.answer.emojis.splice(emojiIndex, 1);
         }
       } else {
         existingEmoji.senders.push(this.data.activeUser[0].id);
@@ -56,10 +59,10 @@ export class ThreadChatComponent {
         emoji: event.emoji.native,
         count: 1,
       });
-      message.emojis.push(emoji.toJSON() as Emoji);
+      this.answer.emojis.push(emoji.toJSON() as Emoji);
     }
     this.showEmojiPicker = !this.showEmojiPicker;
-    this.data.editThreadMessage(this.data.message[0], message, message.content);
+    this.data.editThreadEmoji(this.data.message[0], this.answer);
   }
 
 
@@ -89,7 +92,7 @@ export class ThreadChatComponent {
       });
       message.emojis.push(emoji.toJSON() as Emoji);
     }
-    this.data.editThreadMessage(this.data.message[0], message, message.content);
+    this.data.editThreadEmoji(this.data.message[0], message);
   }
 
 

@@ -5,6 +5,7 @@ import { Channel } from '../models/channel.class';
 import { Chat } from '../models/chat.class';
 import { FirebaseService } from './firebase.service';
 import { user } from '@angular/fire/auth';
+import { Emoji } from '../models/emoji.class';
 
 @Injectable({
   providedIn: 'root'
@@ -535,13 +536,10 @@ export class UserDataService {
       content: message.content,
       editMessage: false,
     });
-    console.log(newMessageData);
     const doc = await this.firebase.getDocument(type + 's', current.id);
     const docData = doc.data();
     if (docData) {
       docData['messages'][messageIndex] = newMessageData.toJSON();
-      console.log(docData);
-      console.log(type + 's', current.id, docData);
       await this.firebase.updateDocument(type + 's', current.id, docData);
       await this.loadChannelsData(this.activeUser);
       this.setChannel(current.id);
@@ -637,6 +635,32 @@ export class UserDataService {
       fileUrl: threadMessage.fileUrl,
       fileType: threadMessage.fileType,
       content: newMessage,
+      editMessage: false,
+    });
+    const doc = await this.firebase.getDocument('channels', this.currentChannel.id);
+    const docData = doc.data();
+    if (docData) {
+      docData['messages'][parentMessageIndex].answers[threadMessageIndex] = newMessageData.toJSON();
+      await this.firebase.updateDocument('channels', this.currentChannel.id, docData);
+      await this.loadChannelsData(this.activeUser);
+      this.setChannel(this.currentChannel.id);
+    }
+  }
+
+
+  async editThreadEmoji(parentMessage: Message, threadMessage: Message) {
+    const parentMessageIndex = this.findMessageIndex(parentMessage.timestamp, [this.currentChannel] as Channel[]);
+    const threadMessageIndex = parentMessage.answers.findIndex(answer => answer.timestamp === threadMessage.timestamp);
+    const newMessageData = new Message({
+      senderId: threadMessage.senderId,
+      recieverId: threadMessage.recieverId,
+      timestamp: threadMessage.timestamp,
+      emojis: threadMessage.emojis,
+      answers: threadMessage.answers,
+      fileName: threadMessage.fileName,
+      fileUrl: threadMessage.fileUrl,
+      fileType: threadMessage.fileType,
+      content: threadMessage.content,
       editMessage: false,
     });
     const doc = await this.firebase.getDocument('channels', this.currentChannel.id);
