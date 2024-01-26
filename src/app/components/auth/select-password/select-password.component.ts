@@ -25,7 +25,6 @@ export class SelectPasswordComponent {
       repeatPassword: ['', [Validators.required, Validators.minLength(8)]]
     })
     this.code = this.route.snapshot.queryParams['oobCode'];
-    console.log(this.code);
   }
 
   changePassword() {
@@ -33,7 +32,6 @@ export class SelectPasswordComponent {
     if (this.changePasswordForm.valid && this.changePasswordForm.get('password')?.value === this.changePasswordForm.get('repeatPassword')?.value) {
       const password = this.changePasswordForm.get('password')?.value;
       if (password) {
-        console.log('password is valid');
         this.authService.changePassword(password, this.code);
         this.popupActive = true;
         setTimeout(() => {
@@ -41,10 +39,10 @@ export class SelectPasswordComponent {
           this.popupActive = false;
         }, 1500);
       } else {
-        console.log('password is invalid');
+        console.warn('password is invalid');
       }
     } else {
-      console.log('passwords do not match');
+      console.warn('passwords do not match');
     }
     this.isSubmitted = false;
   }

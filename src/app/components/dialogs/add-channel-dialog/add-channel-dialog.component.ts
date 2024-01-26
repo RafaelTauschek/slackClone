@@ -30,7 +30,6 @@ export class AddChannelDialogComponent {
   async addChannel() {
     this.addingChannel = true;
     if (this.channelName == '') {
-      console.log('Name is empty');
     } else {
       const date = new Date().getTime();
       const channelData = {
@@ -43,9 +42,7 @@ export class AddChannelDialogComponent {
         users: [this.activeUser[0].id],
       }
       const docRef = await this.firebaseService.addCollection('channels', channelData);
-      console.log(docRef);
       channelData.id = docRef
-      console.log(channelData);
       await this.firebaseService.updateDocument('channels', docRef, channelData);
       this.activeUser[0].channels.push(docRef);
       const userData = {

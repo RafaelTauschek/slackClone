@@ -63,18 +63,14 @@ export class NewMessageComponent {
       case '#':
         this.searchType = 'channel';
         this.searchedChannels = this.sharedService.filterChannels(this.data.userChannels, this.searchTerm.slice(1));
-        console.log(this.searchedChannels);
         break;
       case '@':
         this.searchType = 'user';
         this.searchedUsers = this.sharedService.filterUsers(this.data.users, this.searchTerm.slice(1));
-        console.log(this.searchedUsers);
         break;
       default:
         this.searchType = 'email';
         this.searchedEmails = this.sharedService.filterUsersByMail(this.data.users, this.searchTerm);
-        console.log(this.searchedEmails);
-        
         break;
     }
   }

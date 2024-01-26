@@ -33,10 +33,10 @@ export class LoginComponent {
       if (email && password) {
         this.authService.login(email, password);
       } else {
-        console.log('email or password is invalid');
+        console.warn('email or password is invalid');
       }
     } else {
-      console.log('loginform is invalid');
+      console.warn('loginform is invalid');
 
     }
   }

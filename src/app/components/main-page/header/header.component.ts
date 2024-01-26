@@ -8,7 +8,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserPofileDialogComponent } from '../../dialogs/user-pofile-dialog/user-pofile-dialog.component';
 import { SharedService } from '../../../services/shared.service';
 import { Message } from '../../../models/message.class';
-import { Chat } from '../../../models/chat.class';
 import { UserDataService } from '../../../services/data.service';
 
 interface MessageWithChannel extends Message {
@@ -25,7 +24,6 @@ interface MessageWithChannel extends Message {
 
 
 export class HeaderComponent {
-  currentUser: User[] = []
   userMenu: boolean = false;
   profileMenu: boolean = false;
   editMenu: boolean = false;
@@ -40,7 +38,6 @@ export class HeaderComponent {
   editedUserMail: string = '';
   searchedChannelMessages!: any;
   searchedDirectMessages!: Message[];
-  chats: Chat[] = [];
   isEditing: boolean = false;
 
 
@@ -102,7 +99,6 @@ export class HeaderComponent {
   }
 
   openChannel(channelId: string) {
-    console.log('channel was opend with id: ', channelId);
     this.sharedService.directChatActive = false;
     this.sharedService.threadActive = false;
     this.sharedService.messageActive = false;
@@ -114,24 +110,16 @@ export class HeaderComponent {
 
 
   async editUserName() {
-    const user = this.currentUser[0];
-    console.log('User: ', user);
+    const user = this.data.activeUser[0];
     if (this.editedUserName !== '' && user.name) {
-      console.log('Name changes were made');
       await this.data.updateUserProperties({ name: this.editedUserName });
-    } else {
-      console.log('No changes were made');
     }
   }
 
   async editUserMail() {
-    const user = this.currentUser[0];
-    console.log('User: ', user);
+    const user = this.data.activeUser[0];
     if (this.editedUserMail !== '' && user.email) {
-      console.log('Mail changes were made');
       await this.data.updateUserProperties({ email: this.editedUserMail });
-    } else {
-      console.log('No changes were made');
     }
   }
 

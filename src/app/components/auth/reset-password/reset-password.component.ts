@@ -25,7 +25,6 @@ export class ResetPasswordComponent {
     if (this.myForm.valid ) {
       const email = this.myForm.get('email')?.value;
       if (email) {
-        console.log('email is valid');
         this.authService.resetPassword(email);
         this.popupActive = true;
         setTimeout(() => {
@@ -33,7 +32,7 @@ export class ResetPasswordComponent {
           this.popupActive = false;
         }, 1500);
       } else {
-        console.log('email is invalid');
+        console.warn('email is invalid');
       }
     }
   }

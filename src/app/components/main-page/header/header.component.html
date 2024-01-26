@@ -62,7 +62,7 @@
         <span *ngIf="data.activeUser[0] !== undefined && !sharedService.isTablet">{{ data.activeUser[0].name }}</span>
         <span *ngIf="data.activeUser[0]  !== undefined && sharedService.isTablet">{{ data.getInitials() }}</span>
         <img *ngIf="data.activeUser[0]  !== undefined && !sharedService.isMobile" class="avatar" [src]="data.getProfilePictureURL(data.activeUser[0].id)" alt="avatar">
-        <img (click)="userMenu = !userMenu" *ngIf="currentUser !== undefined && sharedService.isMobile" class="avatar" [src]="data.getProfilePictureURL(data.activeUser[0].id)" alt="avatar">
+        <img (click)="userMenu = !userMenu" *ngIf="data.activeUser !== undefined && sharedService.isMobile" class="avatar" [src]="data.getProfilePictureURL(data.activeUser[0].id)" alt="avatar">
         <img class="online-dot" src="./assets/img/online-dot.png" alt="online-dot">
         <img (click)="userMenu = !userMenu" class="dropdown" src="./assets/img/icons/arrow-drop-down.png"
             alt="arrow-dropdown">

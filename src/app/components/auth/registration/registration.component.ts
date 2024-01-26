@@ -22,10 +22,9 @@ export class RegistrationComponent {
 
   async register() {
     if (this.name !== '' && this.email !== '' && this.password !== '' && this.checkboxChecked) {
-      console.log('Form was filled correctly');
       await this.authService.registerUser(this.email, this.password, this.name);
     } else {
-      console.log('you fucked up!');
+      console.warn('Form was not filled correctly');
     }
   }
 

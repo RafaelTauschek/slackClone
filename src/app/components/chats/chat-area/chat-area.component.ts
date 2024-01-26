@@ -74,7 +74,6 @@ export class ChatAreaComponent implements AfterViewChecked{
     const existingEmoji = this.data.message[0].emojis.find(
       (e: Emoji) => e.emoji === nativeEmoji
     );
-    console.log(existingEmoji);
     if (existingEmoji) {
       const senderIndex = existingEmoji.senders.indexOf(this.data.activeUser[0].id);
       if (senderIndex !== -1) {

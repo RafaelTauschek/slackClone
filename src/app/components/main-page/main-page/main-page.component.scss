@@ -61,6 +61,14 @@
     flex: 0 !important;
 }
 
+.sidebar-closed {
+    left: -123px !important;
+}
+
+.ml32 {
+    margin-left: 32px !important;
+}
+
 .workspace-menu {
     background-color: white;
     display: flex;
@@ -71,10 +79,11 @@
     padding: 14px 23px;
     box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.20);
     border-radius: 0px 0px 30px 30px;
-    bottom: 220px;
+    bottom: 240px;
     left: -140px;
     transform: rotate(270deg);
     cursor: pointer;
+
 
     @media only screen and (max-width: 1024px) {
         display: none;

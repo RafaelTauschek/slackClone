@@ -2,7 +2,7 @@
     <app-header></app-header>
     <main class="desktop-main" *ngIf="!sharedService.isMobile" [style.width]="sharedService.changeWidth">
         <app-sidebar *ngIf="isSidebarOpen"></app-sidebar>
-        <div class="chats" [class.flex-0]="sharedService.isTablet && sharedService.threadActive" >
+        <div class="chats" [class.flex-0]="sharedService.isTablet && sharedService.threadActive" [class.ml32]="!isSidebarOpen">
             <app-channel-chat *ngIf="sharedService.channelChatActive"></app-channel-chat>
             <app-direct-chat *ngIf="sharedService.directChatActive"></app-direct-chat>
             <app-new-message *ngIf="sharedService.messageActive"></app-new-message>
@@ -20,7 +20,7 @@
 
 
 
-    <div *ngIf="!sharedService.isMobile" class="workspace-menu" (click)="isSidebarOpen = !isSidebarOpen">
+    <div *ngIf="!sharedService.isMobile" class="workspace-menu" (click)="isSidebarOpen = !isSidebarOpen" [class.sidebar-closed]="!isSidebarOpen">
         <span *ngIf="isSidebarOpen">Workspace-Menü schließen</span>
         <span *ngIf="!isSidebarOpen">Workspace-Menü öffnen</span>
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">

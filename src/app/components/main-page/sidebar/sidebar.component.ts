@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AddChannelDialogComponent } from '../../dialogs/add-channel-dialog/add-channel-dialog.component';
+import { UserPofileDialogComponent } from '../../dialogs/user-pofile-dialog/user-pofile-dialog.component';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Channel } from '../../../models/channel.class';
@@ -8,11 +9,10 @@ import { Chat } from '../../../models/chat.class';
 import { User } from '../../../models/user.class';
 import { UserDataService } from '../../../services/data.service';
 import { FormsModule } from '@angular/forms';
-import { Message } from '../../../models/message.class'
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
@@ -38,10 +38,10 @@ export class SidebarComponent {
     this.sharedService.channelChatActive = true;
   }
 
-
   openDialog() {
     this.dialog.open(AddChannelDialogComponent, {});
   }
+
 
   openNewMessage() {
     if (this.sharedService.isMobile) {
@@ -56,6 +56,7 @@ export class SidebarComponent {
   }
 
   async openDirectChat(chatpartnerId: string, chat: Chat) {
+    
     this.sharedService.setCurrentChatPartnerId(chatpartnerId);
     this.data.setCurrentChat([chat]);
     if (this.sharedService.isMobile) {
@@ -92,8 +93,20 @@ export class SidebarComponent {
     }
   }
 
-  openChannel(channelId: string) {}
+  openChannel(channelId: string) {
+    this.data.setChannel(channelId);
 
-  openUser(userId: string) {}
+    if (this.sharedService.isMobile) {
+      this.sharedService.activeComponent = 'channel-chat';
+    }
+    this.sharedService.messageActive = false;
+    this.sharedService.directChatActive = false;
+    this.sharedService.channelChatActive = true;
+  }
+
+  openUser(userId: string) {
+    this.sharedService.setCurrentChatPartnerId(userId);
+    this.dialog.open(UserPofileDialogComponent, {});
+  }
 
 }
