@@ -14,6 +14,15 @@
                 </div>
                 <img class="single-user-avatar" [src]="data.getProfilePictureURL(data.message.senderId)" alt="avatar">
             </div>
+            <div class="emoji-container" *ngIf="data.message.emojis[0]">
+                <div class="single-emoji" *ngFor="let emoji of data.message.emojis"
+                    (click)="addReaction({native: emoji.emoji}, data.message)">
+                    <div>{{ emoji.emoji }}</div>
+                    <span class="emoji-count">{{ emoji.count }}</span>
+                </div>
+                <img (click)="toggleEmojiPicker()" class="add-emoji" src="./assets/img/icons/add-emoji-icon.png"
+                    alt="add-emoji-icon">
+            </div>
         </ng-container>
 
         <ng-template #leftMessage>
@@ -28,6 +37,15 @@
                         <span>{{ data.message.content }}</span>
                     </div>
                 </div>
+            </div>
+            <div class="emoji-container" *ngIf="data.message.emojis[0]">
+                <div class="single-emoji" *ngFor="let emoji of data.message.emojis"
+                    (click)="addReaction({native: emoji.emoji}, data.message)">
+                    <div>{{ emoji.emoji }}</div>
+                    <span class="emoji-count">{{ emoji.count }}</span>
+                </div>
+                <img (click)="toggleEmojiPicker()" class="add-emoji" src="./assets/img/icons/add-emoji-icon.png"
+                    alt="add-emoji-icon">
             </div>
         </ng-template>
 
@@ -63,12 +81,28 @@
                     </div>
                     <img [src]="data.getProfilePictureURL(answer.senderId)" alt="avatar">
                     <div class="message-overlay">
-                        <img (click)="toggleEmojiPicker(answer)" src="./assets/img/icons/add-emoji-icon.png" alt="smiley-icon">
-                        <img (click)="toggleEditMenu(answer)" src="./assets/img/icons/three-point-icon.png" alt="vert-icon">
+                        <img (click)="toggleEmojiPicker()" src="./assets/img/icons/add-emoji-icon.png"
+                            alt="smiley-icon">
+                        <img (click)="toggleEditMenu(answer)" src="./assets/img/icons/three-point-icon.png"
+                            alt="vert-icon">
                     </div>
-                    <span *ngIf="editMenu && answer.editMessage" (click)="editMessage(answer)" class="edit-menu">Nachricht bearbeiten</span>
+                    <span *ngIf="editMenu && answer.editMessage" (click)="editMessage(answer)"class="edit-menu">Nachricht bearbeiten</span>
+                    <div class="emoji-container" *ngIf="answer.emojis[0]">
+                        <div class="single-emoji" *ngFor="let emoji of answer.emojis"
+                            (click)="addReaction({native: emoji.emoji}, answer)">
+                            <div>{{ emoji.emoji }}</div>
+                            <span class="emoji-count">{{ emoji.count }}</span>
+                        </div>
+                        <img (click)="toggleEmojiPicker()" class="add-emoji"
+                            src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji-icon">
+                    </div>
                 </div>
             </ng-container>
+
+            <div class="emoji-picker" *ngIf="showEmojiPicker">
+                <emoji-mart noCountryFlags="true" class="emoji-mart"
+                    (emojiClick)="addEmoji($event, answer)"></emoji-mart>
+            </div>
 
             <ng-template #leftContainer>
                 <div class="answer-container-left">
@@ -83,12 +117,19 @@
                         </div>
                     </div>
                     <div class="message-overlay">
-                        <img (click)="toggleEmojiPicker(answer)" src="./assets/img/icons/add-emoji-icon.png" alt="smiley-icon">
+                        <img (click)="toggleEmojiPicker()" src="./assets/img/icons/add-emoji-icon.png"
+                            alt="smiley-icon">
+                    </div>
+                    <div class="emoji-container" *ngIf="answer.emojis[0]">
+                        <div class="single-emoji" *ngFor="let emoji of answer.emojis"
+                            (click)="addReaction({native: emoji.emoji}, answer)">
+                            <div>{{ emoji.emoji }}</div>
+                            <span class="emoji-count">{{ emoji.count }}</span>
+                        </div>
+                        <img (click)="toggleEmojiPicker()" class="add-emoji" src="./assets/img/icons/add-emoji-icon.png"
+                            alt="add-emoji-icon">
                     </div>
                 </div>
             </ng-template>
-        </div>
-        <div class="emoji-picker" *ngIf="showEmojiPicker">
-            <emoji-mart noCountryFlags="true" class="emoji-mart" (emojiClick)="addEmoji($event)"></emoji-mart>
         </div>
     </div>

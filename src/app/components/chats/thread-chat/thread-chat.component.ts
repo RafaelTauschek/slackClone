@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { Emoji } from '../../../models/emoji.class';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
-
+import { Message } from '../../../models/message.class';
 @Component({
   selector: 'app-thread-chat',
   standalone: true,
@@ -24,14 +24,17 @@ export class ThreadChatComponent {
 
   }
 
+  toggleEmojiPicker() {
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
   toggleEditMenu(message: any) {
     this.editMenu = !this.editMenu;
     message.editMessage = true;
   }
 
-  addEmoji(event: any) {
-    console.log(this.data.message[0]);
-    const existingEmoji = this.data.message[0].emojis.find(
+  addEmoji(event: any, message: Message) {
+    const existingEmoji = message.emojis.find(
       (e: Emoji) => e.emoji === event.emoji.native
     );
     if (existingEmoji) {
@@ -40,8 +43,8 @@ export class ThreadChatComponent {
         existingEmoji.senders.splice(senderIndex, 1);
         existingEmoji.count--;
         if (existingEmoji.count === 0) {
-          const emojiIndex = this.data.message[0].emojis.indexOf(existingEmoji);
-          this.data.message[0].emojis.splice(emojiIndex, 1);
+          const emojiIndex = message.emojis.indexOf(existingEmoji);
+          message.emojis.splice(emojiIndex, 1);
         }
       } else {
         existingEmoji.senders.push(this.data.activeUser[0].id);
@@ -53,16 +56,16 @@ export class ThreadChatComponent {
         emoji: event.emoji.native,
         count: 1,
       });
-      this.data.message[0].emojis.push(emoji.toJSON());
+      message.emojis.push(emoji.toJSON() as Emoji);
     }
     this.showEmojiPicker = !this.showEmojiPicker;
-    this.data.editMessage(this.data.message[0], 'chat');
+    this.data.editThreadMessage(this.data.message[0], message, message.content);
   }
 
-  addReaction(emoji: any, message: any) {
-    this.data.message = [message];
+
+  addReaction(emoji: any, message: Message) {
     const nativeEmoji = emoji.native;
-    const existingEmoji = this.data.message[0].emojis.find(
+    const existingEmoji = message.emojis.find(
       (e: Emoji) => e.emoji === nativeEmoji
     );
     if (existingEmoji) {
@@ -71,8 +74,8 @@ export class ThreadChatComponent {
         existingEmoji.senders.splice(senderIndex, 1);
         existingEmoji.count--;
         if (existingEmoji.count === 0) {
-          const emojiIndex = this.data.message[0].emojis.indexOf(existingEmoji);
-          this.data.message[0].emojis.splice(emojiIndex, 1);
+          const emojiIndex = message.emojis.indexOf(existingEmoji);
+          message.emojis.splice(emojiIndex, 1);
         }
       } else {
         existingEmoji.senders.push(this.data.activeUser[0].id);
@@ -84,10 +87,12 @@ export class ThreadChatComponent {
         emoji: nativeEmoji,
         count: 1,
       });
-      this.data.message[0].emojis.push(emoji.toJSON());
+      message.emojis.push(emoji.toJSON() as Emoji);
     }
-    this.data.editMessage(this.data.message[0], 'chat');
+    this.data.editThreadMessage(this.data.message[0], message, message.content);
   }
+
+
 
   editMessage(message: any) {
     this.messageContent = message.content;
@@ -108,11 +113,7 @@ export class ThreadChatComponent {
     this.data.editThreadMessage(this.data.message, message, this.messageContent);
   }
 
-  toggleEmojiPicker(message: any) {
-    console.log(message);
-    this.data.setCurrentMessage([message]);
-    this.showEmojiPicker = !this.showEmojiPicker;
-  }
+
 
 
 
