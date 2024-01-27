@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { FirebaseService } from '../../../services/firebase.service';
 import { User } from '../../../models/user.class';
 import { UserDataService } from '../../../services/data.service';
+import { Channel } from '../../../models/channel.class';
 
 @Component({
   selector: 'app-add-channel-dialog',
@@ -44,6 +45,7 @@ export class AddChannelDialogComponent {
       const docRef = await this.firebaseService.addCollection('channels', channelData);
       channelData.id = docRef
       await this.firebaseService.updateDocument('channels', docRef, channelData);
+      this.data.loadChannelsData(this.activeUser);
       this.activeUser[0].channels.push(docRef);
       const userData = {
         name: this.activeUser[0].name,

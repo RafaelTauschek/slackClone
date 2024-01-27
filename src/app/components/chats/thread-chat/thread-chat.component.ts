@@ -113,7 +113,7 @@ export class ThreadChatComponent {
     this.edit = false;
     this.editMenu = false;
     message.editMessage = false;
-    this.data.editThreadMessage(this.data.message, message, this.messageContent);
+    this.data.editThreadMessage(this.data.message[0], message, this.messageContent);
   }
 
 

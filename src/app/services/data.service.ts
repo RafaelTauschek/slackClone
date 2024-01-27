@@ -82,7 +82,6 @@ export class UserDataService {
     const channel = docSnap.data() as Channel;
     this.currentChannel = channel;
     this.formatChannel(channelId);
-
   }
 
   formatChannel(channelId: string) {
@@ -93,7 +92,7 @@ export class UserDataService {
       let currentDate = null;
       let currentMessages: any[] = [];
       for (const message of this.currentChannel.messages) {
-        const messageDate = new Date(message.timestamp).toDateString();
+        const messageDate = new Date(message.timestamp).toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });
         if (messageDate !== currentDate) {
           if (currentDate !== null) {
             messagesByDate.push({ date: currentDate, messages: currentMessages });
@@ -111,7 +110,6 @@ export class UserDataService {
     }
   }
 
-
   formatChat(chatId: string) {
     this.currentChat = this.chats.filter((chat) => chat.id === chatId);
     if (this.currentChat && this.currentChat[0].messages) {
@@ -120,7 +118,7 @@ export class UserDataService {
       let currentDate = null;
       let currentMessages: any[] = [];
       for (const message of this.currentChat[0].messages) {
-        const messageDate = new Date(message.timestamp).toDateString();
+        const messageDate = new Date(message.timestamp).toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });;
         if (messageDate !== currentDate) {
           if (currentDate !== null) {
             messagesByDate.push({ date: currentDate, messages: currentMessages });
@@ -641,6 +639,7 @@ export class UserDataService {
     const docData = doc.data();
     if (docData) {
       docData['messages'][parentMessageIndex].answers[threadMessageIndex] = newMessageData.toJSON();
+      this.setCurrentMessage([docData['messages'][parentMessageIndex]]);
       await this.firebase.updateDocument('channels', this.currentChannel.id, docData);
       await this.loadChannelsData(this.activeUser);
       this.setChannel(this.currentChannel.id);

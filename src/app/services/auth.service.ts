@@ -50,31 +50,67 @@ export class AuthService {
   }
 
 
-  async loginGoogle() {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(this.auth, provider).then(async (user) => {
-      const userSnap = await this.firebaseService.getDocument('users', user.user.uid);
-      this.userDocId = user.user.uid;
-      if (userSnap.exists()) {
-        setTimeout(() => {
-          this.router.navigate(['/main'])
-        }, 2000);
-      } else {
-        const userData = {
-          name: user.user.displayName,
-          email: user.user.email,
-          id: user.user.uid,
-          profilepicture: '',
-          chats: [],
-          channels: [],
-        };
-        await this.firebaseService.setDocument(this.userDocId, 'users', userData);
-        this.router.navigate(['/select-avatar', { docId: this.userDocId, name: userData.name, email: userData.email }]);
-      }
-    }, err => {
-      console.error(err);
-    })
-  }
+  // async loginGoogle() {
+  //   const provider = new GoogleAuthProvider();
+  //   signInWithRedirect(this.auth, provider);
+  // }
+
+  // async handleAuth() {
+  //   try {
+  //     const result = await getRedirectResult(this.auth);
+  //     if (result && result.user) {
+  //       const userSnap = await this.firebaseService.getDocument('users', result.user.uid);
+  //       this.userDocId = result.user.uid;
+  //       if (userSnap.exists()) {
+  //         setTimeout(() => {
+  //           this.router.navigate(['/main'])
+  //         }, 2000);
+  //       } else {
+  //         const userData = {
+  //           name: result.user.displayName,
+  //           email: result.user.email,
+  //           id: result.user.uid,
+  //           profilepicture: '',
+  //           chats: [],
+  //           channels: [],
+  //         };
+  //         await this.firebaseService.setDocument(this.userDocId, 'users', userData);
+  //         this.router.navigate(['/select-avatar', { docId: this.userDocId, name: userData.name, email: userData.email }]);
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
+
+   async loginGoogle() {
+      const auth = getAuth(); 
+     const provider = new GoogleAuthProvider();
+     signInWithPopup(auth, provider).then(async (user) => {
+       const userSnap = await this.firebaseService.getDocument('users', user.user.uid);
+       this.userDocId = user.user.uid;
+       if (userSnap.exists()) {
+         setTimeout(() => {
+           this.router.navigate(['/main'])
+         }, 2000);
+       } else {
+         const userData = {
+           name: user.user.displayName,
+           email: user.user.email,
+           id: user.user.uid,
+           profilepicture: '',
+           chats: [],
+           channels: [],
+         };
+         await this.firebaseService.setDocument(this.userDocId, 'users', userData);
+         this.router.navigate(['/select-avatar', { docId: this.userDocId, name: userData.name, email: userData.email }]);
+       }
+     }, err => {
+       console.error(err);
+     })
+   }
+
+   async guestLogin() {}
 
 
   async login(email: string, password: string) {
