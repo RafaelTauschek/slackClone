@@ -1,6 +1,12 @@
-<div class="into-overlay" *ngIf="animationStart"></div>
-<div class="intro-content" [class.move-to-top]="animationEnd" *ngIf="animationStart">
+<div class="intro-overlay" *ngIf="animationStart" [class.fade-out]="startFadingOut"></div>
+
+<div class="intro-content" [class.move-to-top]="animationEnd" *ngIf="animationStart && !isMobile">
     <img class="logo" src="./assets/img/logo.png" [class.slide-logo]="logoAnimationStart">
+    <div [class.slide-text]="textAnimationStart" class="logo-text" [class.d-none]="dNone"><span>DABubble</span></div>
+</div>
+
+<div class="mobile-intro"  [class.move-to-top-mobile]="animationEnd" *ngIf="animationStart && isMobile">
+    <img class="logo" src="./assets/img/logo.png" [class.slide-logo-mobile]="logoAnimationStart">
     <div [class.slide-text]="textAnimationStart" class="logo-text" [class.d-none]="dNone"><span>DABubble</span></div>
 </div>
 

@@ -423,7 +423,7 @@
     }
 }
 
-.hiddens-search-container {
+.hidden-search-container {
     display: flex;
     background-color: white;
     padding: 30px;
@@ -468,6 +468,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 
     .single-channel-message {
         display: flex;
@@ -483,6 +485,12 @@
                 font-size: 20px;
                 font-weight: 700;
             }
+        }
+
+        .single-channel-main {
+            display: flex;
+            align-items: center;
+            padding: 4px;
         }
 
         .single-channel-user-section {
@@ -504,8 +512,9 @@
 
         .single-channel-content {
             display: flex;
-            font-size: 16px;
-            margin-left: 35px;
+            font-size: 18px;
+            align-items: center;
+            margin-left: 10px;
         }
     }
 }

@@ -12,7 +12,7 @@
     <div class="search-menu">
         <input type="text" placeholder="Code learning durchsuchen" [(ngModel)]="searchTerm" (input)="onSearch()">
         <img class="search-icon" src="./assets/img/icons/search-icon.png" alt="search-icon">
-        <div class="hiddens-search-container" *ngIf="searchActive">
+        <div class="hidden-search-container" *ngIf="searchActive">
             <div *ngIf="searchedChannel" class="searched-channel">
                 <div class="single-channel" *ngFor="let channel of searchedChannel" (click)="openChannel(channel.id)">
                     <span># {{ channel.name}}</span>
@@ -32,12 +32,14 @@
                         <img src="./assets/img/icons/channel-icon.png" alt="channel-icon">
                         <span>{{ message.channel.name }}</span>
                     </div>
-                    <div class="single-channel-user-section">
-                        <img [src]="data.getProfilePictureURL(message.message.senderId)" alt="avatar">
-                        <span>{{ data.getUserProperty(message.message.senderId, 'name') }}</span>
-                    </div>
-                    <div class="single-channel-content">
-                        <span>{{ message.message.content }}</span>
+                    <div class="single-channel-main">
+                        <div class="single-channel-user-section">
+                            <img [src]="data.getProfilePictureURL(message.message.senderId)" alt="avatar">
+                            <span>{{ data.getUserProperty(message.message.senderId, 'name') }}:</span>
+                        </div>
+                        <div class="single-channel-content">
+                            <span>{{ message.message.content }}</span>
+                        </div>
                     </div>
                 </div>
             </div>

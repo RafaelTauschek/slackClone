@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Message } from '../models/message.class';
 import { User } from '../models/user.class';
 import { Channel } from '../models/channel.class';
 import { Chat } from '../models/chat.class';
-import { FirebaseService } from './firebase.service';
-import { user } from '@angular/fire/auth';
-import { Emoji } from '../models/emoji.class';
+import { Firestore } from '@angular/fire/firestore';
+import { collection, addDoc, updateDoc, doc, setDoc, getDoc, getDocs, arrayUnion, onSnapshot } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -22,66 +22,172 @@ export class UserDataService {
   currentChannel: Channel = {} as Channel;
   messages: any[] = [];
 
-  constructor(private firebase: FirebaseService) { }
+  constructor() { }
+  firestore: Firestore = inject(Firestore);
+  storage = getStorage();
 
+
+  getCollectionRef(colId: string) {
+    return collection(this.firestore, colId);
+  }
+
+
+  getDocumentRef(colId: string, docId: string) {
+    return doc(collection(this.firestore, colId), docId);
+  }
+
+
+  async addCollection(colId: string, item: {}) {
+    const docRef = await addDoc(this.getCollectionRef(colId), item);
+    return docRef.id;
+  }
+
+
+  async setDocument(docId: string, colId: string, item: {}) {
+    await setDoc(doc(this.getCollectionRef(colId), docId), item);
+  }
+
+
+  async updateDocument(colId: string, docId: string, item: {}) {
+    await updateDoc(this.getDocumentRef(colId, docId), item)
+  }
+
+
+  async getDocument(colId: string, docId: string) {
+    const docRef = this.getDocumentRef(colId, docId);
+    const docSnap = await getDoc(docRef);
+    return docSnap;
+  }
+
+
+  async getCollection(colId: string) {
+    const docRef = this.getCollectionRef(colId)
+    return await getDocs(docRef);
+  }
+
+  async updateChats(colId: string, docId: string, item: {}) {
+    updateDoc(this.getDocumentRef(colId, docId), {
+      chats: arrayUnion(item)
+    });
+  }
+
+
+
+  async updateCollection(colId: string, docId: string, field: string, item: {}) {
+    updateDoc(this.getDocumentRef(colId, docId), {
+      [field]: arrayUnion(item)
+    });
+  }
+
+
+  async uploadFile(file: File): Promise<string> {
+    const uniqueFileName = `${Date.now()}-${file.name}`;
+    const storageRef = ref(this.storage, uniqueFileName);
+    const result = await uploadBytes(storageRef, file);
+    return await getDownloadURL(result.ref);
+  }
+
+
+  unsubscribeData() {
+    this.unsubscribeUser.unsubscribe();
+    this.unsubscribeUsers.unsubscribe();
+    this.unsubscribeChats.unsubscribe();
+    this.unsubscribeChannels.unsubscribe();
+    this.unsubscribeChat.unsubscribe();
+    this.unsubscribeChannel.unsubscribe(); 
+  }
 
   async fetchUserData(userId: string) {
     await this.loadUserData(userId);
-
-    await Promise.all([
-      this.loadUsersData(),
-      this.loadChatsData(this.activeUser[0]),
-      this.loadChannelsData(this.activeUser)
-    ]);
-    this.setChannel(this.activeUser[0].channels[0]);
+    if (this.activeUser && this.activeUser[0]) {
+      await Promise.all([
+        this.loadUsersData(),
+        this.loadChatsData(this.activeUser[0]),
+        this.loadChannelsData(this.activeUser)
+      ]);
+      if (this.activeUser[0].channels) {
+        this.setChannel(this.activeUser[0].channels[0]);
+      }
+    }
   }
 
 
-  async loadUserData(userId: string) {
-    const docSnap = await this.firebase.getDocument('users', userId);
-    const user = docSnap.data() as User;
-    this.activeUser = [user];
+  unsubscribeUser: any;
+  loadUserData(userId: string): Promise<void> {
+    this.activeUser = [];
+    return new Promise((resolve) => {
+      this.unsubscribeUser = onSnapshot(this.getDocumentRef('users', userId), (user) => {
+        this.activeUser.push(user.data() as User);
+        resolve();
+      });
+    });
   }
 
+  unsubscribeUsers: any;
 
-  async loadUsersData() {
+
+
+  loadUsersData() {
     this.users = [];
-    await this.firebase.getCollection('users').then((user) => {
+    this.unsubscribeUsers = onSnapshot(this.getCollectionRef('users'), (user) => {
       user.forEach((userData) => {
         this.users.push(userData.data() as User);
       });
-    })
+    });
   }
+
+  unsubscribeChats: any;
 
 
   async loadChatsData(user: User) {
-    const chats = [];
+    const chats: Chat[] = [];
     for (const chat of user.chats) {
-      const docSnap = await this.firebase.getDocument('chats', chat);
-      chats.push(docSnap.data() as Chat);
+      this.unsubscribeChats = onSnapshot(this.getDocumentRef('chats', chat), (docSnap) => {
+        const chatData = docSnap.data() as Chat;
+        chats.push(chatData as Chat);
+      });
+      this.chats = chats;
     }
-    this.chats = chats;
+  }
+
+  unsubscribeChat: any;
+
+  async loadChatData(chatId: string) {
+    this.unsubscribeChat = onSnapshot(this.getDocumentRef('chats', chatId), (docSnap) => {
+      const chatData = docSnap.data() as Chat;
+      this.currentChat = [chatData];
+      this.formatChat(chatId);
+    });
   }
 
 
 
+
+
+
+  unsubscribeChannels: any;
+
   async loadChannelsData(user: User[]) {
     this.channelList = [];
-    if (user[0].channels) {
-      for (const channel of user[0].channels) {
-        const docSnap = await this.firebase.getDocument('channels', channel);
+    for (const channel of user[0].channels) {
+      this.unsubscribeChannels = onSnapshot(this.getDocumentRef('channels', channel), (docSnap) => {
         this.channelList.push(docSnap.data() as Channel);
-      }
+      });
+      const docSnap = await this.getDocument('channels', channel);
+      this.channelList.push(docSnap.data() as Channel);
     }
     this.filterChannelList(user[0]);
   }
 
 
-  async loadChannelData(channelId: string) {
-    const docSnap = await this.firebase.getDocument('channels', channelId);
-    const channel = docSnap.data() as Channel;
-    this.currentChannel = channel;
-    this.formatChannel(channelId);
+  unsubscribeChannel: any;
+
+  loadChannelData(channelId: string) {
+    this.unsubscribeChannel = onSnapshot(this.getDocumentRef('channels', channelId), (docSnap) => {
+      const channelData = docSnap.data() as Channel;
+      this.currentChannel = channelData;
+      this.formatChannel(channelId);
+    });
   }
 
   formatChannel(channelId: string) {
@@ -112,7 +218,7 @@ export class UserDataService {
 
   formatChat(chatId: string) {
     this.currentChat = this.chats.filter((chat) => chat.id === chatId);
-    if (this.currentChat && this.currentChat[0].messages) {
+    if (this.currentChat[0] && this.currentChat[0].messages) {
       this.currentChat[0].messages.sort((a, b) => a.timestamp - b.timestamp);
       const messagesByDate = [];
       let currentDate = null;
@@ -133,9 +239,9 @@ export class UserDataService {
         messagesByDate.push({ date: currentDate, messages: currentMessages });
       }
       this.messages = messagesByDate;
+    } else {
     }
   }
-
 
   filterChannelList(user: User) {
     this.userChannels = [];
@@ -169,8 +275,8 @@ export class UserDataService {
       ...channel,
       ...updatedProperties
     });
-    await this.firebase.updateDocument('channels', channel.id, newChannel.toJSON());
-    await this.loadChannelsData(this.activeUser);
+    await this.updateDocument('channels', channel.id, newChannel.toJSON());
+   // await this.loadChannelsData(this.activeUser);
   }
 
 
@@ -180,11 +286,10 @@ export class UserDataService {
     try {
       if (file) {
         fileName = file.name;
-        fileUrl = await this.firebase.uploadFile(file);
+        fileUrl = await this.uploadFile(file);
       }
       const message = this.generateNewMessage(newMessage, fileName, fileUrl);
-      await this.firebase.updateMessages('channels', this.currentChannel.id, message.toJSON());
-      await this.loadChannelData(this.currentChannel.id);
+      await this.updateMessages('channels', this.currentChannel.id, message.toJSON());
       await this.loadChannelsData(this.activeUser);
       this.formatChannel(this.currentChannel.id);
     } catch (error) {
@@ -200,13 +305,13 @@ export class UserDataService {
     try {
       if (file) {
         fileName = file.name;
-        fileUrl = await this.firebase.uploadFile(file);
+        fileUrl = await this.uploadFile(file);
       }
       const messageIndex = this.findMessageIndex(this.message.timestamp, [this.currentChannel] as Channel[]);
       const message = this.generateNewMessage(answer, fileName, fileUrl);
       this.currentChannel.messages[messageIndex].answers.push(message.toJSON());
       const channelInstance = new Channel(this.currentChannel);
-      await this.firebase.updateDocument('channels', this.currentChannel.id, channelInstance.toJSON());
+      await this.updateDocument('channels', this.currentChannel.id, channelInstance.toJSON());
     } catch (e) {
       console.error(e);
     }
@@ -267,10 +372,10 @@ export class UserDataService {
       messages: [],
       users: [userId],
     });
-    const chatId = await this.firebase.addCollection('chats', chat.toJSON());
+    const chatId = await this.addCollection('chats', chat.toJSON());
     chat.id = chatId;
-    await this.firebase.updateDocument('chats', chatId, chat.toJSON())
-    await this.firebase.updateChats('users', userId, chatId);
+    await this.updateDocument('chats', chatId, chat.toJSON())
+    await this.updateChats('users', userId, chatId);
   }
 
 
@@ -281,12 +386,11 @@ export class UserDataService {
         messages: [message.toJSON()],
         users: [activeUserId],
       });
-      const chatId = await this.firebase.addCollection('chats', chat.toJSON());
+      const chatId = await this.addCollection('chats', chat.toJSON());
       chat.id = chatId;
-      await this.firebase.updateDocument('chats', chatId, chat.toJSON())
-      await this.firebase.updateMessages('chats', chatId, message.toJSON());
-      await this.firebase.updateChats('users', activeUserId, chatId);
-      await this.loadChatsData(this.activeUser[0]);
+      await this.updateDocument('chats', chatId, chat.toJSON())
+      await this.updateMessages('chats', chatId, message.toJSON());
+      await this.updateChats('users', activeUserId, chatId);
       this.setCurrentChat([chat]);
     }
 
@@ -296,31 +400,19 @@ export class UserDataService {
         messages: [message.toJSON()],
         users: [activeUserId, chatPartnerId],
       });
-      const chatId = await this.firebase.addCollection('chats', chat.toJSON());
+      const chatId = await this.addCollection('chats', chat.toJSON());
       chat.id = chatId;
-      await this.firebase.updateDocument('chats', chatId, chat.toJSON())
-      await this.firebase.updateMessages('chats', chatId, message.toJSON());
-      await this.firebase.updateChats('users', activeUserId, chatId);
-      await this.firebase.updateChats('users', chatPartnerId, chatId);
-      await this.loadChatsData(this.activeUser[0]);
+      await this.updateDocument('chats', chatId, chat.toJSON())
+      await this.updateMessages('chats', chatId, message.toJSON());
+      await this.updateChats('users', activeUserId, chatId);
+      await this.updateChats('users', chatPartnerId, chatId);
       this.setCurrentChat([chat]);
     }
   }
 
-
-
-  async updateChatMessages(chatId: string) {
-    const docSnap = await this.firebase.getDocument('chats', chatId);
-    const chat = docSnap.data() as Chat;
-    this.setCurrentChat([chat]);
-    this.formatChat(chatId);
-  }
-
-
   setCurrentChat(chat: Chat[]) {
     this.formatChat(chat[0].id);
-    this.currentChat = chat; 
-
+    this.currentChat = chat;
   }
 
 
@@ -329,11 +421,18 @@ export class UserDataService {
   }
 
 
+  async updateMessages(colId: string, docId: string, item: {}) {
+    updateDoc(this.getDocumentRef(colId, docId), {
+      messages: arrayUnion(item)
+    });
+  }
+
+
 
   async writeChatMessage(message: Message, chatId: string) {
-    await this.firebase.updateMessages('chats', chatId, message.toJSON());
+    await this.updateMessages('chats', chatId, message.toJSON());
     await this.loadChatsData(this.activeUser[0]);
-    await this.updateChatMessages(chatId);
+    await this.loadChatData(chatId); 
   }
 
   async addMessageToChat(chatId: string, newMessage: string, recieverId: string) {
@@ -350,8 +449,7 @@ export class UserDataService {
       fileType: '',
       editMessage: false,
     });
-    await this.firebase.updateMessages('chats', chatId, message.toJSON());
-    await this.updateChatMessages(chatId);
+    await this.updateMessages('chats', chatId, message.toJSON());
   }
 
 
@@ -403,13 +501,14 @@ export class UserDataService {
       ...user,
       ...updatedProperties
     });
-    await this.firebase.updateDocument('users', user.id, newUser.toJSON());
+    await this.updateDocument('users', user.id, newUser.toJSON());
+    await this.loadUserData(user.id);
   }
 
 
   async addChannelToUsers(users: string[], channelId: string) {
     users.forEach(async (user) => {
-      const docSnap = await this.firebase.getDocument('users', user);
+      const docSnap = await this.getDocument('users', user);
       const userData = docSnap.data() as User;
       const newUser = new User({
         name: userData.name,
@@ -419,7 +518,7 @@ export class UserDataService {
         chats: userData.chats,
         id: userData.id,
       });
-      await this.firebase.updateDocument('users', userData.id, newUser.toJSON());
+      await this.updateDocument('users', userData.id, newUser.toJSON());
     })
   }
 
@@ -440,8 +539,6 @@ export class UserDataService {
       channels: user.channels.filter((channel) => channel !== channelId),
     });
     await this.updateUserProperties(newUser);
-    await this.loadUserData(user.id);
-    await this.loadChannelsData(this.activeUser);
   }
 
 
@@ -534,17 +631,15 @@ export class UserDataService {
       content: message.content,
       editMessage: false,
     });
-    const doc = await this.firebase.getDocument(type + 's', current.id);
+    const doc = await this.getDocument(type + 's', current.id);
     const docData = doc.data();
     if (docData) {
       docData['messages'][messageIndex] = newMessageData.toJSON();
-      await this.firebase.updateDocument(type + 's', current.id, docData);
-      await this.loadChannelsData(this.activeUser);
+      await this.updateDocument(type + 's', current.id, docData);
+      //await this.loadChannelsData(this.activeUser);
       this.setChannel(current.id);
       if (type === 'chat') {
-        await this.loadChatsData(this.activeUser[0]);
       } else {
-        await this.loadChannelsData(this.activeUser);
         this.setChannel(current.id);
       }
     }
@@ -585,12 +680,11 @@ export class UserDataService {
       content: newMessage,
       editMessage: false,
     });
-    const doc = await this.firebase.getDocument('chats', this.currentChat[0].id);
+    const doc = await this.getDocument('chats', this.currentChat[0].id);
     const docData = doc.data();
     if (docData) {
       docData['messages'][messageIndex] = newMessageData.toJSON();
-      await this.firebase.updateDocument('chats', this.currentChat[0].id, docData);
-      await this.loadChatsData(this.activeUser[0]);
+      await this.updateDocument('chats', this.currentChat[0].id, docData);
       this.setCurrentChat(this.currentChat);
     }
   }
@@ -610,12 +704,12 @@ export class UserDataService {
       content: newMessage,
       editMessage: false,
     });
-    const doc = await this.firebase.getDocument('channels', this.currentChannel.id);
+    const doc = await this.getDocument('channels', this.currentChannel.id);
     const docData = doc.data();
     if (docData) {
       docData['messages'][messageIndex] = newMessageData.toJSON();
-      await this.firebase.updateDocument('channels', this.currentChannel.id, docData);
-      await this.loadChannelsData(this.activeUser);
+      await this.updateDocument('channels', this.currentChannel.id, docData);
+     // await this.loadChannelsData(this.activeUser);
       this.setChannel(this.currentChannel.id);
     }
   }
@@ -635,13 +729,13 @@ export class UserDataService {
       content: newMessage,
       editMessage: false,
     });
-    const doc = await this.firebase.getDocument('channels', this.currentChannel.id);
+    const doc = await this.getDocument('channels', this.currentChannel.id);
     const docData = doc.data();
     if (docData) {
       docData['messages'][parentMessageIndex].answers[threadMessageIndex] = newMessageData.toJSON();
       this.setCurrentMessage([docData['messages'][parentMessageIndex]]);
-      await this.firebase.updateDocument('channels', this.currentChannel.id, docData);
-      await this.loadChannelsData(this.activeUser);
+      await this.updateDocument('channels', this.currentChannel.id, docData);
+     // await this.loadChannelsData(this.activeUser);
       this.setChannel(this.currentChannel.id);
     }
   }
@@ -662,15 +756,13 @@ export class UserDataService {
       content: threadMessage.content,
       editMessage: false,
     });
-    const doc = await this.firebase.getDocument('channels', this.currentChannel.id);
+    const doc = await this.getDocument('channels', this.currentChannel.id);
     const docData = doc.data();
     if (docData) {
       docData['messages'][parentMessageIndex].answers[threadMessageIndex] = newMessageData.toJSON();
-      await this.firebase.updateDocument('channels', this.currentChannel.id, docData);
-      await this.loadChannelsData(this.activeUser);
+      await this.updateDocument('channels', this.currentChannel.id, docData);
+      //await this.loadChannelsData(this.activeUser);
       this.setChannel(this.currentChannel.id);
     }
   }
-
-
 }

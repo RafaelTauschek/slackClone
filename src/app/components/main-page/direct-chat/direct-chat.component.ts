@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { SharedService } from '../../../services/shared.service';
 import { Chat } from '../../../models/chat.class';
 import { UserDataService } from '../../../services/data.service';
-import { FirebaseService } from '../../../services/firebase.service';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
@@ -24,7 +23,7 @@ export class DirectChatComponent {
   selectedFile: File | null = null;
   showEmojiPicker = false;  
 
-  constructor(public sharedService: SharedService, public data: UserDataService, private firebaseService: FirebaseService) {}
+  constructor(public sharedService: SharedService, public data: UserDataService) {}
 
   
   onFileSelected(event: any) {
@@ -65,7 +64,7 @@ export class DirectChatComponent {
     let fileUrl = '';
     if (file) {
       fileName = file.name;
-      fileUrl = await this.firebaseService.uploadFile(file);
+      fileUrl = await this.data.uploadFile(file);
     }
     const message = this.data.generateNewMessage(this.message, fileName, fileUrl);
     return message;

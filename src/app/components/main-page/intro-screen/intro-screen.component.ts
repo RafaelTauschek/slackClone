@@ -1,10 +1,11 @@
 
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { LoginComponent } from '../../auth/login/login.component';
 import { RouterOutlet } from '@angular/router';
+import { SharedService } from '../../../services/shared.service';
 @Component({
   selector: 'app-intro-screen',
   standalone: true,
@@ -12,7 +13,7 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './intro-screen.component.html',
   styleUrl: './intro-screen.component.scss',
 })
-export class IntroScreenComponent implements AfterViewInit {
+export class IntroScreenComponent implements AfterViewInit, OnInit {
 
 
   constructor(public route: ActivatedRoute, public router: Router) { }
@@ -21,6 +22,14 @@ export class IntroScreenComponent implements AfterViewInit {
   logoAnimationStart: boolean = false;
   textAnimationStart: boolean = false;
   dNone: boolean = true;
+  startFadingOut: boolean = false;
+  isMobile: boolean = false;
+
+  ngOnInit() {
+    if (window.innerWidth < 1024) {
+      this.isMobile = true;
+    }
+  }
   
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -37,6 +46,9 @@ export class IntroScreenComponent implements AfterViewInit {
         this.textAnimationStart = true;
         setTimeout(() => {
           this.animationEnd = true;
+          setTimeout(() => {
+            this.startFadingOut = true;
+          }, 2300); // Starte fading out animation
           setTimeout(() => {
             this.animationEnd = false;
             this.animationStart = false;

@@ -35,7 +35,7 @@ export class AuthService {
       if (user) {
         this.handeUserLoggedIn(user);
       } else {
-        this.handleUserLoggedOut(user);
+        this.handleUserLoggedOut();
       }
     });
   }
@@ -46,7 +46,8 @@ export class AuthService {
   }
 
 
-  async handleUserLoggedOut(user: any) {
+  async handleUserLoggedOut() {
+    this.data.unsubscribeData();
   }
 
 
