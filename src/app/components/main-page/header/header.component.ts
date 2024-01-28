@@ -154,12 +154,12 @@ export class HeaderComponent {
     console.log('Message recieved: ', message);
   }
 
-  findMessageIndex(timestamp: string, channels: any[]): { dayIndex: number, messageIndex: number } {
+  findMessageIndex(timestamp: string, channel: any[]): { dayIndex: number, messageIndex: number } {
     for (let dayIndex = 0; dayIndex < this.data.messages.length; dayIndex++) {
       const day = this.data.messages[dayIndex];
       for (let messageIndex = 0; messageIndex < day.messages.length; messageIndex++) {
         const message = day.messages[messageIndex];
-        if (message.timestamp === timestamp && channels.includes(message.channel)) {
+        if (message.timestamp === timestamp && channel.includes(message.channel)) {
           return { dayIndex, messageIndex };
         }
       }

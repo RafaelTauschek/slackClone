@@ -94,7 +94,7 @@ export class UserDataService {
     this.unsubscribeChats.unsubscribe();
     this.unsubscribeChannels.unsubscribe();
     this.unsubscribeChat.unsubscribe();
-    this.unsubscribeChannel.unsubscribe(); 
+    this.unsubscribeChannel.unsubscribe();
   }
 
   async fetchUserData(userId: string) {
@@ -276,7 +276,7 @@ export class UserDataService {
       ...updatedProperties
     });
     await this.updateDocument('channels', channel.id, newChannel.toJSON());
-   // await this.loadChannelsData(this.activeUser);
+    await this.loadChannelsData(this.activeUser);
   }
 
 
@@ -432,7 +432,7 @@ export class UserDataService {
   async writeChatMessage(message: Message, chatId: string) {
     await this.updateMessages('chats', chatId, message.toJSON());
     await this.loadChatsData(this.activeUser[0]);
-    await this.loadChatData(chatId); 
+    await this.loadChatData(chatId);
   }
 
   async addMessageToChat(chatId: string, newMessage: string, recieverId: string) {
@@ -517,6 +517,7 @@ export class UserDataService {
         channels: [...userData.channels, channelId],
         chats: userData.chats,
         id: userData.id,
+        // online: userData.online,
       });
       await this.updateDocument('users', userData.id, newUser.toJSON());
     })
@@ -636,7 +637,7 @@ export class UserDataService {
     if (docData) {
       docData['messages'][messageIndex] = newMessageData.toJSON();
       await this.updateDocument(type + 's', current.id, docData);
-      //await this.loadChannelsData(this.activeUser);
+      await this.loadChannelsData(this.activeUser);
       this.setChannel(current.id);
       if (type === 'chat') {
       } else {
@@ -685,7 +686,9 @@ export class UserDataService {
     if (docData) {
       docData['messages'][messageIndex] = newMessageData.toJSON();
       await this.updateDocument('chats', this.currentChat[0].id, docData);
-      this.setCurrentChat(this.currentChat);
+      await this.loadChatsData(this.activeUser[0]);
+      await this.loadChatData(this.currentChat[0].id);
+      
     }
   }
 
@@ -709,8 +712,8 @@ export class UserDataService {
     if (docData) {
       docData['messages'][messageIndex] = newMessageData.toJSON();
       await this.updateDocument('channels', this.currentChannel.id, docData);
-     // await this.loadChannelsData(this.activeUser);
-      this.setChannel(this.currentChannel.id);
+      await this.loadChannelsData(this.activeUser);
+      this.loadChannelData(this.currentChannel.id);
     }
   }
 
@@ -735,7 +738,7 @@ export class UserDataService {
       docData['messages'][parentMessageIndex].answers[threadMessageIndex] = newMessageData.toJSON();
       this.setCurrentMessage([docData['messages'][parentMessageIndex]]);
       await this.updateDocument('channels', this.currentChannel.id, docData);
-     // await this.loadChannelsData(this.activeUser);
+      await this.loadChannelsData(this.activeUser);
       this.setChannel(this.currentChannel.id);
     }
   }
@@ -761,7 +764,7 @@ export class UserDataService {
     if (docData) {
       docData['messages'][parentMessageIndex].answers[threadMessageIndex] = newMessageData.toJSON();
       await this.updateDocument('channels', this.currentChannel.id, docData);
-      //await this.loadChannelsData(this.activeUser);
+      await this.loadChannelsData(this.activeUser);
       this.setChannel(this.currentChannel.id);
     }
   }

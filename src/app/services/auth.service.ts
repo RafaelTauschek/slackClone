@@ -35,7 +35,7 @@ export class AuthService {
       if (user) {
         this.handeUserLoggedIn(user);
       } else {
-        this.handleUserLoggedOut();
+        this.handleUserLoggedOut(user);
       }
     });
   }
@@ -43,11 +43,13 @@ export class AuthService {
 
   async handeUserLoggedIn(user: any) {
     await this.data.fetchUserData(user.uid);
+   // await this.data.updateDocument('users', user.uid, { online: true });
   }
 
 
-  async handleUserLoggedOut() {
-    this.data.unsubscribeData();
+  async handleUserLoggedOut(user: any) {
+   //this.data.unsubscribeData();
+   // await this.data.updateDocument('users', user.uid , { online: false });
   }
 
 
@@ -69,6 +71,7 @@ export class AuthService {
           profilepicture: '',
           chats: [],
           channels: [],
+          //online: false,
         };
         await this.firebaseService.setDocument(this.userDocId, 'users', userData);
         this.router.navigate(['/select-avatar', { docId: this.userDocId, name: userData.name, email: userData.email }]);
@@ -104,6 +107,7 @@ export class AuthService {
         profilepicture: '',
         chats: [],
         channels: [],
+       // online: false,
       };
       await this.firebaseService.setDocument(this.userDocId, 'users', userData);
       this.router.navigate(['/select-avatar', { docId: this.userDocId, name: name, email: email }]);
