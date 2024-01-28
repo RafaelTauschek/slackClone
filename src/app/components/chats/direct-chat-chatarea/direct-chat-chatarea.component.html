@@ -13,18 +13,18 @@
             <div class="message-wrapper" *ngFor="let message of day.messages">
                 <div class="message-container">
                     <ng-container *ngIf="sharedService.getMessageAlignment(message.senderId); else leftContainer">
-                        <div class="message-container-right">
-                            <div class="message-content-container">
+                        <div class="message-container-right" [class.background-gray]="edit && message.editMessage">
+                            <div class="message-content-container" [class.w-100]="edit && message.editMessage">
                                 <div class="message-header">
                                     <span class="time">{{ sharedService.formatTimestampToTime(message.timestamp)
                                         }}</span>
                                     <span class="username">{{ data.getUserProperty(message.senderId, 'name') }}</span>
                                 </div>
-                                <div class="message-content">
+                                <div class="message-content" [class.background-white]="edit && message.editMessage">
                                     <div class="editing-container" *ngIf="edit && message.editMessage">
                                         <textarea name="message" [(ngModel)]="messageContent"></textarea>
                                         <div class="editing-footer">
-                                            <img src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
+                                            <img (click)="toggleEmojiPicker(message)" src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
                                             <div class="editing-btn-container">
                                                 <button class="cancel-btn" (click)="cancelEditing(message)">Abbrechen</button>
                                                 <button class="save-btn" (click)="saveChanges(message)">Speichern</button>
@@ -60,7 +60,7 @@
                             <div class="profile-img-container">
                                 <img class="avatar" [src]="data.getProfilePictureURL(message.senderId)" alt="avatar">
                             </div>
-                            <div class="message-overlay">
+                            <div class="message-overlay" *ngIf="!(edit && message.editMessage)">
                                 <div class="overlay-div">
                                     <ngx-emoji set="apple"  emoji="white_check_mark"
                                     (click)="addReaction({ native: '✅' }, message)"></ngx-emoji></div>

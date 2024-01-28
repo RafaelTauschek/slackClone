@@ -1,5 +1,5 @@
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
-import { Component, ViewChild, ElementRef, AfterViewChecked,  } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, OnDestroy, AfterViewInit, } from '@angular/core';
 import { Channel } from '../../../models/channel.class';
 import { Message } from '../../../models/message.class';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { FormsModule } from '@angular/forms';
 import { UserDataService } from '../../../services/data.service';
 import { Emoji } from '../../../models/emoji.class';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -18,24 +19,63 @@ import { Emoji } from '../../../models/emoji.class';
   templateUrl: './chat-area.component.html',
   styleUrl: './chat-area.component.scss'
 })
-export class ChatAreaComponent implements AfterViewChecked{
+export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit {
+  private subscription!: Subscription;
   channel: Channel[] = [];
   messages: Message[] = [];
   showEmojiPicker = false;
   isEditing: boolean = false;
   messageContent: string = '';
   editMenuOpend: boolean = false;
-  @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
+  @ViewChild('chatArea', { static: false }) chatArea!: ElementRef;
+  @ViewChild('scrollMe', { static: false }) scrollMe!: ElementRef;
 
-  constructor( public sharedService: SharedService, public sanitizer: DomSanitizer, public data: UserDataService) {}
 
 
+
+  constructor(public sharedService: SharedService, public sanitizer: DomSanitizer, public data: UserDataService) {}
+
+
+  ngOnInit(): void {
+    this.subscription = this.sharedService.triggerScrollTo$.subscribe(indices => {
+      this.scrollIntoView(indices.dayIndex, indices.messageIndex);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  ngAfterViewInit(): void {
+    this.scrollToBottom();
+  }
+
+
+  scrollToBottom(): void {
+    setTimeout(() => {
+      try {
+        this.scrollMe.nativeElement.scrollTop = this.scrollMe.nativeElement.scrollHeight;
+      } catch (err) {}
+    }, 0);
+  }
+
+  scrollIntoView(dayIndex: number, messageIndex: number) : void {
+    setTimeout(() => {
+      const messageElement = this.chatArea.nativeElement.querySelector(`#message-${dayIndex}-${messageIndex}`);
+      if (messageElement) {
+        messageElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 0);
+  }
 
   toggleEmojiPicker(message: any) {
     this.data.setCurrentMessage([message]);
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
+  closeEmojiPicker () {
+    this.showEmojiPicker = false;
+  }
 
   addEmoji(event: any) {
     const existingEmoji = this.data.message[0].emojis.find(
@@ -60,7 +100,7 @@ export class ChatAreaComponent implements AfterViewChecked{
         emoji: event.emoji.native,
         count: 1,
       });
-      this.data.message[0].emojis.push(emoji.toJSON());    
+      this.data.message[0].emojis.push(emoji.toJSON());
     }
     this.showEmojiPicker = !this.showEmojiPicker;
     this.data.editMessage(this.data.message[0], 'channel');
@@ -95,13 +135,12 @@ export class ChatAreaComponent implements AfterViewChecked{
       });
       this.data.message[0].emojis.push(emoji.toJSON());
     }
-    this.data.editMessage(this.data.message[0], 'channel'); 
+    this.data.editMessage(this.data.message[0], 'channel');
   }
 
 
   openThread(message: any) {
     this.data.setCurrentMessage([message]);
-    console.log(this.data.message[0]);
     if (this.sharedService.isMobile) {
       this.sharedService.activeComponent = 'thread';
     }
@@ -137,20 +176,13 @@ export class ChatAreaComponent implements AfterViewChecked{
     this.isEditing = false;
     message.editMessage = false;
     this.data.editChannelMessage(message, this.messageContent);
-    this.scrollToBottom();
   }
 
 
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
 
-  scrollToBottom(): void {
-    try {
-      this.myScrollContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    } catch(err) { }
-  }
+
+
 
 }
 

@@ -1,4 +1,4 @@
-import { Injectable,  } from '@angular/core';
+import { Injectable, ViewChild,  } from '@angular/core';
 import { Message } from '../models/message.class';
 import { Subject } from 'rxjs';
 import { UserDataService } from './data.service';
@@ -6,6 +6,7 @@ import { User } from '../models/user.class';
 import { Chat } from '../models/chat.class';
 import { Channel } from '../models/channel.class';
 import { FirebaseService } from './firebase.service';
+import { ChatAreaComponent } from '../components/chats/chat-area/chat-area.component';
 
 @Injectable({
   providedIn: 'root'
@@ -188,5 +189,11 @@ export class SharedService {
     }
   }
 
+  private triggerScrollTo = new Subject<{ dayIndex: number, messageIndex: number }>();
+  triggerScrollTo$ = this.triggerScrollTo.asObservable();
+
+  scrollIntoView(dayIndex: number, messageIndex: number) {
+    this.triggerScrollTo.next({ dayIndex, messageIndex });
+  }
 
 }

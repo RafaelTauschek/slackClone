@@ -428,6 +428,12 @@ app-chat-area {
         flex-direction: column;
         max-height: 250px;
         overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .member-wrapper {
+        max-height: 300px;
+        overflow: scroll;
     }
 
     .member-list-header {

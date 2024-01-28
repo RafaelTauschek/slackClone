@@ -50,67 +50,35 @@ export class AuthService {
   }
 
 
-  // async loginGoogle() {
-  //   const provider = new GoogleAuthProvider();
-  //   signInWithRedirect(this.auth, provider);
-  // }
+  async loginGoogle() {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider).then(async (user) => {
+      const userSnap = await this.firebaseService.getDocument('users', user.user.uid);
+      this.userDocId = user.user.uid;
+      if (userSnap.exists()) {
+        setTimeout(() => {
+          this.router.navigate(['/main'])
+        }, 2000);
+      } else {
+        const userData = {
+          name: user.user.displayName,
+          email: user.user.email,
+          id: user.user.uid,
+          profilepicture: '',
+          chats: [],
+          channels: [],
+        };
+        await this.firebaseService.setDocument(this.userDocId, 'users', userData);
+        this.router.navigate(['/select-avatar', { docId: this.userDocId, name: userData.name, email: userData.email }]);
+      }
+    }, err => {
+      console.error(err);
+    })
+  }
 
-  // async handleAuth() {
-  //   try {
-  //     const result = await getRedirectResult(this.auth);
-  //     if (result && result.user) {
-  //       const userSnap = await this.firebaseService.getDocument('users', result.user.uid);
-  //       this.userDocId = result.user.uid;
-  //       if (userSnap.exists()) {
-  //         setTimeout(() => {
-  //           this.router.navigate(['/main'])
-  //         }, 2000);
-  //       } else {
-  //         const userData = {
-  //           name: result.user.displayName,
-  //           email: result.user.email,
-  //           id: result.user.uid,
-  //           profilepicture: '',
-  //           chats: [],
-  //           channels: [],
-  //         };
-  //         await this.firebaseService.setDocument(this.userDocId, 'users', userData);
-  //         this.router.navigate(['/select-avatar', { docId: this.userDocId, name: userData.name, email: userData.email }]);
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
 
-   async loginGoogle() {
-      const auth = getAuth(); 
-     const provider = new GoogleAuthProvider();
-     signInWithPopup(auth, provider).then(async (user) => {
-       const userSnap = await this.firebaseService.getDocument('users', user.user.uid);
-       this.userDocId = user.user.uid;
-       if (userSnap.exists()) {
-         setTimeout(() => {
-           this.router.navigate(['/main'])
-         }, 2000);
-       } else {
-         const userData = {
-           name: user.user.displayName,
-           email: user.user.email,
-           id: user.user.uid,
-           profilepicture: '',
-           chats: [],
-           channels: [],
-         };
-         await this.firebaseService.setDocument(this.userDocId, 'users', userData);
-         this.router.navigate(['/select-avatar', { docId: this.userDocId, name: userData.name, email: userData.email }]);
-       }
-     }, err => {
-       console.error(err);
-     })
-   }
-
-   async guestLogin() {}
+  async guestLogin() { }
 
 
   async login(email: string, password: string) {
@@ -122,7 +90,6 @@ export class AuthService {
       console.error(err);
     })
   }
-
 
 
   async registerUser(email: string, password: string, name: string) {
@@ -161,15 +128,18 @@ export class AuthService {
     }
   }
 
-  updateEmail(email: string) {
+
+  async updateEmail(email: string) {
     const currentUser = this.auth.currentUser;
     if (currentUser) {
-      updateEmail(currentUser, email).then(() => {
-      }).catch((err) => {
+      try {
+        await updateEmail(currentUser, email);
+      } catch (err) {
         console.error(err);
-      });
+      }
     }
   }
+
 
   resetPassword(email: string) {
     sendPasswordResetEmail(this.auth, email).then(() => {
@@ -178,7 +148,8 @@ export class AuthService {
     });
   }
 
-  changePassword(password: string, oobCode: string|null) {
+
+  changePassword(password: string, oobCode: string | null) {
     const auth = getAuth();
     if (oobCode) {
       const currentUser = auth.currentUser;

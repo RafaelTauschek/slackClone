@@ -49,6 +49,7 @@ export class DirectChatChatareaComponent {
     this.data.editChatMessage(message, this.messageContent);
   }
 
+
   addEmoji(event: any) {
     const existingEmoji = this.data.message[0].emojis.find(
       (e: Emoji) => e.emoji === event.emoji.native

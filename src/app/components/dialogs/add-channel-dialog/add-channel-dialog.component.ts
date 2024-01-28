@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { FirebaseService } from '../../../services/firebase.service';
 import { User } from '../../../models/user.class';
 import { UserDataService } from '../../../services/data.service';
-import { Channel } from '../../../models/channel.class';
 
 @Component({
   selector: 'app-add-channel-dialog',

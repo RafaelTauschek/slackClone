@@ -269,6 +269,88 @@
     }
 }
 
+.editing-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    textarea {
+        border: none;
+        outline: none;
+        resize: none;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 10px 20px;
+        border-radius: 20px;
+        background-color: white;
+        color: #686868;
+        height: 100px;
+    }
+
+    .editing-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 20px;
+
+        img {
+            height: 24px;
+            width: 24px;
+        }
+
+        .editing-btn-container {
+            display: flex;
+            gap: 10px;
+
+            .cancel-btn {
+                font-size: 16px;
+                color: #444DF2;
+                cursor: pointer;
+                font-weight: 700;
+                display: flex;
+                padding: 12px 25px;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                border-radius: 50px;
+                border: 1px solid #797EF3;
+                background-color: white;
+            }
+
+            .save-btn {
+                font-size: 16px;
+                color: #535AF1;
+                cursor: pointer;
+                display: flex;
+                padding: 12px 25px;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                border-radius: 50px;
+                color: white;
+                background-color: #444DF2;
+                border: 1px solid #444DF2;
+            }
+        }
+
+
+    }
+}
+
+.background-gray {
+    background-color: #ECEEFE !important;
+}
+
+.background-white {
+    background-color: white !important;
+}
+
+.w-100 {
+    width: 100%;
+    padding: 15px;
+}
+
 .answer-container-left {
     display: flex;
     gap: 20px;
@@ -278,6 +360,11 @@
 
     &:hover {
         background-color: #ECEEFE;
+
+        .answer-main {
+            background-color: white;
+        }
+
 
         .message-overlay {
             display: flex;

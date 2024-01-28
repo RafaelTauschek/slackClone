@@ -1,6 +1,6 @@
-<div class="chat-area-container" [class.first-channel-message]="!data.messages || data.messages.length < 1">
+<div class="chat-area-container" #chatArea [class.first-channel-message]="!data.messages || data.messages.length < 1" #scrollMe>
     <div *ngIf="data.messages && data.messages.length > 0; else noMessages">
-        <div class="chat-area-wrapper" *ngFor="let day of data.messages">
+        <div class="chat-area-wrapper" *ngFor="let day of data.messages; let dayIndex = index">
             <div class="date-container">
                 <div class="line"></div>
                 <div class="date">
@@ -11,7 +11,7 @@
             </div>
 
             <div class="message-wrapper">
-                <div class="message-container" *ngFor="let message of day.messages">
+                <div class="message-container" *ngFor="let message of day.messages; let messageIndex = index" [id]="'message-' + dayIndex + '-' + messageIndex">
                     <ng-container *ngIf="this.sharedService.getMessageAlignment(message.senderId); else leftContainer">
                         <div class="message-container-right" [class.background-gray]="isEditing && message.editMessage">
                             <div class="message-overlay" *ngIf="!message.editMessage">
@@ -161,4 +161,6 @@
                 data.currentChannel.name }}</a>.</span>
         </div>
     </ng-template>
+
+    <div class="overlay" *ngIf="showEmojiPicker" (click)="closeEmojiPicker()"></div>
 </div>

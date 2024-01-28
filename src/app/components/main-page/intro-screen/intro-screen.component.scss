@@ -1,9 +1,22 @@
 .intro-section {
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     background: #ECEEFE;
     height: 100%;
     padding: 75px 75px 48px 75px;
     max-height: 100vh;
+    gap: 30px;
+
+
+    @media only screen and (max-width: 1024px) {
+        padding: 92px 16px 88px 16px;
+    }
+
+
+    @media only screen and (max-height: 750px) {
+        padding: 32px 16px 32px 16px;
+    }
 }
 
 
@@ -12,10 +25,18 @@
     justify-content: space-between;
     width: 100%;
 
+    @media only screen and (max-width: 1024px) {
+        justify-content: center;
+    }
+
     .register {
         display: flex;
         flex-direction: column;
         gap: 10px;
+
+        @media only screen and (max-width: 1024px) {
+            display: none;
+        }
 
         .new {
             font-size: 18px;
@@ -42,6 +63,10 @@
     padding-top: 50px;
     gap: 16px;
 
+    @media only screen and (max-width: 1024px) {
+        display: none;
+    }
+
     span {
         padding: 10px 15px;
         font-size: 18px;
@@ -64,30 +89,109 @@
     align-items: center;
     justify-content: center;
 
-    img {
-        height: 184px;
+
+
+
+    .intro-content {
+        display: flex;
+        align-items: center;
+
+        img {
+            height: 184px;
+            z-index: 3;
+        }
+
+        .logo-text {
+            font-size: 72px;
+            font-weight: 700;
+            color: white;
+            margin-left: -40px;
+        }
+    }
+}
+
+.slide-logo {
+    animation: moveLogoLeft 2s 0.2 forwards;
+}
+
+.slide-text {
+    animation: moveTextToRight 1s forwards;
+}
+
+.move-to-top {
+    animation: moveAndScaleDown 1s forwards;
+}
+
+.d-none {
+    display: none;
+}
+
+@keyframes moveTextToRight {
+    0% {
+        display: none;
+        opacity: 0;
+        transform: translateX(-80%);
     }
 
-    .logo-text {
-        font-size: 72px;
-        font-weight: 700;
-        color: white;
+    100% {
+        display: flex;
+        opacity: 1;
+        transform: translateX(0%);
+    }
+}
+
+@keyframes moveLogoLeft {
+    0% {
+        transform: translateX(0);
     }
 
-    img, .logo-text {
-        animation: moveToTopLeft 2s forwards;
+    100% {
+        transform: translateX(-100%);
     }
-
 }
 
 
+@keyframes moveAndScaleDown {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+}
 
 
+.mobile-footer {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    @media only screen and (max-width: 1024px) {
+        display: flex;
+    }
+
+    .new {
+        font-size: 18px;
+    }
+
+    .register-user {
+        color: #444DF2;
+        font-size: 18px;
+        font-weight: 700;
+        text-align: center;
+        display: flex;
+        padding: 7px 18px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 25px;
+        border: 1px solid #797EF3;
+    }
 
 
-
-
-
+}
 
 
 @media only screen and (max-width: 768px) {
@@ -98,3 +202,98 @@
 
 
 
+.into-overlay {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(1deg, #313AE5 1.22%, #797EF3 98.76%);
+    gap: 16px;
+    display: flex;
+    top: 0;
+    left: 0;
+}
+
+
+
+.intro-content {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.5s transform 0.5s;
+    transition: 700ms;
+    display: flex;
+    align-items: center;
+
+
+    img {
+        height: 184px;
+        z-index: 2;
+    }
+
+    .logo-text {
+        font-size: 72px;
+        font-weight: 700;
+        color: white;
+        margin-left: -40px;
+        transition: 700ms;
+        z-index: 3;
+    }
+}
+
+
+
+
+.slide-text {
+    animation: moveTextToRight 2s forwards;
+}
+
+.move-to-top {
+    animation: moveAndScaleDown 3s forwards;
+}
+
+.d-none {
+    display: none;
+}
+
+@keyframes moveTextToRight {
+  0% {
+    display: none;
+    opacity: 0;
+    transform: translateX(-50%);
+  }
+
+  70% {
+    opacity: 0.4;
+  }
+
+  100% {
+    display: flex;
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+.slide-logo {
+    animation: moveLogoLeft 2s ease-in-out 0.5s forwards;
+}
+
+@keyframes moveLogoLeft {
+    0% {
+      transform: translate(200px);
+    }
+
+    100% {
+      transform: translate(-40%);
+    }
+  }
+
+  @keyframes moveAndScaleDown {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: translate(calc(-50vw - 20px), calc(-50vh + 40px)) scale(0.45);
+    }
+  }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { User } from '../../../models/user.class';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
@@ -10,9 +10,7 @@ import { SharedService } from '../../../services/shared.service';
 import { Message } from '../../../models/message.class';
 import { UserDataService } from '../../../services/data.service';
 
-interface MessageWithChannel extends Message {
-  channelName: string;
-}
+
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -42,7 +40,8 @@ export class HeaderComponent {
 
 
 
-  constructor(private authService: AuthService, private dialog: MatDialog, public sharedService: SharedService, public data: UserDataService) { }
+  constructor(private authService: AuthService, private dialog: MatDialog, public sharedService: SharedService, 
+    public data: UserDataService) { }
 
 
 
@@ -121,6 +120,7 @@ export class HeaderComponent {
     const user = this.data.activeUser[0];
     if (this.editedUserMail !== '' && user.email) {
       await this.data.updateUserProperties({ email: this.editedUserMail });
+      await this.authService.updateEmail(this.editedUserMail);
     }
   }
 
@@ -134,6 +134,37 @@ export class HeaderComponent {
     } else {
       this.searchActive = false;
     }
+  }
+
+  redirectToChannel(data: any) {
+    const channelId = data.channel.id;
+    const message = data.message;
+    const indices = this.findMessageIndex(message.timestamp, [data.channel]);
+    this.data.setChannel(channelId);
+    this.sharedService.directChatActive = false;
+    this.sharedService.threadActive = false;
+    this.sharedService.messageActive = false;
+    this.sharedService.channelChatActive = true;
+    setTimeout(() => {
+      this.sharedService.scrollIntoView(indices.dayIndex, indices.messageIndex)
+    }, 500)
+  }
+
+  redirectToDirectChat(message: any) {
+    console.log('Message recieved: ', message);
+  }
+
+  findMessageIndex(timestamp: string, channels: any[]): { dayIndex: number, messageIndex: number } {
+    for (let dayIndex = 0; dayIndex < this.data.messages.length; dayIndex++) {
+      const day = this.data.messages[dayIndex];
+      for (let messageIndex = 0; messageIndex < day.messages.length; messageIndex++) {
+        const message = day.messages[messageIndex];
+        if (message.timestamp === timestamp && channels.includes(message.channel)) {
+          return { dayIndex, messageIndex };
+        }
+      }
+    }
+    return { dayIndex: -1, messageIndex: -1 };
   }
 
 

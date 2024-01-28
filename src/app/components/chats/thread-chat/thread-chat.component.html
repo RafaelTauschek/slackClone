@@ -42,13 +42,13 @@
     <div class="answer-container">
         <div class="answer" *ngFor="let answer of data.message[0].answers">
             <ng-container *ngIf="sharedService.getMessageAlignment(answer.senderId); else leftContainer">
-                <div class="answer-container-right">
-                    <div class="answer-content">
+                <div class="answer-container-right" [class.background-gray]="edit && answer.editMessage">
+                    <div class="answer-content" [class.w-100]="edit && answer.editMessage">
                         <div class="answer-header">
                             <span class="time">{{ sharedService.formatTimestampToTime(answer.timestamp) }} Uhr</span>
                             <span class="user-name">{{ data.getUserProperty(answer.senderId , 'name') }}</span>
                         </div>
-                        <div class="answer-main">
+                        <div class="answer-main" [class.background-white]="edit && answer.editMessage">
                             <div class="editing-container" *ngIf="edit && answer.editMessage">
                                 <textarea name="message" [(ngModel)]="messageContent"></textarea>
                                 <div class="editing-footer">

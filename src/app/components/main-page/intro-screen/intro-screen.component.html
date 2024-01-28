@@ -1,11 +1,10 @@
-
-
-<div class="into-overlay" *ngIf="animationStart">
-    <img class="logo" src="./assets/img/logo.png">
-    <div class="logo-text"><span>DABubble</span></div>
+<div class="into-overlay" *ngIf="animationStart"></div>
+<div class="intro-content" [class.move-to-top]="animationEnd" *ngIf="animationStart">
+    <img class="logo" src="./assets/img/logo.png" [class.slide-logo]="logoAnimationStart">
+    <div [class.slide-text]="textAnimationStart" class="logo-text" [class.d-none]="dNone"><span>DABubble</span></div>
 </div>
 
-<div class="intro-section" >
+<div class="intro-section">
     <div class="header">
         <img src="./assets/img/logo_top.png" alt="logo">
         <div class="register">
@@ -20,7 +19,8 @@
         <span [routerLink]="['/imprint']">Impressum</span>
         <span [routerLink]="['/privacy']">Datenschutz</span>
     </div>
+    <div class="mobile-footer">
+        <span class="new">Neu bei DABubble?</span>
+        <span class="register-user" [routerLink]="['/registration']">Konto erstellen</span>
+    </div>
 </div>
-
-
-

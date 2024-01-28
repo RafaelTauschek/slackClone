@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { collection, addDoc, updateDoc, doc, setDoc, getDoc, getDocs, arrayUnion, onSnapshot } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc, setDoc, getDoc, getDocs, arrayUnion } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { Observable } from 'rxjs';
 
 
 

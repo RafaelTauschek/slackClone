@@ -61,12 +61,14 @@
             <span>Mitglieder</span>
             <img src="./assets/img/icons/close-icon.png" alt="close-icon" (click)="memberListActive = false">
         </div>
-        <div *ngFor="let member of data.currentChannel.users" class="member-list">
-            <div class="single-member">
-                <img class="single-user-avatar" 
-                    [src]="data.getProfilePictureURL(member)" 
-                    alt="avatar">
-                <span>{{ data.getUserProperty(member, 'name')}}</span>
+        <div class="member-wrapper">
+            <div *ngFor="let member of data.currentChannel.users" class="member-list">
+                <div class="single-member">
+                    <img class="single-user-avatar" 
+                        [src]="data.getProfilePictureURL(member)" 
+                        alt="avatar">
+                    <span>{{ data.getUserProperty(member, 'name')}}</span>
+                </div>
             </div>
         </div>
         <div class="member-list-add-member" (click)="openInviteList()">
