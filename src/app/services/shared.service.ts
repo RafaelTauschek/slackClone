@@ -183,6 +183,7 @@ export class SharedService {
       }
       const message = this.generateNewMessage(newMessage, fileName, fileUrl);
       await this.firebaseService.updateMessages('channels', this.data.currentChannel.id, message.toJSON());
+      this.openChannel(this.data.currentChannel.id);
     }
     catch (err) {
       console.log(err);
@@ -195,5 +196,18 @@ export class SharedService {
   scrollIntoView(dayIndex: number, messageIndex: number) {
     this.triggerScrollTo.next({ dayIndex, messageIndex });
   }
+
+
+  
+  openChannel(channelId: string) {
+    this.data.setChannel(channelId);
+    if (this.isMobile) {
+      this.activeComponent = 'channel-chat';
+    }
+    this.messageActive = false;
+    this.directChatActive = false;
+    this.channelChatActive = true;
+  }
+
 
 }

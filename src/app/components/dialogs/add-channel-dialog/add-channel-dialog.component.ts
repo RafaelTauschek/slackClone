@@ -29,7 +29,9 @@ export class AddChannelDialogComponent {
 
   async addChannel() {
     this.addingChannel = true;
-    if (this.channelName == '') {
+    if (this.checkIfChannelExists(this.channelName)) {
+      this.addingChannel = false;
+      console.log('channel already exists'); 
     } else {
       const date = new Date().getTime();
       const channelData = {
@@ -57,6 +59,19 @@ export class AddChannelDialogComponent {
       await this.firebaseService.updateDocument('users', this.activeUser[0].id, userData);
       this.addingChannel = false;
       this.closeDialog();
+    }
+  }
+
+  checkIfChannelExists(channelName: string) {
+    if (channelName == '') {
+      return false;
+    } else {
+      const channel = this.data.channelList.find(channel => channel.name == channelName);
+      if (channel) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 }

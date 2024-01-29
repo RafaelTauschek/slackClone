@@ -78,8 +78,11 @@
                 <img class="avatar"
                     [src]="data.getProfilePictureURL(data.getChatPartnerId(chat, data.activeUser[0].id) || '')">
                 <img class="online-dot" src="./assets/img/online-dot.png">
-                <span>{{ data.getUserProperty(data.getChatPartnerId(chat, data.activeUser[0].id) || '', 'name' ||
+                <span *ngIf="data.getChatPartnerId(chat, data.activeUser[0].id) !== data.activeUser[0].id; else userChat">{{ data.getUserProperty(data.getChatPartnerId(chat, data.activeUser[0].id) || '', 'name' ||
                     '')}}</span>
+                    <ng-template #userChat>
+                        <span>{{ data.activeUser[0].name }} (Du)</span>
+                    </ng-template>
             </div>
             }
         </div>

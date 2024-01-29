@@ -41,6 +41,9 @@ export class LoginComponent {
     }
   }
 
+  guestLogin() {
+    this.authService.login('gast@gast.de', 'Gast123!')
+  }
 
   loginGoogle() {
     this.authService.loginGoogle();

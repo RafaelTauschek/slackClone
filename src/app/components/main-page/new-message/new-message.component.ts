@@ -138,4 +138,15 @@ export class NewMessageComponent {
     const message = this.data.generateNewMessage(this.newMessage, fileName, fileUrl);
     return message;
   }
+
+
+  openChannel(channelId: string) {
+    this.data.setChannel(channelId);
+    if (this.sharedService.isMobile) {
+      this.sharedService.activeComponent = 'channel-chat';
+    }
+    this.sharedService.messageActive = false;
+    this.sharedService.directChatActive = false;
+    this.sharedService.channelChatActive = true;
+  }
 }

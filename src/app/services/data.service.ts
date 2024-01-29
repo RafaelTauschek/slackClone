@@ -168,7 +168,6 @@ export class UserDataService {
   unsubscribeChannels: any;
 
   async loadChannelsData(user: User[]) {
-    this.channelList = [];
     for (const channel of user[0].channels) {
       this.unsubscribeChannels = onSnapshot(this.getDocumentRef('channels', channel), (docSnap) => {
         this.channelList.push(docSnap.data() as Channel);
@@ -495,6 +494,7 @@ export class UserDataService {
   }
 
 
+
   async updateUserProperties(updatedProperties: Partial<User>) {
     const user = this.activeUser[0];
     const newUser = new User({
@@ -507,7 +507,7 @@ export class UserDataService {
 
 
   async addChannelToUsers(users: string[], channelId: string) {
-    users.forEach(async (user) => {
+    await Promise.all(users.map(async (user) => {
       const docSnap = await this.getDocument('users', user);
       const userData = docSnap.data() as User;
       const newUser = new User({
@@ -517,11 +517,26 @@ export class UserDataService {
         channels: [...userData.channels, channelId],
         chats: userData.chats,
         id: userData.id,
-        // online: userData.online,
       });
       await this.updateDocument('users', userData.id, newUser.toJSON());
-    })
+      await this.updateChannelUsers({ users: [...this.currentChannel.users, user] }, newUser.id)
+    }));
+    await this.loadChannelsData(this.activeUser);
+    this.loadChannelData(channelId);
   }
+
+
+  async updateChannelUsers(updatedProperties: Partial<Channel>, userId: string) {
+    const channel = this.currentChannel;
+    const newChannel = new Channel({
+      ...channel,
+      ...updatedProperties,
+      users: [...channel.users, userId]
+    });
+    await this.updateDocument('channels', channel.id, newChannel.toJSON());
+  }
+
+
 
   async leaveChannel(userId: string, channel: Channel) {
     const newChannel = channel.users.filter((user) => user !== userId);
@@ -637,11 +652,10 @@ export class UserDataService {
     if (docData) {
       docData['messages'][messageIndex] = newMessageData.toJSON();
       await this.updateDocument(type + 's', current.id, docData);
-      await this.loadChannelsData(this.activeUser);
-      this.setChannel(current.id);
       if (type === 'chat') {
+        await this.loadChatsData(this.activeUser[0]);
       } else {
-        this.setChannel(current.id);
+        this.loadChannelData(current.id);
       }
     }
   }
@@ -688,7 +702,6 @@ export class UserDataService {
       await this.updateDocument('chats', this.currentChat[0].id, docData);
       await this.loadChatsData(this.activeUser[0]);
       await this.loadChatData(this.currentChat[0].id);
-      
     }
   }
 

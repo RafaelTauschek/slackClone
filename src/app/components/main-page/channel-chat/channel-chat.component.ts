@@ -20,7 +20,6 @@ import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
   styleUrl: './channel-chat.component.scss'
 })
 export class ChannelChatComponent {
-  channel: Channel[] = [];
   message: string = '';
   memberInviteActive: boolean = false;
   memberListActive: boolean = false;
@@ -43,6 +42,7 @@ export class ChannelChatComponent {
   onSearch() {
     if (this.searchTerm !== '') {
       this.searchActive = true;
+      this.searchedUsers = [];
       this.searchedUsers = this.sharedService.filterUsers(this.data.users ,this.searchTerm);
     } else {
       this.searchActive = false;
@@ -64,7 +64,8 @@ export class ChannelChatComponent {
   async updateUsersOnChannel() {
     const users: string[] = this.userToAdd;
     this.userToAdd = [];
-    await this.data.addChannelToUsers(users, this.channel[0].id);
+    await this.data.addChannelToUsers(users, this.data.currentChannel.id);
+    this.memberInviteActive = false;
   }
 
   openMemberList() {
@@ -107,5 +108,6 @@ export class ChannelChatComponent {
     } 
     this.message = '';
     this.selectedFile = null;
+    this.selectedFileName = '';
   }
 }

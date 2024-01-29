@@ -92,7 +92,7 @@ export class DirectChatChatareaComponent {
         existingEmoji.count--;
         if (existingEmoji.count === 0) {
           const emojiIndex = this.data.message[0].emojis.indexOf(existingEmoji);
-          this.data.message[0].emojis.splice(emojiIndex, 1);
+          this.data.message[0].emojis.splice(emojiIndex, 1); 
         }
       } else {
         existingEmoji.senders.push(this.data.activeUser[0].id);

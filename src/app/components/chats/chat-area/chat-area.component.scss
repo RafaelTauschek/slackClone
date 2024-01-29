@@ -374,21 +374,21 @@
     }
 }
 
-.message-img {
-    max-height: 200px;
-    max-width: 200px;
+.message-image {
+    max-height: 400px;
+    max-width: 300px;
     object-fit: contain;
 }
 
 .message-video {
-    max-height: 200px;
-    max-width: 200px;
+    max-height: 400px;
     object-fit: contain;
+    max-width: 300px;
 }
 
 .message-pdf {
-    max-height: 200px;
-    max-width: 200px;
+    max-height: 400px;
+    max-width: 300px;
     object-fit: contain;
 }
 

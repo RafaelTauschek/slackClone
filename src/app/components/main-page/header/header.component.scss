@@ -180,6 +180,19 @@
     box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.20);
     border-radius: 30px 0px 30px 30px;
 
+
+    @media only screen and (max-width: 550px) {
+       width: 320px; 
+    }
+
+    @media only screen and (max-width: 420px){
+        width: calc(100vw - 40px);
+        padding: 25px 20px;
+        right: 0;
+    }
+
+
+
     .profile-menu-header {
         justify-content: space-between;
         align-items: center;
@@ -300,6 +313,17 @@
     border-radius: 30px;
     box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.20);
 
+
+
+    @media only screen and (max-width: 550px) {
+        width: 320px;
+    }
+
+    @media only screen and (max-width: 450px) {
+        left: 0;
+        width: calc(100vw - 80px);
+    }
+
     .edit-menu-header {
         display: flex;
         align-items: center;
@@ -311,8 +335,8 @@
         }
 
         img {
-            width: 40px;
-            height: 40px;
+            width: 25px;
+            height: 25px;
             cursor: pointer;
         }
     }
@@ -328,6 +352,12 @@
             width: 200px;
             height: 200px;
             border-radius: 100px;
+
+
+            @media only screen and (max-width: 450px) {
+                height: 150px;
+                width: 150px;
+            }
         }
     }
 
@@ -352,6 +382,11 @@
                 font-size: 18px;
                 font-weight: 500;
                 color: #686868;
+
+
+                @media only screen and (max-width: 450px) {
+                    font-size: 16px;
+                }
             }
 
 
@@ -368,6 +403,10 @@
                 span {
                     font-size: 20px;
                     font-weight: 700;
+
+                    @media(max-width: 450px) {
+                        font-size: 18px;
+                    }
                 }
 
 
@@ -439,13 +478,24 @@
     border-radius: 30px;
 }
 
-.searched-user,
+.searched-user {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+
+}
+
 .searched-channel {
     display: flex;
     flex-direction: column;
     gap: 15px;
-}
 
+    .single-channel span {
+        font-size: 18px;
+        font-weight: 700;
+    };
+}
 .singleUser,
 .singleChannel {
     display: flex;
