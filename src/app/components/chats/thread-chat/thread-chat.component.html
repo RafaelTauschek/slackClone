@@ -28,13 +28,12 @@
                         <span>{{ data.message[0].content }}</span>
                     </div>
                 </div>
-
             </div>
         </ng-template>
 
     </div>
 
-    <div class="answer-divider" *ngIf="data.message[0].answers[0]">
+    <div class="answer-divider">
         <span>{{ data.message[0].answers.length }} Antworten</span>
         <img src="./assets/img/line.png" alt="line">
     </div>

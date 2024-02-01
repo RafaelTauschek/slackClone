@@ -140,7 +140,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   openThread(message: any) {
-    this.data.setCurrentMessage([message]);
+    this.data.message = [message];
     if (this.sharedService.isMobile) {
       this.sharedService.activeComponent = 'thread';
     }

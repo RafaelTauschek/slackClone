@@ -102,7 +102,7 @@ export class UserDataService {
     if (this.activeUser && this.activeUser[0]) {
       await Promise.all([
         this.loadUsersData(),
-        this.loadChatsData(this.activeUser[0]),
+        this.loadChatsData(this.activeUser),
         this.loadChannelsData(this.activeUser)
       ]);
       if (this.activeUser[0].channels) {
@@ -139,9 +139,10 @@ export class UserDataService {
   unsubscribeChats: any;
 
 
-  async loadChatsData(user: User) {
+  async loadChatsData(user: User[]) {
+    this.chats = [];
     const chats: Chat[] = [];
-    for (const chat of user.chats) {
+    for (const chat of user[0].chats) {
       this.unsubscribeChats = onSnapshot(this.getDocumentRef('chats', chat), (docSnap) => {
         const chatData = docSnap.data() as Chat;
         chats.push(chatData as Chat);
@@ -181,37 +182,36 @@ export class UserDataService {
 
   unsubscribeChannel: any;
 
-  loadChannelData(channelId: string) {
+  async loadChannelData(channelId: string) {
     this.unsubscribeChannel = onSnapshot(this.getDocumentRef('channels', channelId), (docSnap) => {
       const channelData = docSnap.data() as Channel;
-      this.currentChannel = channelData;
-      this.formatChannel(channelId);
+      this.currentChannel = channelData as Channel;
+      this.formatChannel(this.currentChannel);
     });
   }
 
-  formatChannel(channelId: string) {
-    this.currentChannel = this.userChannels.find((channel) => channel.id === channelId) as Channel;
-    if (this.currentChannel && this.currentChannel.messages) {
-      this.currentChannel.messages.sort((a, b) => a.timestamp - b.timestamp);
-      const messagesByDate = [];
-      let currentDate = null;
-      let currentMessages: any[] = [];
-      for (const message of this.currentChannel.messages) {
-        const messageDate = new Date(message.timestamp).toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });
-        if (messageDate !== currentDate) {
-          if (currentDate !== null) {
-            messagesByDate.push({ date: currentDate, messages: currentMessages });
-          }
-          currentDate = messageDate;
-          currentMessages = [message];
-        } else {
-          currentMessages.push(message);
+  formatChannel(channel: Channel) {
+    if (channel && channel.messages) {
+        channel.messages.sort((a, b) => a.timestamp - b.timestamp);
+        const messagesByDate = [];
+        let currentDate = null;
+        let currentMessages: any[] = [];
+        for (const message of channel.messages) {
+            const messageDate = new Date(message.timestamp).toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });
+            if (messageDate !== currentDate) {
+                if (currentDate !== null) {
+                    messagesByDate.push({ date: currentDate, messages: currentMessages });
+                }
+                currentDate = messageDate;
+                currentMessages = [message];
+            } else {
+                currentMessages.push(message);
+            }
         }
-      }
-      if (currentMessages.length > 0) {
-        messagesByDate.push({ date: currentDate, messages: currentMessages });
-      }
-      this.messages = messagesByDate;
+        if (currentMessages.length > 0) {
+            messagesByDate.push({ date: currentDate, messages: currentMessages });
+        }
+        this.messages = messagesByDate;
     }
   }
 
@@ -262,10 +262,9 @@ export class UserDataService {
   }
 
 
-  setChannel(channelId: string) {
-    this.currentChannel = this.userChannels.find((channel) => channel.id === channelId) as Channel;
-    this.formatChannel(channelId);
-  }
+   setChannel(channelId: string) {
+    // this.formatChannel(channelId);
+   }
 
 
   async updateChannelProperties(updatedProperties: Partial<Channel>) {
@@ -289,32 +288,20 @@ export class UserDataService {
       }
       const message = this.generateNewMessage(newMessage, fileName, fileUrl);
       await this.updateMessages('channels', this.currentChannel.id, message.toJSON());
-      await this.loadChannelsData(this.activeUser);
-      this.formatChannel(this.currentChannel.id);
+      this.loadChannelsData(this.activeUser);
+      this.loadChannelData(this.currentChannel.id);
     } catch (error) {
       console.error(error);
     }
   }
 
-
-
-  async writeAnswerMessage(answer: string, file: File | null) {
-    let fileName = '';
-    let fileUrl = '';
-    try {
-      if (file) {
-        fileName = file.name;
-        fileUrl = await this.uploadFile(file);
-      }
-      const messageIndex = this.findMessageIndex(this.message.timestamp, [this.currentChannel] as Channel[]);
-      const message = this.generateNewMessage(answer, fileName, fileUrl);
-      this.currentChannel.messages[messageIndex].answers.push(message.toJSON());
-      const channelInstance = new Channel(this.currentChannel);
-      await this.updateDocument('channels', this.currentChannel.id, channelInstance.toJSON());
-    } catch (e) {
-      console.error(e);
-    }
+  async writeChatMessage(message: Message, chatId: string) {
+    await this.updateMessages('chats', chatId, message.toJSON());
+    await this.loadChatsData(this.activeUser);
+    await this.loadChatData(chatId);
   }
+
+
 
 
 
@@ -428,12 +415,6 @@ export class UserDataService {
 
 
 
-  async writeChatMessage(message: Message, chatId: string) {
-    await this.updateMessages('chats', chatId, message.toJSON());
-    await this.loadChatsData(this.activeUser[0]);
-    await this.loadChatData(chatId);
-  }
-
   async addMessageToChat(chatId: string, newMessage: string, recieverId: string) {
     const date = new Date().getTime();
     const message = new Message({
@@ -449,6 +430,7 @@ export class UserDataService {
       editMessage: false,
     });
     await this.updateMessages('chats', chatId, message.toJSON());
+    await this.loadChatsData(this.activeUser);
   }
 
 
@@ -568,11 +550,14 @@ export class UserDataService {
 
 
   findMessageIndex(timestamp: number, channel: Channel[]) {
+    console.log('timestamp' + timestamp);
+    console.log('Channel ' + channel);
     const channelIndex = channel.findIndex((channel) => {
       return channel.messages.some((message) => {
         return message.timestamp === timestamp;
       });
     });
+    console.log('Channelindex: ', channelIndex);
     if (channelIndex !== -1) {
       const messageIndex = channel[channelIndex].messages.findIndex((message) => {
         return message.timestamp === timestamp;
@@ -635,25 +620,14 @@ export class UserDataService {
   async editMessage(message: Message, type: 'chat' | 'channel') {
     const current = type === 'chat' ? this.currentChat[0] : this.currentChannel;
     const messageIndex = this.findMessageIndex(message.timestamp, [current] as unknown as Channel[]);
-    const newMessageData = new Message({
-      senderId: message.senderId,
-      recieverId: message.recieverId,
-      timestamp: message.timestamp,
-      emojis: message.emojis,
-      answers: message.answers,
-      fileName: message.fileName,
-      fileUrl: message.fileUrl,
-      fileType: message.fileType,
-      content: message.content,
-      editMessage: false,
-    });
+    const newMessageData = this.generateMessage(message);
     const doc = await this.getDocument(type + 's', current.id);
     const docData = doc.data();
     if (docData) {
       docData['messages'][messageIndex] = newMessageData.toJSON();
-      await this.updateDocument(type + 's', current.id, docData);
+      this.updateDocument(type + 's', current.id, docData);
       if (type === 'chat') {
-        await this.loadChatsData(this.activeUser[0]);
+        this.loadChatsData(this.activeUser);
       } else {
         this.loadChannelData(current.id);
       }
@@ -700,7 +674,7 @@ export class UserDataService {
     if (docData) {
       docData['messages'][messageIndex] = newMessageData.toJSON();
       await this.updateDocument('chats', this.currentChat[0].id, docData);
-      await this.loadChatsData(this.activeUser[0]);
+      await this.loadChatsData(this.activeUser);
       await this.loadChatData(this.currentChat[0].id);
     }
   }

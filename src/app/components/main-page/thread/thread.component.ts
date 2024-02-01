@@ -8,6 +8,7 @@ import { FirebaseService } from '../../../services/firebase.service';
 import { UserDataService } from '../../../services/data.service';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { Channel } from '../../../models/channel.class';
 
 @Component({
   selector: 'app-thread',
@@ -47,11 +48,37 @@ export class ThreadComponent {
 
   async sendMessage() {
     if (this.answer !== '' || this.selectedFile) {
-      await this.data.writeAnswerMessage(this.answer, this.selectedFile);
-    } 
+      try {
+        let fileName = '';
+        let fileUrl = '';
+        if (this.selectedFile) {
+          fileName = this.selectedFile.name;
+          fileUrl = await this.data.uploadFile(this.selectedFile)
+        }
+        const messageIndex = this.findMessageIndex(this.data.message[0].timestamp, this.data.currentChannel);
+        const message = this.data.generateNewMessage(this.answer, fileName, fileUrl);
+        this.data.currentChannel.messages[messageIndex].answers.push(message.toJSON());
+        await this.data.updateDocument('channels', this.data.currentChannel.id, this.data.currentChannel)
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
     this.answer = '';
-    this.selectedFile = null;
+    this.selectedFile = null
   }
+
+
+
+   findMessageIndex(timestamp: number, channel: Channel) {
+     if (channel && timestamp) {
+         const messageIndex = channel.messages.findIndex(message => message.timestamp === timestamp);
+         return messageIndex;
+     } else {
+       return -1;
+     }
+ }
+
 
 
   closeThread() {

@@ -28,11 +28,11 @@ export class SidebarComponent {
   constructor(private dialog: MatDialog, public sharedService: SharedService, public data: UserDataService) {
   }
 
-  selectChannel(channelId: string) {
+  async selectChannel(channelId: string) {
     if (this.sharedService.isMobile) {
       this.sharedService.activeComponent = 'channel-chat';
     }
-    this.data.setChannel(channelId);
+    await this.data.loadChannelData(channelId);
     this.sharedService.messageActive = false;
     this.sharedService.directChatActive = false;
     this.sharedService.channelChatActive = true;

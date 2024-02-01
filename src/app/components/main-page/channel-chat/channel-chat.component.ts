@@ -11,6 +11,7 @@ import { User } from '../../../models/user.class';
 import { SharedService } from '../../../services/shared.service';
 import { UserDataService } from '../../../services/data.service';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { Message } from '../../../models/message.class';
 
 @Component({
   selector: 'app-channel-chat',
@@ -104,10 +105,31 @@ export class ChannelChatComponent {
 
   async sendMessage() {
     if (this.message !== '' || this.selectedFile) {
-      this.data.writeChannelMessage(this.message, this.selectedFile);
-    } 
-    this.message = '';
-    this.selectedFile = null;
-    this.selectedFileName = '';
+      let filename = '';
+      let fileUrl = '';
+      try {
+        if (this.selectedFile) {
+          filename = this.selectedFile.name;
+          fileUrl = await this.data.uploadFile(this.selectedFile);
+        }
+        const message = this.data.generateNewMessage(this.message, filename, fileUrl);
+        this.updateMessages(message);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+     this.message = '';
+     this.selectedFile = null;
+     this.selectedFileName = '';
+  }
+
+  async updateMessages(message: Message) {
+    const channelId = this.data.currentChannel.id;
+    if (message) {
+      await this.data.updateMessages('channels', channelId, message.toJSON());
+      await this.data.loadChannelData(channelId);
+      await this.data.loadChannelsData(this.data.activeUser);
+      this.data.formatChannel(this.data.currentChannel);
+    }
   }
 }

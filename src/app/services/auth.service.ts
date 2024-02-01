@@ -48,7 +48,7 @@ export class AuthService {
 
 
   async handleUserLoggedOut(user: any) {
-   //this.data.unsubscribeData();
+   this.data.unsubscribeData();
    // await this.data.updateDocument('users', user.uid , { online: false });
   }
 
