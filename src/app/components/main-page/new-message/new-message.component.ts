@@ -140,8 +140,8 @@ export class NewMessageComponent {
   }
 
 
-  openChannel(channelId: string) {
-    this.data.setChannel(channelId);
+  openChannel(channel: Channel) {
+    this.data.setChannel(channel);
     if (this.sharedService.isMobile) {
       this.sharedService.activeComponent = 'channel-chat';
     }

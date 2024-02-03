@@ -18,8 +18,6 @@ export class UserPofileDialogComponent {
   }
 
 
-
-
   closeDialog() {
     this.dialogRef.close();
   }

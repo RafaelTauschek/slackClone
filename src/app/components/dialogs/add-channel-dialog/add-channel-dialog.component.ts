@@ -31,7 +31,6 @@ export class AddChannelDialogComponent {
     this.addingChannel = true;
     if (this.checkIfChannelExists(this.channelName)) {
       this.addingChannel = false;
-      console.log('channel already exists'); 
     } else {
       const date = new Date().getTime();
       const channelData = {

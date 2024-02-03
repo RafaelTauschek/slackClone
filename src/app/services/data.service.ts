@@ -89,12 +89,12 @@ export class UserDataService {
 
 
   unsubscribeData() {
-    this.unsubscribeUser.unsubscribe();
-    this.unsubscribeUsers.unsubscribe();
-    this.unsubscribeChats.unsubscribe();
-    this.unsubscribeChannels.unsubscribe();
-    this.unsubscribeChat.unsubscribe();
-    this.unsubscribeChannel.unsubscribe();
+    this.unsubscribeUser();
+    this.unsubscribeUsers();
+    this.unsubscribeChats();
+    this.unsubscribeChannels();
+    this.unsubscribeChat();
+    this.unsubscribeChannel();
   }
 
   async fetchUserData(userId: string) {
@@ -106,7 +106,7 @@ export class UserDataService {
         this.loadChannelsData(this.activeUser)
       ]);
       if (this.activeUser[0].channels) {
-        this.setChannel(this.activeUser[0].channels[0]);
+        this.setChannel(this.userChannels[0])
       }
     }
   }
@@ -192,26 +192,26 @@ export class UserDataService {
 
   formatChannel(channel: Channel) {
     if (channel && channel.messages) {
-        channel.messages.sort((a, b) => a.timestamp - b.timestamp);
-        const messagesByDate = [];
-        let currentDate = null;
-        let currentMessages: any[] = [];
-        for (const message of channel.messages) {
-            const messageDate = new Date(message.timestamp).toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });
-            if (messageDate !== currentDate) {
-                if (currentDate !== null) {
-                    messagesByDate.push({ date: currentDate, messages: currentMessages });
-                }
-                currentDate = messageDate;
-                currentMessages = [message];
-            } else {
-                currentMessages.push(message);
-            }
-        }
-        if (currentMessages.length > 0) {
+      channel.messages.sort((a, b) => a.timestamp - b.timestamp);
+      const messagesByDate = [];
+      let currentDate = null;
+      let currentMessages: any[] = [];
+      for (const message of channel.messages) {
+        const messageDate = new Date(message.timestamp).toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });
+        if (messageDate !== currentDate) {
+          if (currentDate !== null) {
             messagesByDate.push({ date: currentDate, messages: currentMessages });
+          }
+          currentDate = messageDate;
+          currentMessages = [message];
+        } else {
+          currentMessages.push(message);
         }
-        this.messages = messagesByDate;
+      }
+      if (currentMessages.length > 0) {
+        messagesByDate.push({ date: currentDate, messages: currentMessages });
+      }
+      this.messages = messagesByDate;
     }
   }
 
@@ -262,9 +262,9 @@ export class UserDataService {
   }
 
 
-   setChannel(channelId: string) {
-    // this.formatChannel(channelId);
-   }
+  setChannel(channel: Channel) {
+    this.formatChannel(channel);
+  }
 
 
   async updateChannelProperties(updatedProperties: Partial<Channel>) {
@@ -275,7 +275,9 @@ export class UserDataService {
     });
     await this.updateDocument('channels', channel.id, newChannel.toJSON());
     await this.loadChannelsData(this.activeUser);
+    this.loadChannelData(this.currentChannel.id);
   }
+
 
 
   async writeChannelMessage(newMessage: string, file: File | null) {
@@ -393,6 +395,8 @@ export class UserDataService {
       await this.updateChats('users', activeUserId, chatId);
       await this.updateChats('users', chatPartnerId, chatId);
       this.setCurrentChat([chat]);
+      await this.loadChatsData(this.activeUser)
+      await this.loadChatData(chatId)
     }
   }
 
@@ -453,7 +457,7 @@ export class UserDataService {
     if (typeof userProfilePicture === 'string' && userProfilePicture.startsWith('http')) {
       return userProfilePicture;
     } else {
-      return './assets/img/avatars/' + userProfilePicture + '.png';
+      return './assets/img/avatars/' + userProfilePicture + '';
     }
   }
 
@@ -528,6 +532,7 @@ export class UserDataService {
     });
     await this.updateChannelProperties(newChannelData);
     await this.removeChannelFromUser(channel.id);
+    await this.loadChannelsData(this.activeUser);
   }
 
   async removeChannelFromUser(channelId: string) {
@@ -550,14 +555,11 @@ export class UserDataService {
 
 
   findMessageIndex(timestamp: number, channel: Channel[]) {
-    console.log('timestamp' + timestamp);
-    console.log('Channel ' + channel);
     const channelIndex = channel.findIndex((channel) => {
       return channel.messages.some((message) => {
         return message.timestamp === timestamp;
       });
     });
-    console.log('Channelindex: ', channelIndex);
     if (channelIndex !== -1) {
       const messageIndex = channel[channelIndex].messages.findIndex((message) => {
         return message.timestamp === timestamp;
@@ -726,7 +728,6 @@ export class UserDataService {
       this.setCurrentMessage([docData['messages'][parentMessageIndex]]);
       await this.updateDocument('channels', this.currentChannel.id, docData);
       await this.loadChannelsData(this.activeUser);
-      this.setChannel(this.currentChannel.id);
     }
   }
 
@@ -752,7 +753,6 @@ export class UserDataService {
       docData['messages'][parentMessageIndex].answers[threadMessageIndex] = newMessageData.toJSON();
       await this.updateDocument('channels', this.currentChannel.id, docData);
       await this.loadChannelsData(this.activeUser);
-      this.setChannel(this.currentChannel.id);
     }
   }
 }

@@ -15,21 +15,21 @@
                     <ng-container *ngIf="this.sharedService.getMessageAlignment(message.senderId); else leftContainer">
                         <div class="message-container-right" [class.background-gray]="isEditing && message.editMessage">
                             <div class="message-overlay" *ngIf="!message.editMessage">
-                                <div>
+                                <div class="message.overlay-icon">
                                     <ngx-emoji set="apple"  emoji="white_check_mark"
                                     (click)="addReaction({  native: '✅' }, message)"></ngx-emoji></div>
-                                <div>
+                                <div message.overlay-icon>
                                     <ngx-emoji set="apple" emoji="raised_hands"
                                     (click)="addReaction({  native: '🙌' }, message)"></ngx-emoji>
                                 </div>
-                                <div (click)="toggleEmojiPicker(message)">
+                                <div (click)="toggleEmojiPicker(message)" message.overlay-icon>
                                     <img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji">
                                 </div>
-                                <div>
+                                <div message.overlay-icon>
                                     <img (click)="openThread(message)" src="./assets/img/icons/comment2-icon.png"
                                         alt="add-comment">
                                 </div>
-                                <div (click)="openEditMenu(message)">
+                                <div (click)="openEditMenu(message)" message.overlay-icon>
                                     <img src="./assets/img/icons/three-point-icon.png" alt="edit-message">
                                 </div>
                             </div>
@@ -93,14 +93,14 @@
                     <ng-template #leftContainer>
                         <div class="message-container-left">
                             <div *ngIf="!message.editMessage" class="message-overlay">
-                                <div>
+                                <div message.overlay-icon>
                                     <ngx-emoji set="apple"  emoji="white_check_mark"
                                     (click)="addReaction({ native: '✅' }, message)"></ngx-emoji></div>
-                                <div>
+                                <div message.overlay-icon>
                                     <ngx-emoji set="apple" emoji="raised_hands"
                                     (click)="addReaction({  native: '🙌' }, message)"></ngx-emoji>
                                 </div>
-                                <div (click)="toggleEmojiPicker(message)"><img
+                                <div (click)="toggleEmojiPicker(message)" message.overlay-icon><img
                                         src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
                                 <div><img (click)="openThread(message)" src="./assets/img/icons/comment2-icon.png"
                                         alt="add-comment"></div>

@@ -107,7 +107,9 @@ export class SharedService {
      const searchedUser: User[] = [];
      users.forEach((user: User) => {
        if (user.name.toLowerCase().includes(searchTerm.toLowerCase())) {
-         searchedUser.push(user);
+        if (user.id !== this.data.activeUser[0].id) {
+          searchedUser.push(user);
+        }
        }
      });
      return searchedUser;
@@ -147,7 +149,7 @@ export class SharedService {
    const searchedDirectMessages: Message[] = [];
    chats.forEach((chat: Chat) => {
      chat.messages.forEach((message: Message) => {
-       if (message.content.toLowerCase().includes(searchTerm.toLowerCase())) {
+       if (message.content.toLowerCase().includes(searchTerm.toLowerCase()) && message.senderId !== this.data.activeUser[0].id) {
          searchedDirectMessages.push(message);
        }
      });
@@ -161,7 +163,7 @@ export class SharedService {
      channels.forEach(channel => {
        if (channel.messages && Array.isArray(channel.messages)) {
          channel.messages.forEach(message => {
-           if (message.content.toLowerCase().includes(searchTerm.toLowerCase())) {
+           if (message.content.toLowerCase().includes(searchTerm.toLowerCase()) && message.senderId !== this.data.activeUser[0].id) {
              searchedChannelMessages.push({ message: message, channel: channel });
            }
          });
@@ -183,10 +185,10 @@ export class SharedService {
       }
       const message = this.generateNewMessage(newMessage, fileName, fileUrl);
       await this.firebaseService.updateMessages('channels', this.data.currentChannel.id, message.toJSON());
-      this.openChannel(this.data.currentChannel.id);
+      this.openChannel(this.data.currentChannel);
     }
     catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -199,8 +201,8 @@ export class SharedService {
 
 
   
-  openChannel(channelId: string) {
-    this.data.setChannel(channelId);
+  openChannel(channel: Channel) {
+    this.data.setChannel(channel);
     if (this.isMobile) {
       this.activeComponent = 'channel-chat';
     }

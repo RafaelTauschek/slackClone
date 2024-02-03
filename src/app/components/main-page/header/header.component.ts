@@ -98,8 +98,8 @@ export class HeaderComponent {
     this.searchActive = false;
   }
 
-  openChannel(channelId: string) {
-    this.data.setChannel(channelId);
+  openChannel(channel: Channel) {
+    this.data.setChannel(channel);
     this.sharedService.directChatActive = false;
     this.sharedService.threadActive = false;
     this.sharedService.messageActive = false;
@@ -155,9 +155,7 @@ export class HeaderComponent {
     }, 500)
   }
 
-  redirectToDirectChat(message: any) {
-    console.log('Message recieved: ', message);
-  }
+  redirectToDirectChat(message: any) {}
 
   findMessageIndex(timestamp: string, channel: any[]): { dayIndex: number, messageIndex: number } {
     for (let dayIndex = 0; dayIndex < this.data.messages.length; dayIndex++) {

@@ -14,7 +14,7 @@
         <img class="search-icon" src="./assets/img/icons/search-icon.png" alt="search-icon">
         <div class="hidden-search-container" *ngIf="searchActive">
             <div *ngIf="searchedChannel" class="searched-channel">
-                <div class="single-channel" *ngFor="let channel of searchedChannel" (click)="openChannel(channel.id)">
+                <div class="single-channel" *ngFor="let channel of searchedChannel" (click)="openChannel(channel)">
                     <span># {{ channel.name}}</span>
                 </div>
             </div>
