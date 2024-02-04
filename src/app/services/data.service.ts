@@ -89,12 +89,12 @@ export class UserDataService {
 
 
   unsubscribeData() {
-    this.unsubscribeUser();
-    this.unsubscribeUsers();
-    this.unsubscribeChats();
-    this.unsubscribeChannels();
-    this.unsubscribeChat();
-    this.unsubscribeChannel();
+    this.unsubscribeUser;
+    this.unsubscribeUsers;
+    this.unsubscribeChats;
+    this.unsubscribeChannels;
+    this.unsubscribeChat;
+    this.unsubscribeChannel;
   }
 
   async fetchUserData(userId: string) {
@@ -263,6 +263,7 @@ export class UserDataService {
 
 
   setChannel(channel: Channel) {
+    this.currentChannel = channel;
     this.formatChannel(channel);
   }
 
@@ -379,7 +380,9 @@ export class UserDataService {
       await this.updateDocument('chats', chatId, chat.toJSON())
       await this.updateMessages('chats', chatId, message.toJSON());
       await this.updateChats('users', activeUserId, chatId);
+      await this.loadChatsData(this.activeUser);
       this.setCurrentChat([chat]);
+      this.chats.push(chat);
     }
 
     if (activeUserId !== chatPartnerId) {
@@ -395,8 +398,7 @@ export class UserDataService {
       await this.updateChats('users', activeUserId, chatId);
       await this.updateChats('users', chatPartnerId, chatId);
       this.setCurrentChat([chat]);
-      await this.loadChatsData(this.activeUser)
-      await this.loadChatData(chatId)
+      this.chats.push(chat);
     }
   }
 
@@ -457,7 +459,7 @@ export class UserDataService {
     if (typeof userProfilePicture === 'string' && userProfilePicture.startsWith('http')) {
       return userProfilePicture;
     } else {
-      return './assets/img/avatars/' + userProfilePicture + '';
+      return './assets/img/avatars/' + userProfilePicture + '.png';
     }
   }
 

@@ -104,16 +104,18 @@ export class SharedService {
 
 
    filterUsers(users: User[], searchTerm: string) {
-     const searchedUser: User[] = [];
-     users.forEach((user: User) => {
-       if (user.name.toLowerCase().includes(searchTerm.toLowerCase())) {
-        if (user.id !== this.data.activeUser[0].id) {
+    const searchedUser: User[] = [];
+    const uniqueUserIds = new Set<string>();
+    users.forEach((user: User) => {
+      if (user.name.toLowerCase().includes(searchTerm.toLowerCase()) && user.id !== this.data.activeUser[0].id) {
+        if (!uniqueUserIds.has(user.id)) {
           searchedUser.push(user);
+          uniqueUserIds.add(user.id);
         }
-       }
-     });
-     return searchedUser;
-   }
+      }
+    });
+    return searchedUser;
+  }
 
 
  filterUsersByMail(users: User[], searchTerm: string) {

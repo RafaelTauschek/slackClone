@@ -26,7 +26,6 @@ export class LoginComponent {
 
   login() {
     this.isSubmitted = true;
-    
     if (this.loginForm.valid) {
       const email = this.loginForm.get('email')?.value;
       const password = this.loginForm.get('password')?.value;

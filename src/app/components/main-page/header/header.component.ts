@@ -128,14 +128,10 @@ export class HeaderComponent {
   onSearch() {
     if (this.searchTerm !== '') {
       this.searchActive = true;
-      this.searchedChannel = [];
       this.searchedChannel = this.sharedService.filterChannels(this.data.userChannels, this.searchTerm);
-      this.searchedUser = [];
       this.searchedUser = this.sharedService.filterUsers(this.data.users, this.searchTerm);
-      this.searchedDirectMessages = [];
       this.searchedDirectMessages = this.sharedService.filterDirectMessages(this.data.chats, this.searchTerm);
-      this.searchedChannelMessages = [];
-      this.searchedChannelMessages = this.sharedService.filterChannelMessages(this.data.channelList, this.searchTerm);
+      this.searchedChannelMessages = this.sharedService.filterChannelMessages(this.data.userChannels, this.searchTerm);
     } else {
       this.searchActive = false;
     }

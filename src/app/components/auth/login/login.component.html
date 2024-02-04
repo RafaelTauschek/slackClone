@@ -6,7 +6,7 @@
     <form [formGroup]="loginForm" (ngSubmit)="login()">
         <div class="input-container">
             <img class="email-icon" src="./assets/img/icons/mail-icon.png" alt="email-icon">
-            <input type="email" formControlName="email" placeholder="E-Mail-Adresse">
+            <input type="email" formControlName="email" placeholder="E-Mail-Adresse" autocomplete="email">
             <div class="error" *ngIf="isSubmitted && loginForm.get('email')?.hasError('required')">Dieses Feld ist
                 erforderlich</div>
             <div class="error" *ngIf="isSubmitted && loginForm.get('email')?.hasError('email')">Diese E-Mail-Adresse ist

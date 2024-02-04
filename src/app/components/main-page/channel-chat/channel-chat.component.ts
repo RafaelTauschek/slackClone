@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { ChatAreaComponent } from '../../chats/chat-area/chat-area.component';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
-import { Channel } from '../../../models/channel.class';
 import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditChannelDialogComponent } from '../../dialogs/edit-channel-dialog/edit-channel-dialog.component';
