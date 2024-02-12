@@ -47,10 +47,8 @@ export class DirectChatComponent {
       const newMessage = await this.generateNewMessage(this.selectedFile);
       const chatExists = this.data.checkIfChatExists(this.data.activeUser[0].id, this.sharedService.currentPartner);
       if (chatExists) {
-        console.log('Chat exists');
         await this.data.writeChatMessage(newMessage, this.data.currentChat[0].id);
       } else {
-        console.log('Chat doesnt exsists, generating new one'); 
         await this.data.generateNewChat(this.data.activeUser[0].id, this.sharedService.currentPartner, newMessage);
       }
     } 

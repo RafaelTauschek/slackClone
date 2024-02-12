@@ -87,6 +87,7 @@
         .add-emoji {
             width: 24px;
             height: 24px;
+            cursor: pointer;
         }
 
         .single-emoji {
@@ -97,6 +98,7 @@
             border: 1px solid #ADB0D9;
             background-color: white;
             padding: 5px 10px;
+            cursor: pointer;
 
 
             img {
@@ -145,11 +147,13 @@
             img {
                 height: 24px;
                 width: 24px;
+                cursor: pointer;
             }
 
             ngx-emoji {
                 height: 24px;
                 width: 24px;
+                cursor: pointer;
             }
         }
     }
@@ -305,6 +309,7 @@
         .add-emoji {
             width: 24px;
             height: 24px;
+            cursor: pointer;
         }
 
         .single-emoji {
@@ -315,6 +320,7 @@
             border: 1px solid #ADB0D9;
             background-color: white;
             padding: 5px 10px;
+            cursor: pointer;
 
 
             img {
@@ -344,6 +350,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
     }
 
     .message-overlay {
@@ -368,11 +375,13 @@
             img {
                 height: 24px;
                 width: 24px;
+                cursor: pointer;
             }
 
             ngx-emoji {
                 height: 24px;
                 width: 24px;
+                cursor: pointer;
             }
         }
     }

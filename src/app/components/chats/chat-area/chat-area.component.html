@@ -15,21 +15,21 @@
                     <ng-container *ngIf="this.sharedService.getMessageAlignment(message.senderId); else leftContainer">
                         <div class="message-container-right" [class.background-gray]="isEditing && message.editMessage">
                             <div class="message-overlay" *ngIf="!message.editMessage">
-                                <div class="message.overlay-icon">
+                                <div class="message-overlay-icon">
                                     <ngx-emoji set="apple"  emoji="white_check_mark"
                                     (click)="addReaction({  native: '✅' }, message)"></ngx-emoji></div>
-                                <div message.overlay-icon>
+                                <div message-overlay-icon>
                                     <ngx-emoji set="apple" emoji="raised_hands"
                                     (click)="addReaction({  native: '🙌' }, message)"></ngx-emoji>
                                 </div>
                                 <div (click)="toggleEmojiPicker(message)" message.overlay-icon>
                                     <img src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji">
                                 </div>
-                                <div message.overlay-icon>
+                                <div message-overlay-icon>
                                     <img (click)="openThread(message)" src="./assets/img/icons/comment2-icon.png"
                                         alt="add-comment">
                                 </div>
-                                <div (click)="openEditMenu(message)" message.overlay-icon>
+                                <div (click)="openEditMenu(message)" message-overlay-icon>
                                     <img src="./assets/img/icons/three-point-icon.png" alt="edit-message">
                                 </div>
                             </div>
@@ -78,6 +78,10 @@
                                         <div class="single-emoji" *ngFor="let emoji of message.emojis" (click)="addReaction({native: emoji.emoji}, message)">
                                             <div>{{ emoji.emoji }}</div>
                                             <span class="emoji-count">{{ emoji.count }}</span>
+                                            <div class="emoji-popup">
+                                                <span class="popup-emoji">{{ emoji.emoji }}</span>
+                                                <span class="popup-text">Hat reagiert</span>
+                                            </div>
                                         </div>
                                         <img (click)="toggleEmojiPicker(message)" class="add-emoji" src="./assets/img/icons/add-emoji-icon.png"
                                             alt="add-emoji-icon">
@@ -93,14 +97,14 @@
                     <ng-template #leftContainer>
                         <div class="message-container-left">
                             <div *ngIf="!message.editMessage" class="message-overlay">
-                                <div message.overlay-icon>
+                                <div message-overlay-icon>
                                     <ngx-emoji set="apple"  emoji="white_check_mark"
                                     (click)="addReaction({ native: '✅' }, message)"></ngx-emoji></div>
-                                <div message.overlay-icon>
+                                <div message-overlay-icon>
                                     <ngx-emoji set="apple" emoji="raised_hands"
                                     (click)="addReaction({  native: '🙌' }, message)"></ngx-emoji>
                                 </div>
-                                <div (click)="toggleEmojiPicker(message)" message.overlay-icon><img
+                                <div (click)="toggleEmojiPicker(message)" message-overlay-icon><img
                                         src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji"></div>
                                 <div><img (click)="openThread(message)" src="./assets/img/icons/comment2-icon.png"
                                         alt="add-comment"></div>
@@ -138,8 +142,13 @@
                                         <div class="single-emoji" *ngFor="let emoji of message.emojis" (click)="addReaction({native: emoji.emoji}, message)">
                                             <span>{{ emoji.emoji }}</span>
                                             <span class="emoji-count">{{ emoji.count }}</span>
+                                            <div class="emoji-popup">
+                                                <span>{{ emoji.emoji }}</span>
+                                                <span>Hat reagiert</span>
+                                            </div>
                                         </div>
-                                        <img (click)="toggleEmojiPicker(message)" src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji-icon">
+
+                                        <img class="add-emoji" (click)="toggleEmojiPicker(message)" src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji-icon">
                                     </div>
                                 </div>
                             </div>
