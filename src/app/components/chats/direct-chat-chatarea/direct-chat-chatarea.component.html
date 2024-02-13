@@ -53,6 +53,11 @@
                                     <div class="single-emoji" *ngFor="let emoji of message.emojis" (click)="addReaction({native: emoji.emoji}, message)">
                                         <span>{{ emoji.emoji }}</span>
                                         <span class="emoji-count">{{ emoji.count }}</span>
+                                        <div class="emoji-popup mt-150">
+                                            <span class="popup-emoji">{{ emoji.emoji }}</span>
+                                            <span *ngIf="emoji.senders.length < 2" class="popup-text">{{ data.getSenderNames(emoji.senders) }} hat reagiert.</span>
+                                            <span *ngIf="emoji.senders.length > 1" class="popup-text">{{ data.getSenderNames(emoji.senders) }} haben reagiert.</span>
+                                        </div>
                                     </div>
                                     <img class="add-emoji" (click)="toggleEmojiPicker(message)" src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji-icon">
                                 </div>
@@ -111,6 +116,11 @@
                                     <div class="single-emoji" *ngFor="let emoji of message.emojis" (click)="addReaction({native: emoji.emoji}, message)">
                                         <span>{{ emoji.emoji }}</span>
                                         <span class="emoji-count">{{ emoji.count }}</span>
+                                        <div class="emoji-popup">
+                                            <span class="popup-emoji">{{ emoji.emoji }}</span>
+                                            <span *ngIf="emoji.senders.length < 2" class="popup-text">{{ data.getSenderNames(emoji.senders) }} hat reagiert.</span>
+                                            <span *ngIf="emoji.senders.length > 1" class="popup-text">{{ data.getSenderNames(emoji.senders) }} haben reagiert.</span>
+                                        </div>
                                     </div>
                                     <img class="add-emoji" (click)="toggleEmojiPicker(message)" src="./assets/img/icons/add-emoji-icon.png" alt="add-emoji-icon">
                                 </div>

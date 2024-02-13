@@ -78,9 +78,10 @@
                                         <div class="single-emoji" *ngFor="let emoji of message.emojis" (click)="addReaction({native: emoji.emoji}, message)">
                                             <div>{{ emoji.emoji }}</div>
                                             <span class="emoji-count">{{ emoji.count }}</span>
-                                            <div class="emoji-popup">
+                                            <div class="emoji-popup mt-120">
                                                 <span class="popup-emoji">{{ emoji.emoji }}</span>
-                                                <span class="popup-text">Hat reagiert</span>
+                                                <span *ngIf="emoji.senders.length < 2" class="popup-text">{{ data.getSenderNames(emoji.senders) }} hat reagiert.</span>
+                                                <span *ngIf="emoji.senders.length > 1" class="popup-text">{{ data.getSenderNames(emoji.senders) }} haben reagiert.</span>
                                             </div>
                                         </div>
                                         <img (click)="toggleEmojiPicker(message)" class="add-emoji" src="./assets/img/icons/add-emoji-icon.png"
@@ -143,8 +144,9 @@
                                             <span>{{ emoji.emoji }}</span>
                                             <span class="emoji-count">{{ emoji.count }}</span>
                                             <div class="emoji-popup">
-                                                <span>{{ emoji.emoji }}</span>
-                                                <span>Hat reagiert</span>
+                                                <span class="popup-emoji">{{ emoji.emoji }}</span>
+                                                <span *ngIf="emoji.senders.length < 2" class="popup-text">{{ data.getSenderNames(emoji.senders) }} hat reagiert.</span>
+                                                <span *ngIf="emoji.senders.length > 1" class="popup-text">{{ data.getSenderNames(emoji.senders) }} haben reagiert.</span>
                                             </div>
                                         </div>
 

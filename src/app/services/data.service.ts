@@ -757,4 +757,16 @@ export class UserDataService {
       await this.loadChannelsData(this.activeUser);
     }
   }
+
+
+  getSenderNames(senderIds: string[]): string {
+    const senderNames: string[] = [];
+    senderIds.forEach((sender) => {
+      const senderName = this.getUserProperty(sender, 'name');
+      senderNames.push(senderName as string);
+    });
+    return senderNames.join(', ');
+  }
 }
+
+
