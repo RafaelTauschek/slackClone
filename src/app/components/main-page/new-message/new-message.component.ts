@@ -149,4 +149,18 @@ export class NewMessageComponent {
     this.sharedService.directChatActive = false;
     this.sharedService.channelChatActive = true;
   }
+
+  
+  atUser: boolean = false;
+
+  atUserChat() {
+    this.atUser = !this.atUser;
+  }
+
+  atUserToChat(user: User) {
+    const username = user.name;
+    const formatedString = "@" + username;
+    this.newMessage += formatedString;
+    this.atUser = false;
+  }
 }

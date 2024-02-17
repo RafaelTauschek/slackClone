@@ -39,7 +39,7 @@
                 <input type="file" id="file-input" (change)="onFileSelected($event)">
                 <div class="seperator"></div>
                 <img (click)="toggleEmojiPicker()" src="./assets/img/icons/smiley-icon.png" alt="smiley-icon">
-                <img src="./assets/img/icons/at-icon.png" alt="at-icon">
+                <img (click)="atUserChat()" src="./assets/img/icons/at-icon.png" alt="at-icon">
             </div>
             <div class="thred-middle">
                 <span>{{ selectedFileName }}</span>
@@ -48,13 +48,21 @@
                 <img src="./assets/img/icons/send-icon.png" alt="send-icon" (click)="sendMessage()">
             </div>
         </div>
+        <div class="at-user-menu" *ngIf="atUser">
+            <div class="user-list" *ngFor="let user of data.users" (click)="atUserToChat(user)">
+                <div class="single-user" *ngIf="user.id !== data.activeUser[0].id">
+                    <img [src]="data.getProfilePictureURL(user.id)" alt="user-avatar">
+                    <span>{{ data.getUserProperty(user.id, 'name') }}</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="emoji-picker" *ngIf="showEmojiPicker">
         <emoji-mart class="emoji-mart" (emojiClick)="addEmoji($event)"></emoji-mart>
     </div>
 
-    <div class="overlay" *ngIf="memberInviteActive || memberListActive" (click)="closeMenus()"></div>
+    <div class="overlay" *ngIf="memberInviteActive || memberListActive || atUser" (click)="closeMenus()"></div>
     
     <div class="member-list-menu" *ngIf="memberListActive">
         <div class="member-list-header">
@@ -115,4 +123,5 @@
             <button (click)="updateUsersOnChannel()" [class.enabled]="userToAdd.length > 0" [class.disabled]="userToAdd.length <= 0" [disabled]="userToAdd.length <= 0">Hinzufügen</button>
             </div>
     </div>
+
 </div>

@@ -8,6 +8,7 @@ import { Chat } from '../../../models/chat.class';
 import { UserDataService } from '../../../services/data.service';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { User } from '../../../models/user.class';
 
 @Component({
   selector: 'app-direct-chat',
@@ -71,8 +72,20 @@ export class DirectChatComponent {
   }
 
 
+
+  atUser: boolean = false;
+
+  atUserChat() {
+    this.atUser = !this.atUser;
+  }
+
+  atUserToChat(user: User) {
+    const username = user.name;
+    const formatedString = "@" + username;
+    this.message += formatedString;
+    this.atUser = false;
+  }
   
 
- 
 
 }

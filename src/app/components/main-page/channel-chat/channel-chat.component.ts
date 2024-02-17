@@ -80,7 +80,8 @@ export class ChannelChatComponent {
 
   closeMenus() {
     this.memberInviteActive = false;
-    this.memberListActive = false;  
+    this.memberListActive = false; 
+    this.atUser = false
   }
 
   openDialog() {
@@ -130,5 +131,18 @@ export class ChannelChatComponent {
       await this.data.loadChannelsData(this.data.activeUser);
       this.data.formatChannel(this.data.currentChannel);
     }
+  }
+
+  atUser: boolean = false;
+
+  atUserChat() {
+    this.atUser = !this.atUser;
+  }
+
+  atUserToChat(user: User) {
+    const username = user.name;
+    const formatedString = "@" + username;
+    this.message += formatedString 
+    this.atUser = false;
   }
 }

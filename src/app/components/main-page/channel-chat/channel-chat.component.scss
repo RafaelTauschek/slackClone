@@ -579,3 +579,47 @@ label {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.at-user-menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    border-radius: 30px;
+    border: 1px solid #797EF3;
+    background-color: white;
+    padding: 15px;
+    overflow: scroll;
+    z-index: 999;
+
+
+    .user-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .single-user {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px;
+            gap: 15px;
+
+            &:hover {
+                background-color: #ECEEFE;
+            }
+
+            span {
+                font-size: 18px;
+            }
+
+            img {
+                height: 25px;
+                width: 25px;
+                object-fit: fill;
+                border-radius: 100px;
+            }
+        }
+    }
+}
